@@ -5,14 +5,14 @@ class baktest:
         self.Struct = Struct
         self.data = data
         self.index=0
-        self.buy_hist=log_path+'buy_hist.csv'
-        self.sell_hist=log_path+'sell_hist.csv'
-        self.money_balance=money_balance
-        self.crypto_balance=crypto_balance
-        with open(self.buy_hist, 'w') as f:
+        self.pool_hist=log_path+'pool_hist.csv'
+        self.position_hist=log_path+'position_hist.csv'
+        self.pool={'money_balance' : money_balance, 
+                   'crypto_balance' : crypto_balance}
+        with open(self.pool_hist, 'w') as f:
             f.write('Time,Open,High,Low,Close,Volume,Vol,Justification,crypto_balance,money_balance\n')
-        with open(self.sell_hist, 'w') as f:
-            f.write('Time,Open,High,Low,Close,Volume,Vol,Justification,crypto_balance,money_balance\n')
+        with open(self.position_hist, 'w') as f:
+            f.write('')#A faire
     
     def __iter__(self):
         self.index = 0  # Reset index for iteration
@@ -26,24 +26,21 @@ class baktest:
         else:
             raise StopIteration
 
-    def buy(self,vol,justif,price=1):
+    def make_position(self,vol,justif, top_buy=True,price_col=1):
         info=list(self.current_data)
-        self.crypto_balance-=vol*info[price]
-        self.money_balance+=vol*info[price]
+        signe_buy=1
+        if top_buy is False : signe_buy=-1
+        self.crypto_balance+=vol*info[price_col] * signe_buy
+        self.money_balance-=vol*info[price_col] * signe_buy
         for i in [vol,justif,self.crypto_balance,self.money_balance]:
             info.append(i)
-        with open(self.buy_hist, 'a') as f:
+        
+        with open(self.position_hist, 'a') as f:
+            f.write()#AFAIRE quand structure
+        
+        with open(self.pool_hist, 'a') as f:
             f.write(','.join([str(i) for i in info])+'\n')
     
-    def sell(self,vol,justif,price=1):
-        info=list(self.current_data)
-        self.crypto_balance+=vol*info[price]
-        self.money_balance-=vol*info[price]        
-        for i in [vol,justif,self.crypto_balance,self.money_balance]:
-            info.append(i)
-        with open(self.sell_hist, 'a') as f:
-            f.write(','.join([str(i) for i in info])+'\n')
-
 
 
 
