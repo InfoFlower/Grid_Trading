@@ -44,10 +44,7 @@ class baktest:
             params['entryprice'] = self.current_data[self.CloseCol]
             params['close_condition'] = self.orders['buy_orders'][0]['close_condition']
             self.open_position(params)
-            # Ordre pris donc supprimé de la grille,
-            # Rajouter un ordre en dessous du prix pour 'recréer' l'ordre
-            #self.strategy.grid_maker.update_grid(current_grid = self.orders, 'buy_orders')
-            self.orders['buy_orders']=self.orders['buy_orders'][1:]
+            self.orders=self.strategy.grid_maker.update_grid(current_grid = self.orders,wich_orders = 'sell_orders')
 
         condition_open_sell = self.orders['sell_orders'][0]['open_condition'](self.orders, self.current_data[self.CloseCol], self.data_n_1[self.CloseCol])
         if condition_open_sell == 'SELL' and self.pool['crypto_balance']>self.orders['sell_orders'][0]['orders_params']['qty']:
@@ -57,7 +54,8 @@ class baktest:
             params['entryprice'] = self.current_data[self.CloseCol]
             params['close_condition'] = self.orders['sell_orders'][0]['close_condition']
             self.open_position(params)
-            self.orders['sell_orders']=self.orders['sell_orders'][1:]
+            self.orders=self.strategy.grid_maker.update_grid(current_grid = self.orders,wich_orders = 'buy_orders')
+
         Ids_to_close = [position['close_condition'](position,self.current_data[self.CloseCol], self.data_n_1[self.CloseCol]) for position in self.positions.to_dicts()]
         if len(Ids_to_close)>0 and all(Ids_to_close) is not None: 
             [self.close_position(*i) for i in Ids_to_close if i[0] is not False]
@@ -177,7 +175,7 @@ if __name__ == '__main__':
     import polars as pl
     import MakeGrid as MakeGrid
     from strategies.strategy_example import Strategy
-    data=pl.read_csv('data/OPE_DATA/data_raw_BTCUSDT_176.csv', truncate_ragged_lines=True)
+    data=pl.read_csv('data\OPE_DATA\DATA_RAW_S_ORIGIN_test_code\data_raw_BTCUSDT_176.csv', truncate_ragged_lines=True)
     data=data[['Open time','Close']].to_numpy()
     TimeCol=0
     CloseCol=1
@@ -188,3 +186,4 @@ if __name__ == '__main__':
     bktst=baktest(data, strategy, money_balance,crypto_balance,TimeCol,CloseCol)
     for i in bktst:
         pass
+
