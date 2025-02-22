@@ -34,7 +34,7 @@ class baktest:
             #Time,Open,High,Low,Close,Volume,Vol,Justification,crypto_balance,money_balance
             f.write('Time,Price,Qty,Justification,crypto_balance,money_balance\n')
         with open(self.position_hist, 'w') as f:
-            f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,justif\n')#A faire
+            f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,justif,state,money_balance,crypto_balance\n')#A faire
     
     def __iter__(self):
         self.index = 0  # Reset index for iteration
@@ -57,16 +57,27 @@ class baktest:
             {'money_balance' : money_balance, 
            'crypto_balance' : crypto_balance}
         """
-        info=list(self.current_data.copy())
+
+        if position['state'].item() == 'Opening':
+            signe_open = 1
+        elif position['state'].item() == 'Closing' :
+            signe_open = -1
 
         #SET POOL
-        self.pool['crypto_balance']+=position['qty'].item()*position['entryprice'].item() * position['signe_buy'].item()
-        self.pool['money_balance']-=position['qty'].item()*position['entryprice'].item() * position['signe_buy'].item()
+        self.pool['crypto_balance']+=position['qty'].item()*position['entryprice'].item() * position['signe_buy'].item() * signe_open
+        self.pool['money_balance']-=position['qty'].item()*position['entryprice'].item() * position['signe_buy'].item() * signe_open
 
-        for i in [position['qty'].item(),position['justif'].item(),self.pool['crypto_balance'],self.pool['money_balance']]:
+        
+    
+    def log_position(self, position):
+        """
+        log the position
+        """
+        info = list(position.rows()[0])
+        for i in [self.pool['crypto_balance'],self.pool['money_balance']]:
             info.append(i)
-            
-        with open(self.pool_hist, 'a') as f:
+
+        with open(self.position_hist, 'a') as f:
             f.write(','.join([str(i) for i in info])+'\n')
 
     def open_position(self,position_args):
@@ -96,7 +107,8 @@ class baktest:
             'leverage' : float,
             'take_profit':float,
             'stop_loss':float,
-            'justif' : string
+            'justif' : string,
+            'state' : string
         }
         
         """
@@ -108,6 +120,7 @@ class baktest:
         #SET POSITION
 
         position_args['id'] = self.id_position
+        position_args['state'] = 'Opening'
         self.id_position += 1
         current_position = pl.DataFrame(position_args).select(['id',
                                                        'timestamp', 
@@ -118,18 +131,26 @@ class baktest:
                                                         'leverage',
                                                         'take_profit',
                                                         'stop_loss',
-                                                        'justif'])
+                                                        'justif',
+                                                        'state'])
         
         self.positions = pl.concat([self.positions, current_position])
 
-        with open(self.position_hist, 'a') as f:
-            f.write(','.join([str(i) for i in current_position.rows()[0]])+'\n')
-
         self.set_pool(current_position)
+        self.log_position(current_position)
 
+    def close_position(self, id):
+        """
+        Close a position by its id
+        """
+        close_position = self.positions.filter(pl.col("id") == id)
+        print(close_position)
+        close_position = close_position.with_columns(state=pl.lit('Closing'))
+        print(close_position)
+        self.positions = self.positions.filter(pl.col("id") != id)
 
-    def close_position(self):
-        pass
+        self.set_pool(close_position)
+        self.log_position(close_position)
 
 if __name__ == '__main__':
     import polars as pl
@@ -155,4 +176,9 @@ if __name__ == '__main__':
 
             bktst.open_position(position_args)
         n+=1
+
+    print(bktst.positions)
+
+    bktst.close_position(48)
+
     print(bktst.positions)
