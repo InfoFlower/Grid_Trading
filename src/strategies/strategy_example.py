@@ -55,5 +55,4 @@ class Strategy:
     
 if __name__ == '__main__':
     import src.MakeGrid as MakeGrid
-    import src.
     Strategy('basic_grid', MakeGrid.Grid_Maker('basic_grid', 'grid_test'))
