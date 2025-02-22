@@ -53,18 +53,15 @@ class Strategy:
     
     def __call__(self,grid_origin, prct_of_intervall, nb_orders):
         params = {'grid_origin': grid_origin, 
-         'prct_of_intervall': prct_of_intervall, 
-         'nb_orders': nb_orders,
-         'orders_params': {
-                'qty':100,
-                'leverage':1,
-                'take_profit':prct_of_intervall,
-                'stop_loss':prct_of_intervall/2
-         },
+                    'prct_of_intervall': prct_of_intervall, 
+                    'nb_orders': nb_orders,
+                    'orders_params': {
+                            'qty':100,
+                            'leverage':1,
+                            'take_profit':prct_of_intervall,
+                            'stop_loss':prct_of_intervall/2
+                    },
          'open_condition': self.open_condition, 
          'close_condition': self.close_condition}
         return self.make_orders(params)
     
-if __name__ == '__main__':
-    import src.MakeGrid as MakeGrid
-    Strategy('basic_grid', MakeGrid.Grid_Maker('basic_grid', 'grid_test'))

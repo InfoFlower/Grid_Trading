@@ -37,8 +37,16 @@ class Grid_Maker:
 
     def update_grid(self, current_grid):
         pass
+        # make_order()
+
+
+    def make_order():
+        pass
         
     def Make_Basic_Grid(self,args):
+        """
+        make_order
+        """
         buy_params = args['orders_params'].copy()
         buy_params['is_buy'] = True
         buy_orders = [{'level' : args['grid_origin']-args['grid_origin']*(i*args['prct_of_intervall']),
@@ -59,24 +67,3 @@ class Grid_Maker:
                 'buy_orders' : buy_orders,
                 'sell_orders': sell_orders, 
                 'origin' : args['grid_origin']}
-    
-
-if __name__ == '__main__':
-    grid_type, grid_name, write_path='basic_grid', 'grid_test', 'data/trade_history/grid/'
-    close_condition = lambda x: x>100
-    open_condition = lambda x: x<100
-    
-    maker = Grid_Maker(grid_type, grid_name, write_path)
-    
-    args = {'grid_origin': 500, 
-            'prct_of_intervall': 0.01, 
-            'nb_orders': 10,
-            'orders_params': {
-                            'qty':100,
-                            'leverage':1,
-                            'take_profit':0.01,
-                            'stop_loss':0.01/2,
-                            'justif' : 'justif'},
-            'open_condition': open_condition,
-            'close_condition': close_condition}
-    maker(args)
