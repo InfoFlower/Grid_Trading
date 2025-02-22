@@ -25,13 +25,16 @@ class baktest:
         self.index=0
         self.pool_hist=log_path+'pool_hist.csv'
         self.position_hist=log_path+'position_hist.csv'
+        self.id_position = 0
+
         self.pool={'money_balance' : money_balance, 
                    'crypto_balance' : crypto_balance}
+        
         with open(self.pool_hist, 'w') as f:
             #Time,Open,High,Low,Close,Volume,Vol,Justification,crypto_balance,money_balance
             f.write('Time,Price,Qty,Justification,crypto_balance,money_balance\n')
         with open(self.position_hist, 'w') as f:
-            f.write('id,timestamp,entryprice,qty,is_buy,leverage,take_profit,stop_loss\n')#A faire
+            f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,justif\n')#A faire
     
     def __iter__(self):
         self.index = 0  # Reset index for iteration
@@ -45,51 +48,7 @@ class baktest:
         else:
             raise StopIteration
         
-    def set_position(self, position_args):
-        """
-        Add a new position by setting self.current_position
-
-        Position Structure
-
-        In
-        {
-            'timestamp':timestamp,
-            'qty':float,
-            'is_buy':bool,
-            'leverage':float,
-            'take_profit':float,
-            'stop_loss':float
-        }
-
-        Out
-        {
-            'id' : varchar (int),
-            'timestamp' : timestamp,
-            'entryprice' : float,
-            'qty' : float,
-            'is_buy' : bool,
-            'leverage' : float,
-            'take_profit':float,
-            'stop_loss':float
-        }
-        """
-        #SET POSITION
-        position_args['id'] = 0
-        self.current_position = pl.DataFrame(position_args).select(['id',
-                                                       'timestamp', 
-                                                        'entryprice',
-                                                        'qty',
-                                                        'is_buy',
-                                                        'leverage',
-                                                        'take_profit',
-                                                        'stop_loss'])
-        
-        self.positions = pl.concat([self.positions, self.current_position])
-
-        with open(self.position_hist, 'a') as f:
-            f.write(','.join([str(i) for i in self.current_position.rows()[0]])+'\n')#AFAIRE quand structure
-        
-    def set_pool(self, justif, signe_buy):
+    def set_pool(self, position):
         """
         Update the pool state
 
@@ -101,25 +60,73 @@ class baktest:
         info=list(self.current_data.copy())
 
         #SET POOL
-        self.pool['crypto_balance']+=self.current_position['qty'].item()*self.current_position['entryprice'].item() * signe_buy
-        self.pool['money_balance']-=self.current_position['qty'].item()*self.current_position['entryprice'].item() * signe_buy
+        self.pool['crypto_balance']+=position['qty'].item()*position['entryprice'].item() * position['signe_buy'].item()
+        self.pool['money_balance']-=position['qty'].item()*position['entryprice'].item() * position['signe_buy'].item()
 
-        for i in [self.current_position['qty'].item(),justif,self.pool['crypto_balance'],self.pool['money_balance']]:
+        for i in [position['qty'].item(),position['justif'].item(),self.pool['crypto_balance'],self.pool['money_balance']]:
             info.append(i)
             
         with open(self.pool_hist, 'a') as f:
             f.write(','.join([str(i) for i in info])+'\n')
 
-    def open_position(self,justif,position_args):
+    def open_position(self,position_args):
         """
-        
-        """
-        signe_buy=1
-        if position_args['is_buy'] is False : signe_buy=-1
+        Position Structure
 
-        self.set_position(position_args)
-        self.set_pool(justif, signe_buy)
+        In
+        {
+            'timestamp':timestamp,
+            'entryprice':float,
+            'qty':float,
+            'is_buy':bool,
+            'leverage':float,
+            'take_profit':float,
+            'stop_loss':float,
+            'justif' : string
+        }
+
+        Out
+        {
+            'id' : string,
+            'timestamp' : timestamp,
+            'entryprice' : float,
+            'qty' : float,
+            'is_buy' : bool,
+            'signe_buy': int,
+            'leverage' : float,
+            'take_profit':float,
+            'stop_loss':float,
+            'justif' : string
+        }
         
+        """
+        if position_args['is_buy'] is False : 
+            position_args['signe_buy']=-1
+        else:
+            position_args['signe_buy']=1
+
+        #SET POSITION
+
+        position_args['id'] = self.id_position
+        self.id_position += 1
+        current_position = pl.DataFrame(position_args).select(['id',
+                                                       'timestamp', 
+                                                        'entryprice',
+                                                        'qty',
+                                                        'is_buy',
+                                                        'signe_buy',
+                                                        'leverage',
+                                                        'take_profit',
+                                                        'stop_loss',
+                                                        'justif'])
+        
+        self.positions = pl.concat([self.positions, current_position])
+
+        with open(self.position_hist, 'a') as f:
+            f.write(','.join([str(i) for i in current_position.rows()[0]])+'\n')
+
+        self.set_pool(current_position)
+
 
     def close_position(self):
         pass
@@ -137,15 +144,15 @@ if __name__ == '__main__':
     for i in bktst:
         
         if n%1000 == 0:
-            print('i' ,i)
             position_args = {'timestamp':i[TimeCol],
                 'entryprice':i[CloseCol],
                 'qty':100,
                 'is_buy':True,
                 'leverage':1,
                 'take_profit':0,
-                'stop_loss':0}
+                'stop_loss':0,
+                'justif' : 'justif'}
 
-            bktst.open_position('justif', position_args)
+            bktst.open_position(position_args)
         n+=1
     print(bktst.positions)
