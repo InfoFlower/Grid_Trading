@@ -47,4 +47,4 @@ if __name__ == '__main__':
     maker = Grid_Maker(grid_type, grid_name, write_path)
     for i in range(100,500+1,100):
         args = {'grid_origin': i, 'prct_of_intervall': 0.01, 'nb_orders': 10}
-        maker(args)
+        print(maker(args))
