@@ -1,32 +1,13 @@
 class baktest:
-    def __init__(self, data, Struct, money_balance, crypto_balance,TimeCol='Open Time',CloseCol='Close', log_path='data/trade_history/'):
+    def __init__(self, data, strategy, money_balance, crypto_balance,TimeCol='Open Time',CloseCol='Close', log_path='data/trade_history/'):
         """
-        Data Structure
-
-        Open time,
-        Open,
-        High,
-        Low,
-        Close,
-        Volume,
-        Close time,
-        Quote asset volume,
-        Number of trades,
-        Taker buy base asset volume,
-        Taker buy quote asset volume,
-        Ignore
-        
-        """
+        """# faire une structure?
         self.TimeCol=TimeCol
         self.CloseCol=CloseCol
-        self.Struct = Struct
+        self.strategy = strategy 
         self.data = data
-        self.positions = pl.DataFrame()
-        self.index=0
         self.pool_hist=log_path+'pool_hist.csv'
         self.position_hist=log_path+'position_hist.csv'
-        self.id_position = 0
-
         self.pool={'money_balance' : money_balance, 
                    'crypto_balance' : crypto_balance}
         
@@ -37,17 +18,46 @@ class baktest:
             f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,justif,state,money_balance,crypto_balance\n')#A faire
     
     def __iter__(self):
+        self.id_position = 0
+        self.positions = pl.DataFrame()
         self.index = 0  # Reset index for iteration
+        self.current_data = self.data[self.index]
+        self.orders=self.strategy(self.current_data[self.CloseCol], 0.01, 10)
         return self
 
     def __next__(self):
+        self.data_n_1 = self.current_data
         if self.index < len(self.data):
-            self.current_data = self.data[self.index]
             self.index += 1
+            self.current_data = self.data[self.index]
+            self.triger_order()
             return self.current_data
         else:
             raise StopIteration
         
+    def trigger(self):
+        """
+        Triger the order
+        """
+        if self.orders['buy_orders'][0]['open_condition'](self.orders, self.current_data[self.CloseCol], self.data_n_1[self.CloseCol]) == 'BUY':
+            print('buy')
+            params = self.orders['buy_orders'][0]['orders_hyperparams']
+            params['timestamp'] = self.current_data[self.TimeCol]
+            params['entryprice'] = self.current_data[self.CloseCol]
+            params['close_condition'] = self.orders['buy_orders'][0]['close_condition']
+            self.open_position(params)
+            self.orders=self.orders['buy_orders'][1:]
+            
+        if self.orders['sell_orders'][0]['open_condition'](self.orders, self.current_data[self.CloseCol], self.data_n_1[self.CloseCol]) == 'SELL':
+            print('sell')
+            params = self.orders['sell_orders'][0]['orders_hyperparams']
+            params['timestamp'] = self.current_data[self.TimeCol]
+            params['entryprice'] = self.current_data[self.CloseCol]
+            params['close_condition'] = self.orders['sell_orders'][0]['close_condition']
+            self.open_position(params)
+            self.orders=self.orders['sell_orders'][1:]
+
+
     def set_pool(self, position):
         """
         Update the pool state
@@ -80,6 +90,8 @@ class baktest:
         with open(self.position_hist, 'a') as f:
             f.write(','.join([str(i) for i in info])+'\n')
 
+
+
     def open_position(self,position_args):
         """
         Position Structure
@@ -94,6 +106,7 @@ class baktest:
             'take_profit':float,
             'stop_loss':float,
             'justif' : string
+            'close_condition' : function
         }
 
         Out
@@ -132,12 +145,14 @@ class baktest:
                                                         'take_profit',
                                                         'stop_loss',
                                                         'justif',
+                                                        'close_condition',
                                                         'state'])
         
         self.positions = pl.concat([self.positions, current_position])
 
         self.set_pool(current_position)
         self.log_position(current_position)
+        return self.id_position
 
     def close_position(self, id):
         """
@@ -152,9 +167,19 @@ class baktest:
         self.set_pool(close_position)
         self.log_position(close_position)
     
-    def __call__(self, position_args,Open=True):
-        if Open: self.open_position(position_args)
-        else: self.close_position(0)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':

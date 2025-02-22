@@ -17,9 +17,8 @@ crypto_balance=1000
 
 # SETTING UP THE STRATEGY (STRATEGY : make bktst and grid)
 Grider = Grid_Maker('basic_grid', 'grid_test')
+strat=Strategy('basic_grid', Grider, 'Close')
 bktst=baktest(data, 0, money_balance, crypto_balance,TimeCol,CloseCol)
-strat=Strategy('basic_grid', bktst, Grider, 'Close')
-
 
 
 
