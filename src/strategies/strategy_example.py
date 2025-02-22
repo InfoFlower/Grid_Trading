@@ -23,32 +23,44 @@ class Strategy:
             - open_condition : function, the opening condition
             - closing_condition : function, the closing condition
         """
-        self.grid = self.grid_maker(grid_parameters)
-        return {'buy_orders' :self.grid[1],
-                                 'sell_orders' :self.grid[2]}
+        grid = self.grid_maker(grid_parameters)
+        return {'buy_orders' :grid['buy_orders'],'sell_orders' :grid['sell_orders']}
     
-    def closing_condition(position, price_n, price_n_1):
-        stop_loss_price = position['entryprice']*(1-position['stop_loss'])
-        take_profit_price = position['entryprice']*(1+position['take_profit'])
-        
+    def closing_condition(self, position, price_n, price_n_1):
+        """
+        """
         if position['is_buy']:
-            if   price_n <=  stop_loss_price and price_n_1 >stop_loss_price : return position['id'] # stop loss
-            elif price_n >= take_profit_price and price_n_1 < take_profit_price : return position['id'] # take profit
-
+            stop_loss_price = position['entryprice']*(1-position['stop_loss'])
+            take_profit_price = position['entryprice']*(1+position['take_profit'])
+            if   price_n <= stop_loss_price and price_n_1 >stop_loss_price : 
+                return (position['id'], 'STOPLOSS BUY')
+            elif price_n >= take_profit_price and price_n_1 < take_profit_price : 
+                return (position['id'], 'TAKEPROFIT BUY')
+        
         if position['is_buy']==False:
-            if price_n >=  stop_loss_price and price_n_1 <stop_loss_price:  return position['id'] # stop loss
-            elif price_n <= take_profit_price and price_n_1 > take_profit_price: return position['id'] # take profit
-        return False
+            stop_loss_price = position['entryprice']*(1+position['stop_loss'])
+            take_profit_price = position['entryprice']*(1-position['take_profit'])
+            if price_n >=  stop_loss_price and price_n_1 <stop_loss_price: 
+                return (position['id'], 'STOPLOSS SELL')
+            elif price_n <= take_profit_price and price_n_1 > take_profit_price: 
+                return (position['id'], 'TAKEPROFIT BUY')
+        return False, False
     
     def open_condition(self, orders, price_n, price_n_1):
-        if orders['buy_orders'][0]>=price_n and orders['buy_orders'][0]<price_n_1 :return "BUY"
-        if orders['sell_orders'][0]<=price_n and orders['sell_orders'][0]>price_n_1 :return "SELL"
+        if orders['buy_orders'][0]['level']>=price_n and orders['buy_orders'][0]['level']<price_n_1 :return "BUY"
+        if orders['sell_orders'][0]['level']<=price_n and orders['sell_orders'][0]['level']>price_n_1 :return "SELL"
         return False
     
     def __call__(self,grid_origin, prct_of_intervall, nb_orders):
         params = {'grid_origin': grid_origin, 
          'prct_of_intervall': prct_of_intervall, 
-         'nb_orders': nb_orders, 
+         'nb_orders': nb_orders,
+         'orders_params': {
+                'qty':100,
+                'leverage':1,
+                'take_profit':prct_of_intervall,
+                'stop_loss':prct_of_intervall/2
+         },
          'open_condition': self.open_condition, 
          'close_condition': self.closing_condition}
         return self.make_orders(params)

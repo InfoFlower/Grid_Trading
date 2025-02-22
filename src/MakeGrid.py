@@ -34,20 +34,31 @@ class Grid_Maker:
             return self.Make_Basic_Grid(args)
         else:
             raise ValueError(f"Unknown grid type: {self.grid_type}")
+
+    def update_grid(self, current_grid):
+        pass
         
     def Make_Basic_Grid(self,args):
-        buy_orders = [[{'level' : args['grid_origin']+args['grid_origin']*(i*args['prct_of_intervall']),
-                        'orders_params' : args['orders_params'],
+        buy_params = args['orders_params'].copy()
+        buy_params['is_buy'] = True
+        buy_orders = [{'level' : args['grid_origin']-args['grid_origin']*(i*args['prct_of_intervall']),
+                        'orders_params' : buy_params,
                         'open_condition' : args['open_condition'],
-                        'close_condition' : args['close_condition']}] for i in range(1, args['nb_orders']+1)]
-        sell_orders = [[{'level' : args['grid_origin']-args['grid_origin']*(i*args['prct_of_intervall']),
-                        'orders_params' : args['orders_params'],
+                        'close_condition' : args['close_condition']} for i in range(1, args['nb_orders']+1)]
+        
+        sell_params = args['orders_params'].copy()
+        sell_params['is_buy'] = False
+        sell_orders = [{'level' : args['grid_origin']+args['grid_origin']*(i*args['prct_of_intervall']),
+                        'orders_params' : sell_params,
                         'open_condition' : args['open_condition'],
-                        'close_condition' : args['close_condition']}] for i in range(1, args['nb_orders']+1)]
-
+                        'close_condition' : args['close_condition']} for i in range(1, args['nb_orders']+1)]
+        
         with open(self.write_path, 'a') as f:
-            f.write(f"{self.index};{buy_orders};{sell_orders};{args['grid_origin']}\n")
-        return self.index, buy_orders, sell_orders, args['grid_origin']
+            f.write(f"{self.index};\n{buy_orders};\n{sell_orders};\n{args['grid_origin']}\n")
+        return {'index':self.index,
+                'buy_orders' : buy_orders,
+                'sell_orders': sell_orders, 
+                'origin' : args['grid_origin']}
     
 
 if __name__ == '__main__':
@@ -56,6 +67,16 @@ if __name__ == '__main__':
     open_condition = lambda x: x<100
     
     maker = Grid_Maker(grid_type, grid_name, write_path)
-    for i in range(100,500+1,100):
-        args = {'grid_origin': i, 'prct_of_intervall': 0.01, 'nb_orders': 10, 'open_condition': open_condition, 'close_condition': close_condition}
-        print(maker(args))
+    
+    args = {'grid_origin': 500, 
+            'prct_of_intervall': 0.01, 
+            'nb_orders': 10,
+            'orders_params': {
+                            'qty':100,
+                            'leverage':1,
+                            'take_profit':0.01,
+                            'stop_loss':0.01/2,
+                            'justif' : 'justif'},
+            'open_condition': open_condition,
+            'close_condition': close_condition}
+    maker(args)
