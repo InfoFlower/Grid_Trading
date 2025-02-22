@@ -145,12 +145,17 @@ class baktest:
         """
         close_position = self.positions.filter(pl.col("id") == id)
         print(close_position)
-        close_position = close_position.with_columns(state=pl.lit('Closing'))
+        close_position = close_position.with_columns(state=pl.lit('Closing')) #Ajouter étape de log du prix de closing
         print(close_position)
         self.positions = self.positions.filter(pl.col("id") != id)
 
         self.set_pool(close_position)
         self.log_position(close_position)
+    
+    def __call__(self, position_args,Open=True):
+        if Open: self.open_position(position_args)
+        else: self.close_position(0)
+
 
 if __name__ == '__main__':
     import polars as pl
@@ -163,7 +168,6 @@ if __name__ == '__main__':
     bktst=baktest(data, 0, money_balance,crypto_balance,TimeCol,CloseCol)
     n = 0
     for i in bktst:
-        
         if n%1000 == 0:
             position_args = {'timestamp':i[TimeCol],
                 'entryprice':i[CloseCol],
@@ -173,12 +177,11 @@ if __name__ == '__main__':
                 'take_profit':0,
                 'stop_loss':0,
                 'justif' : 'justif'}
-
-            bktst.open_position(position_args)
+            bktst(position_args)
         n+=1
 
     print(bktst.positions)
 
-    bktst.close_position(48)
+    bktst(48)
 
     print(bktst.positions)
