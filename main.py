@@ -3,14 +3,13 @@
 ###
 ##
 # OUR PACKAGES
-import src.MakeGrid as MakeGrid
-from src.strategies.Strategy_template import Strategy
-from src.BackTest import baktest
+import src.OPE.MakeGrid as MakeGrid
+from OPE.strategies.strategy_DumbStrat import Strategy
+from src.OPE.BackTest import baktest
 import time
 ##
 # OTHER PACKAGES
 import polars as pl
-import pandas as pd
 import argparse
 from datetime import datetime
 

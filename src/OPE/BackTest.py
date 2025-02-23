@@ -70,7 +70,12 @@ class baktest:
             return self.current_data
         else:
             raise StopIteration
-        
+    
+    def __call__(self,data):
+        self.data=data
+
+
+#Class trigger ==> EVOL prio 2
     def check_time_conformity(self):
         """
         Check if the time is conform to the strategy
@@ -80,8 +85,7 @@ class baktest:
         b=self.current_data[self.TimeCol]
         dif=a-b
         dif=dif.item()
-        #if abs(dif)>5000 :raise ValueError(f"Time between two data is too long : {dif}")
-
+        if abs(dif)>5000 :raise ValueError(f"Time between two data is too long : {dif}")
 
     def trigger(self):
         """
@@ -95,7 +99,7 @@ class baktest:
             params['entryprice'] = self.current_data[self.CloseCol]
             params['close_condition'] = self.orders['buy_orders'][0]['close_condition']
             self.open_position(params)
-            self.orders=self.strategy.update_grid(self.current_data[self.CloseCol])
+            self.orders=self.strategy.update_grid(self.current_data[self.CloseCol]) #Ajouter kwargs
 
         condition_open_sell = self.orders['sell_orders'][0]['open_condition'](self.orders, self.current_data[self.CloseCol], self.data_n_1[self.CloseCol])
         if condition_open_sell == 'SELL' and self.pool['crypto_balance']>self.orders['sell_orders'][0]['orders_params']['qty']:
@@ -129,17 +133,6 @@ class baktest:
             signe_open = -1
             self.pool['crypto_balance']+=position['qty'].item() * position['signe_buy'].item() * signe_open
             self.pool['money_balance']-=position['qty'].item()* self.current_data[self.CloseCol] * position['signe_buy'].item() * signe_open
-
-    def log_position(self, position):
-        """
-        log the position
-        """
-        info = list(position.rows()[0])
-        for i in [self.pool['crypto_balance'],self.pool['money_balance']]:
-            info.append(i)
-
-        with open(self.position_hist, 'a') as f:
-            f.write('\n'+','.join([str(i) for i in info if not callable(i)]))
 
     def open_position(self,position_args):
         """
@@ -206,6 +199,8 @@ class baktest:
         self.log_position(current_position)
         return self.id_position
 
+#Classe log
+
     def close_position(self, id, justif):
         """
         Close a position by its id
@@ -229,7 +224,14 @@ class baktest:
             print(f'\n',f'EPOCH : {epoch}  \n NUMBER OF LINES : {self.index}\n PRCT OF RUN : {prct_of_run} \n TIME BETWEEN EPOCH : {time_between_epoch} \n TIME FROM START : {time_from_start} \n EPOCH SIZE : {self.time_4_epoch}',f'\n'*2,'#'*20)
             with open(self.log_path,'a') as f : f.write(f'\n{epoch},{self.index},{prct_of_run},{time_between_epoch},{time_from_start},{self.time_4_epoch}')
             self.step_time_n_1=time.time()
+    
+    def log_position(self, position):
+        """
+        log the position
+        """
+        info = list(position.rows()[0])
+        for i in [self.pool['crypto_balance'],self.pool['money_balance']]:
+            info.append(i)
 
-
-    def __call__(self,data):
-        self.data=data
+        with open(self.position_hist, 'a') as f:
+            f.write('\n'+','.join([str(i) for i in info if not callable(i)]))
