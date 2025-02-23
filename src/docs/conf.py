@@ -8,7 +8,7 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))  # Si ton code est dans le répertoire `src`
+sys.path.insert(0, os.path.abspath('..'))
 
 
 project = 'GRID_TRADING'

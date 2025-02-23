@@ -2,64 +2,105 @@ import polars as pl
 import time
 
 class baktest:
-    def __init__(self, data, strategy, money_balance, crypto_balance,TimeCol='Open Time',CloseCol='Close', log_path='data/trade_history/',time_4_epoch=50000):
-        """
-        A backtesting engine for evaluating trading strategies.
+    """
+        Classe de backtest qui constitue la couche opérationnelle permettant d'appliquer des stratégies
 
-        This class iterates over historical market data, applies a given strategy,
-        and manages trading positions based on predefined conditions.
+        Itère sur data et évalue une fonction de trigger à chaque itération pour savoir si 
+            - un ordre doit être fill -> open_position
+            - une position doit être fermée -> close_position
+
+        Met à jour la pool {money_balance,crypto_balance}
+
+        Log l'évolution des positions au cours du temps
+
+        Arguments:
+            data (np.ndarray) : Historical market data.
+            strategy (object) : Une trading strategy
+            money_balance (float) : Balance initiale en USD
+            crypto_balance (float) : Balance initiale en BTC
+            TimeCol (str) : Nom de la colonne timestamp
+            CloseCol (str) : Nom de la colonne du prix
+            log_path (str) : Chemin relatif du répertoire de log
+            time_4_epoch (int) : Nombre de ligne par epoch
 
         Attributes:
-            data (list): Historical market data.
-            strategy (object): A trading strategy that defines buy/sell conditions.
-            money_balance (float): Initial money balance for trading.
-            crypto_balance (float): Initial cryptocurrency balance for trading.
-            TimeCol (str): Column name for timestamps in market data.
-            CloseCol (str): Column name for closing prices in market data.
-            log_path (str): Path to store trading logs.
-            time_4_epoch (int): Interval for logging execution time.
-            pool (dict): Dictionary managing available funds and crypto balance.
-            positions (pl.DataFrame): Dataframe storing open positions.
-            orders (dict): Dictionary of buy and sell orders.
+            index (int) : Identifiant de la ligne courante
+            TimeCol (str or int) : TimeCol
+            CloseCol (str or int) : CloseCol
+            data (np.ndarray) : data
+            current_data (np.ndarray) : Ligne numéro index
+            data_n_1 (np.ndarray) : Ligne numéro index-1
+            strategy (object) : strategy
+            orders (dict) : Dictionnaire {buy_orders, sell_orders} contenant les listes des ordres
+            id_position (int) : Identifiant de la dernière position, incrémenté à l'ouverture d'une position
+            positions (polars.DataFrame) : Liste l'ensemble des positions actuellement ouvertes
+            pool (dict) : Dictionnaire {crypto_balance, money_balance}, mis à jour à chaque ouverture ou fermeture de position
+            position_hist (str) : Chemin vers le fichier csv de log des positions
+            log_path (str): log_path
+
+            # A determiner
+            start_time
+            time_4_epoch (int)
+            step_time_n_1
+            length_of_data (int)
         
         Methods:
-            __iter__(): Initializes iteration over the dataset.
-            __next__(): Processes the next data point in the dataset.
-            check_time_conformity(): Ensures time continuity in data.
-            trigger(): Evaluates buy/sell conditions and executes trades.
-            set_pool(position): Updates the account balance after trades.
-            log_position(position): Records trade positions in a log file.
-            open_position(position_args): Opens a new trade position.
-            close_position(id, justif): Closes an existing trade position.
-            log_time(): Logs execution statistics at intervals.
-            __call__(data): Updates the dataset for a new run.
+            __iter__(): Initialise index
+            __next__(): Itère sur data et appelle trigger
+            check_time_conformity(): 
+            trigger(): Evalue si une position doit être ouverte ou fermée
+            set_pool(position): Met à jour la pool après qu'une position soit ouverte ou fermée
+            log_position(position): Log les changements d'état de self.positions dans un fichier csv
+            open_position(position_args): Ajoute une position dans self.positions
+            close_position(id, justif): Supprimer une position de self.positions
+            log_time(): Log des stats temporelles par epoch
+            __call__(data): Met à jour la data lors d'un changement de fichier
         """
+    def __init__(self, data, strategy, money_balance, crypto_balance,TimeCol='Open Time',CloseCol='Close', log_path='data/trade_history/',time_4_epoch=50000):
+        
         # faire une structure?
         self.start_time = time.time()
         self.step_time_n_1=self.start_time
         self.length_of_data=len(data)
+        self.time_4_epoch=time_4_epoch
+
         self.TimeCol=TimeCol
         self.CloseCol=CloseCol
-        self.strategy = strategy 
+        self.strategy = strategy
         self.data = data
         self.id_position = 0
         self.positions = pl.DataFrame()
-        self.pool_hist=log_path+'pool_hist.csv'
-        self.position_hist=log_path+'position_hist.csv'
-        self.time_4_epoch=time_4_epoch
+        
         self.orders=self.strategy(self.data[0][self.CloseCol])
         self.pool={'money_balance' : money_balance, 
                    'crypto_balance' : crypto_balance}
         
+        self.position_hist=log_path+'position_hist.csv'
+        #TODO CHANGE self.log_path pour self.sio_time_path ou qqchose du genre
         self.log_path=log_path+'sio_time.csv'
         with open(self.position_hist, 'w') as f:f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,state,justif,close_price,crypto_balance,money_balance')
         with open(self.log_path,'w') as f:f.write('epoch,total_of_lines,prct_of_run,time_between_epoch,time_from_start,epoch_size')
     
     def __iter__(self):
+        """
+        Initialise l'index de l'itération.
+        
+        Returns:
+            self: L'instance elle-même pour l'itération.
+        """
         self.index = 0  # Reset index for iteration
         return self
 
     def __next__(self):
+        """
+        Passe à la ligne suivante des données et déclenche la vérification des conditions de trading.
+        
+        Returns:
+            np.ndarray: La ligne actuelle des données de marché.
+        
+        Raises:
+            StopIteration: Si toutes les lignes ont été parcourues.
+        """
         self.data_n_1 = self.data[self.index]
         if self.index < len(self.data)-1:
             self.index += 1
@@ -71,13 +112,22 @@ class baktest:
             raise StopIteration
     
     def __call__(self,data):
+        """
+        Met à jour les données de marché lors d'un changement de fichier.
+        
+        Parameters:
+            data (np.ndarray): Nouvelles données de marché.
+        """
         self.data=data
 
 
 #Class trigger ==> EVOL prio 2
     def check_time_conformity(self):
         """
-        Check if the time is conform to the strategy
+        Vérifie que les timestamps des données sont conformes et détecte les écarts anormaux.
+        
+        Raises:
+            ValueError: Si l'écart temporel entre deux lignes est trop important.
         """
         self.log_time()
         a=self.data_n_1[self.TimeCol]
@@ -88,7 +138,7 @@ class baktest:
 
     def trigger(self):
         """
-        Triger the order
+        Détermine si une position doit être ouverte ou fermée selon la stratégie en cours.
         """
         
         condition_open_buy = self.orders['buy_orders'][0]['open_condition'](self.orders, self.current_data[self.CloseCol], self.data_n_1[self.CloseCol])
@@ -115,12 +165,10 @@ class baktest:
 
     def set_pool(self, position):
         """
-        Update the pool state
-
-        Pool Stucture
-
-            {'money_balance' : money_balance, 
-           'crypto_balance' : crypto_balance}
+        Met à jour les balances après l'ouverture ou la fermeture d'une position.
+        
+        Parameters:
+            position (polars.DataFrame): Informations sur la position ouverte ou fermée.
         """
 
         if position['state'].item() == 'Opening':
@@ -134,37 +182,25 @@ class baktest:
             self.pool['money_balance']-=position['qty'].item()* self.current_data[self.CloseCol] * position['signe_buy'].item() * signe_open
 
     def open_position(self,position_args):
-        """
-        Position Structure
-
-        In
-        {
-            'timestamp':timestamp,
-            'entryprice':float,
-            'qty':float,
-            'is_buy':bool,
-            'leverage':float,
-            'take_profit':float,
-            'stop_loss':float,
-            'close_condition' : function
-        }
-
-        Out
-        {
-            'id' : string,
-            'timestamp' : timestamp,
-            'entryprice' : float,
-            'qty' : float,
-            'is_buy' : bool,
-            'signe_buy': int,
-            'leverage' : float,
-            'take_profit':float,
-            'stop_loss':float,
-            'state' : string
-            'justif' : string,
-            'close_price' : float
-        }
         
+        """
+        Ouvre une nouvelle position de trading et l'ajoute à la liste des positions ouvertes.
+        Met à jour la pool (set_pool) et log la position ouverte (log_position)
+        
+        Parameters:
+            position_args (dict): Paramètres de la position (prix d'entrée, quantité, type d'ordre, etc.).
+                {'timestamp':timestamp,
+                'entryprice':float,
+                'qty':float,
+                'is_buy':bool,
+                'leverage':float,
+                'take_profit':float,
+                'stop_loss':float,
+                'close_condition' : function}
+        
+        Returns:
+            int: Identifiant de la position ouverte.
+
         """
         if position_args['is_buy'] is False : 
             position_args['signe_buy']=-1
@@ -202,7 +238,11 @@ class baktest:
 
     def close_position(self, id, justif):
         """
-        Close a position by its id
+        Ferme une position identifiée par son ID , met à jour la pool (set_pool) et log la position fermée (log_position).
+        
+        Parameters:
+            id (int): Identifiant de la position à fermer.
+            justif (str): Justification de la fermeture.
         """
         close_position = self.positions.filter(pl.col("id") == id)
         close_position = close_position.with_columns(state=pl.lit('Closing')) #Ajouter étape de log du prix de closing
@@ -214,6 +254,9 @@ class baktest:
         self.log_position(close_position)
     
     def log_time(self):
+        """
+        Log les statistiques temporelles pour chaque epoch.
+        """
         if self.index%self.time_4_epoch==0:
             current_time=time.time()
             prct_of_run=self.index/self.length_of_data
@@ -226,7 +269,10 @@ class baktest:
     
     def log_position(self, position):
         """
-        log the position
+        Enregistre les changements d'état des positions dans un fichier CSV.
+        
+        Parameters:
+            position (polars.DataFrame): Informations sur la position à enregistrer.
         """
         info = list(position.rows()[0])
         for i in [self.pool['crypto_balance'],self.pool['money_balance']]:
