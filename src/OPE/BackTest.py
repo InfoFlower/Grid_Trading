@@ -47,8 +47,7 @@ class baktest:
         self.pool_hist=log_path+'pool_hist.csv'
         self.position_hist=log_path+'position_hist.csv'
         self.time_4_epoch=time_4_epoch
-        
-        self.orders=self.strategy(self.data[0][self.CloseCol], 0.01, 1)
+        self.orders=self.strategy(self.data[0][self.CloseCol])
         self.pool={'money_balance' : money_balance, 
                    'crypto_balance' : crypto_balance}
         

@@ -4,7 +4,7 @@
 ##
 # OUR PACKAGES
 import src.OPE.MakeGrid as MakeGrid
-from OPE.strategies.strategy_DumbStrat import Strategy
+from src.OPE.strategies.strategy_DumbStrat import Strategy
 from src.OPE.BackTest import baktest
 import time
 ##
