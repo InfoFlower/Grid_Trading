@@ -197,10 +197,12 @@ if __name__ == '__main__':
     money_balance=1000000 #USD
     crypto_balance=money_balance/data[0][CloseCol] #BTC
     bktst=baktest(data, strategy, money_balance,crypto_balance,TimeCol,CloseCol)
-    for i in range(start_time+1, 250):
+    for i in range(start_time, 154):
         for _ in bktst:
             pass
         data=pl.read_csv(f'data\OPE_DATA\DATA_RAW_S_ORIGIN_test_code\data_raw_BTCUSDT_{i}.csv', truncate_ragged_lines=True)
         data=data[['Open time','Close']].to_numpy()
         bktst(data)
         print(i)
+    with open(bktst.strategy.grid_maker.write_path, 'a') as f:
+        f.write(']')
