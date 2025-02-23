@@ -27,7 +27,7 @@ class Grid_Maker:
         self.index=0
         self.write_path = write_path+grid_name+'.json'
         with open(self.write_path, 'w', encoding='utf-8') as f:
-            json.dump([], f, ensure_ascii=False, indent=4)
+            f.write('[')
 
     def __call__(self, args):
         self.index+=1
@@ -64,8 +64,9 @@ class Grid_Maker:
         sell_orders = [self.make_order(i,args,sell_params) for i in range(1, args['nb_orders']+1)]
         
         grid={'index':self.index,
-                'buy_orders' : buy_orders,
-                'sell_orders': sell_orders}
+              'origin':args['grid_origin'],
+                'sell_orders': sell_orders,
+                'buy_orders' : buy_orders}
         
         self.log_grid(grid)
 
@@ -76,10 +77,6 @@ class Grid_Maker:
         """
         
         """
-        #LOAD GRID
-        with open(self.write_path) as json_file:
-            data = json.load(json_file)
-        
         #Clean orders to remove open_condition, close_condition that contains functions
         def clean_order(orders):
             """
@@ -99,10 +96,17 @@ class Grid_Maker:
         clean_grid['buy_orders'] = str_function_buy_orders
         clean_grid['sell_orders'] = str_function_sell_orders
         
-        #Append data to be dumped
-        data.append(clean_grid)
+        # Open the file in read mode and a temporary file to write the modified content
+        with open(self.write_path, 'r+') as f:
+            line = f.readlines()
+            line = line[:-1]
+            f.write(f'\n'.join(line))
+
 
         #DUMP GRID
-        with open(self.write_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=4)
+        with open(self.write_path, 'a', encoding='utf-8') as f:
+            f.write(f',\n')   
+            json.dump(clean_grid, f, ensure_ascii=False, indent=4)
+            f.write(f'\n]')
+
         

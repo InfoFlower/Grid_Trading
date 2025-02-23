@@ -34,12 +34,13 @@ class Strategy:
         return {'buy_orders' :grid['buy_orders'],'sell_orders' :grid['sell_orders']}
     
 
-    def update_grid(self):
+    def update_grid(self, current_price):
         """
         current_grid : dict, the current grid
         grid_parameters : dict, the parameters of the new grid
         which_orders : str, 'buy_orders' or 'sell_orders'
         """
+        self.grid_parameters['grid_origin'] = current_price
         grid = self.grid_maker(self.grid_parameters)
         return {'buy_orders' :grid['buy_orders'],'sell_orders' :grid['sell_orders']}
 

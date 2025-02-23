@@ -10,7 +10,7 @@ class baktest:
         self.positions = pl.DataFrame()
         self.pool_hist=log_path+'pool_hist.csv'
         self.position_hist=log_path+'position_hist.csv'
-        self.orders=self.strategy(self.data[0][self.CloseCol], 0.01, 10)
+        self.orders=self.strategy(self.data[0][self.CloseCol], 0.01, 1)
         self.pool={'money_balance' : money_balance, 
                    'crypto_balance' : crypto_balance}
         
@@ -54,7 +54,7 @@ class baktest:
             params['entryprice'] = self.current_data[self.CloseCol]
             params['close_condition'] = self.orders['buy_orders'][0]['close_condition']
             self.open_position(params)
-            self.orders=self.strategy.update_grid()
+            self.orders=self.strategy.update_grid(self.current_data[self.CloseCol])
 
         condition_open_sell = self.orders['sell_orders'][0]['open_condition'](self.orders, self.current_data[self.CloseCol], self.data_n_1[self.CloseCol])
         if condition_open_sell == 'SELL' and self.pool['crypto_balance']>self.orders['sell_orders'][0]['orders_params']['qty']:
@@ -64,7 +64,7 @@ class baktest:
             params['entryprice'] = self.current_data[self.CloseCol]
             params['close_condition'] = self.orders['sell_orders'][0]['close_condition']
             self.open_position(params)
-            self.orders=self.strategy.update_grid()
+            self.orders=self.strategy.update_grid(self.current_data[self.CloseCol])
 
         Ids_to_close = [position['close_condition'](position,self.current_data[self.CloseCol], self.data_n_1[self.CloseCol]) for position in self.positions.to_dicts()]
         if len(Ids_to_close)>0 and all(Ids_to_close) is not None: 
@@ -189,7 +189,7 @@ if __name__ == '__main__':
     from strategies.Strategy_template import Strategy
 
     strategy = Strategy('basic_grid', MakeGrid.Grid_Maker('basic_grid', 'grid_test'))
-    start_time = 150
+    start_time = 153
     data=pl.read_csv(f'data\OPE_DATA\DATA_RAW_S_ORIGIN_test_code\data_raw_BTCUSDT_{start_time}.csv', truncate_ragged_lines=True)
     data=data[['Open time','Close']].to_numpy()
     TimeCol=0

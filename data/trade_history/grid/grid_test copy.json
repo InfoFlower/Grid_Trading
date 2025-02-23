@@ -1,0 +1,58 @@
+[
+    {
+        "index": 1,
+        "origin": 6444.29,
+        "sell_orders": [
+            {
+                "level": 6508.7329,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": false
+                }
+            }
+        ],
+        "buy_orders": [
+            {
+                "level": 6379.8471,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": true
+                }
+            }
+        ]
+    },
+    {
+        "index": 2,
+        "origin": 6444.29,
+        "sell_orders": [
+            {
+                "level": 6508.7329,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": false
+                }
+            }
+        ],
+        "buy_orders": [
+            {
+                "level": 6379.8471,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": true
+                }
+            }
+        ]
+    }
+]
