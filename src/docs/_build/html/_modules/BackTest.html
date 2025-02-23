@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html lang="fr" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BackTest &#8212; Documentation GRID_TRADING 0.1.0</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=897fae25"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/translations.js?v=e6b791cb"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Code source de BackTest</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<div class="viewcode-block" id="baktest">
+<a class="viewcode-back" href="../BackTest.html#BackTest.baktest">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">baktest</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">strategy</span><span class="p">,</span> <span class="n">money_balance</span><span class="p">,</span> <span class="n">crypto_balance</span><span class="p">,</span><span class="n">TimeCol</span><span class="o">=</span><span class="s1">&#39;Open Time&#39;</span><span class="p">,</span><span class="n">CloseCol</span><span class="o">=</span><span class="s1">&#39;Close&#39;</span><span class="p">,</span> <span class="n">log_path</span><span class="o">=</span><span class="s1">&#39;data/trade_history/&#39;</span><span class="p">,</span><span class="n">time_4_epoch</span><span class="o">=</span><span class="mi">50000</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A backtesting engine for evaluating trading strategies.</span>
+
+<span class="sd">        This class iterates over historical market data, applies a given strategy,</span>
+<span class="sd">        and manages trading positions based on predefined conditions.</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            data (list): Historical market data.</span>
+<span class="sd">            strategy (object): A trading strategy that defines buy/sell conditions.</span>
+<span class="sd">            money_balance (float): Initial money balance for trading.</span>
+<span class="sd">            crypto_balance (float): Initial cryptocurrency balance for trading.</span>
+<span class="sd">            TimeCol (str): Column name for timestamps in market data.</span>
+<span class="sd">            CloseCol (str): Column name for closing prices in market data.</span>
+<span class="sd">            log_path (str): Path to store trading logs.</span>
+<span class="sd">            time_4_epoch (int): Interval for logging execution time.</span>
+<span class="sd">            pool (dict): Dictionary managing available funds and crypto balance.</span>
+<span class="sd">            positions (pl.DataFrame): Dataframe storing open positions.</span>
+<span class="sd">            orders (dict): Dictionary of buy and sell orders.</span>
+<span class="sd">        </span>
+<span class="sd">        Methods:</span>
+<span class="sd">            __iter__(): Initializes iteration over the dataset.</span>
+<span class="sd">            __next__(): Processes the next data point in the dataset.</span>
+<span class="sd">            check_time_conformity(): Ensures time continuity in data.</span>
+<span class="sd">            trigger(): Evaluates buy/sell conditions and executes trades.</span>
+<span class="sd">            set_pool(position): Updates the account balance after trades.</span>
+<span class="sd">            log_position(position): Records trade positions in a log file.</span>
+<span class="sd">            open_position(position_args): Opens a new trade position.</span>
+<span class="sd">            close_position(id, justif): Closes an existing trade position.</span>
+<span class="sd">            log_time(): Logs execution statistics at intervals.</span>
+<span class="sd">            __call__(data): Updates the dataset for a new run.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># faire une structure?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step_time_n_1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">length_of_data</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TimeCol</span><span class="o">=</span><span class="n">TimeCol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">CloseCol</span><span class="o">=</span><span class="n">CloseCol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="n">strategy</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id_position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool_hist</span><span class="o">=</span><span class="n">log_path</span><span class="o">+</span><span class="s1">&#39;pool_hist.csv&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position_hist</span><span class="o">=</span><span class="n">log_path</span><span class="o">+</span><span class="s1">&#39;position_hist.csv&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_4_epoch</span><span class="o">=</span><span class="n">time_4_epoch</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">strategy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">CloseCol</span><span class="p">],</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;money_balance&#39;</span> <span class="p">:</span> <span class="n">money_balance</span><span class="p">,</span> 
+                   <span class="s1">&#39;crypto_balance&#39;</span> <span class="p">:</span> <span class="n">crypto_balance</span><span class="p">}</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_path</span><span class="o">=</span><span class="n">log_path</span><span class="o">+</span><span class="s1">&#39;sio_time.csv&#39;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position_hist</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span><span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,state,justif,close_price,crypto_balance,money_balance&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_path</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span><span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;epoch,total_of_lines,prct_of_run,time_between_epoch,time_from_start,epoch_size&#39;</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Reset index for iteration</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_n_1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_time_conformity</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">trigger</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span>
+        
+<div class="viewcode-block" id="baktest.check_time_conformity">
+<a class="viewcode-back" href="../BackTest.html#BackTest.baktest.check_time_conformity">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_time_conformity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if the time is conform to the strategy</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_time</span><span class="p">()</span>
+        <span class="n">a</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_n_1</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">TimeCol</span><span class="p">]</span>
+        <span class="n">b</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">TimeCol</span><span class="p">]</span>
+        <span class="n">dif</span><span class="o">=</span><span class="n">a</span><span class="o">-</span><span class="n">b</span>
+        <span class="n">dif</span><span class="o">=</span><span class="n">dif</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
+
+        <span class="c1">#if abs(dif)&gt;5000 :raise ValueError(f&quot;Time between two data is too long : {dif}&quot;)</span>
+
+
+<div class="viewcode-block" id="baktest.trigger">
+<a class="viewcode-back" href="../BackTest.html#BackTest.baktest.trigger">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">trigger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Triger the order</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">condition_open_buy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">[</span><span class="s1">&#39;buy_orders&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;open_condition&#39;</span><span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">CloseCol</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_n_1</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">CloseCol</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">condition_open_buy</span> <span class="o">==</span> <span class="s1">&#39;BUY&#39;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">[</span><span class="s1">&#39;money_balance&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">[</span><span class="s1">&#39;buy_orders&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;level&#39;</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">[</span><span class="s1">&#39;buy_orders&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;orders_params&#39;</span><span class="p">][</span><span class="s1">&#39;qty&#39;</span><span class="p">]:</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">[</span><span class="s1">&#39;buy_orders&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;orders_params&#39;</span><span class="p">]</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">TimeCol</span><span class="p">]</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;entryprice&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">CloseCol</span><span class="p">]</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;close_condition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">[</span><span class="s1">&#39;buy_orders&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;close_condition&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">open_position</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">strategy</span><span class="o">.</span><span class="n">update_grid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">CloseCol</span><span class="p">])</span>
+
+        <span class="n">condition_open_sell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">[</span><span class="s1">&#39;sell_orders&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;open_condition&#39;</span><span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">CloseCol</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_n_1</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">CloseCol</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">condition_open_sell</span> <span class="o">==</span> <span class="s1">&#39;SELL&#39;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">[</span><span class="s1">&#39;crypto_balance&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">[</span><span class="s1">&#39;sell_orders&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;orders_params&#39;</span><span class="p">][</span><span class="s1">&#39;qty&#39;</span><span class="p">]:</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">[</span><span class="s1">&#39;sell_orders&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;orders_params&#39;</span><span class="p">]</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">TimeCol</span><span class="p">]</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;entryprice&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">CloseCol</span><span class="p">]</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;close_condition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">[</span><span class="s1">&#39;sell_orders&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;close_condition&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">open_position</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">strategy</span><span class="o">.</span><span class="n">update_grid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">CloseCol</span><span class="p">])</span>
+
+        <span class="n">Ids_to_close</span> <span class="o">=</span> <span class="p">[</span><span class="n">position</span><span class="p">[</span><span class="s1">&#39;close_condition&#39;</span><span class="p">](</span><span class="n">position</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">current_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">CloseCol</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_n_1</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">CloseCol</span><span class="p">])</span> <span class="k">for</span> <span class="n">position</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">to_dicts</span><span class="p">()]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Ids_to_close</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">Ids_to_close</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> 
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">close_position</span><span class="p">(</span><span class="o">*</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">Ids_to_close</span> <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="baktest.set_pool">
+<a class="viewcode-back" href="../BackTest.html#BackTest.baktest.set_pool">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_pool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the pool state</span>
+
+<span class="sd">        Pool Stucture</span>
+
+<span class="sd">            {&#39;money_balance&#39; : money_balance, </span>
+<span class="sd">           &#39;crypto_balance&#39; : crypto_balance}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">position</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;Opening&#39;</span><span class="p">:</span>
+            <span class="n">signe_open</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="c1">#SET POOL</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">[</span><span class="s1">&#39;crypto_balance&#39;</span><span class="p">]</span><span class="o">+=</span><span class="n">position</span><span class="p">[</span><span class="s1">&#39;qty&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> <span class="n">position</span><span class="p">[</span><span class="s1">&#39;signe_buy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> <span class="n">signe_open</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">[</span><span class="s1">&#39;money_balance&#39;</span><span class="p">]</span><span class="o">-=</span><span class="n">position</span><span class="p">[</span><span class="s1">&#39;qty&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">*</span><span class="n">position</span><span class="p">[</span><span class="s1">&#39;entryprice&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> <span class="n">position</span><span class="p">[</span><span class="s1">&#39;signe_buy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> <span class="n">signe_open</span>
+        <span class="k">elif</span> <span class="n">position</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;Closing&#39;</span> <span class="p">:</span>
+            <span class="n">signe_open</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">[</span><span class="s1">&#39;crypto_balance&#39;</span><span class="p">]</span><span class="o">+=</span><span class="n">position</span><span class="p">[</span><span class="s1">&#39;qty&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> <span class="n">position</span><span class="p">[</span><span class="s1">&#39;signe_buy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> <span class="n">signe_open</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">[</span><span class="s1">&#39;money_balance&#39;</span><span class="p">]</span><span class="o">-=</span><span class="n">position</span><span class="p">[</span><span class="s1">&#39;qty&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">CloseCol</span><span class="p">]</span> <span class="o">*</span> <span class="n">position</span><span class="p">[</span><span class="s1">&#39;signe_buy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> <span class="n">signe_open</span></div>
+
+
+<div class="viewcode-block" id="baktest.log_position">
+<a class="viewcode-back" href="../BackTest.html#BackTest.baktest.log_position">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">log_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        log the position</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">position</span><span class="o">.</span><span class="n">rows</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">[</span><span class="s1">&#39;crypto_balance&#39;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">[</span><span class="s1">&#39;money_balance&#39;</span><span class="p">]]:</span>
+            <span class="n">info</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position_hist</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">+</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">info</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">i</span><span class="p">)]))</span></div>
+
+
+<div class="viewcode-block" id="baktest.open_position">
+<a class="viewcode-back" href="../BackTest.html#BackTest.baktest.open_position">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">open_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">position_args</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Position Structure</span>
+
+<span class="sd">        In</span>
+<span class="sd">        {</span>
+<span class="sd">            &#39;timestamp&#39;:timestamp,</span>
+<span class="sd">            &#39;entryprice&#39;:float,</span>
+<span class="sd">            &#39;qty&#39;:float,</span>
+<span class="sd">            &#39;is_buy&#39;:bool,</span>
+<span class="sd">            &#39;leverage&#39;:float,</span>
+<span class="sd">            &#39;take_profit&#39;:float,</span>
+<span class="sd">            &#39;stop_loss&#39;:float,</span>
+<span class="sd">            &#39;close_condition&#39; : function</span>
+<span class="sd">        }</span>
+
+<span class="sd">        Out</span>
+<span class="sd">        {</span>
+<span class="sd">            &#39;id&#39; : string,</span>
+<span class="sd">            &#39;timestamp&#39; : timestamp,</span>
+<span class="sd">            &#39;entryprice&#39; : float,</span>
+<span class="sd">            &#39;qty&#39; : float,</span>
+<span class="sd">            &#39;is_buy&#39; : bool,</span>
+<span class="sd">            &#39;signe_buy&#39;: int,</span>
+<span class="sd">            &#39;leverage&#39; : float,</span>
+<span class="sd">            &#39;take_profit&#39;:float,</span>
+<span class="sd">            &#39;stop_loss&#39;:float,</span>
+<span class="sd">            &#39;state&#39; : string</span>
+<span class="sd">            &#39;justif&#39; : string,</span>
+<span class="sd">            &#39;close_price&#39; : float</span>
+<span class="sd">        }</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">position_args</span><span class="p">[</span><span class="s1">&#39;is_buy&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span> <span class="p">:</span> 
+            <span class="n">position_args</span><span class="p">[</span><span class="s1">&#39;signe_buy&#39;</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">position_args</span><span class="p">[</span><span class="s1">&#39;signe_buy&#39;</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span>
+
+        <span class="c1">#SET POSITION</span>
+
+        <span class="n">position_args</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_position</span>
+        <span class="n">position_args</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Opening&#39;</span>
+        <span class="n">position_args</span><span class="p">[</span><span class="s1">&#39;justif&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Opening&#39;</span>
+        <span class="n">position_args</span><span class="p">[</span><span class="s1">&#39;close_price&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id_position</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">current_position</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">position_args</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s1">&#39;id&#39;</span><span class="p">,</span>
+                                                       <span class="s1">&#39;timestamp&#39;</span><span class="p">,</span> 
+                                                        <span class="s1">&#39;entryprice&#39;</span><span class="p">,</span>
+                                                        <span class="s1">&#39;qty&#39;</span><span class="p">,</span>
+                                                        <span class="s1">&#39;is_buy&#39;</span><span class="p">,</span>
+                                                        <span class="s1">&#39;signe_buy&#39;</span><span class="p">,</span>
+                                                        <span class="s1">&#39;leverage&#39;</span><span class="p">,</span>
+                                                        <span class="s1">&#39;take_profit&#39;</span><span class="p">,</span>
+                                                        <span class="s1">&#39;stop_loss&#39;</span><span class="p">,</span>
+                                                        <span class="s1">&#39;state&#39;</span><span class="p">,</span>
+                                                        <span class="s1">&#39;justif&#39;</span><span class="p">,</span>
+                                                        <span class="s1">&#39;close_price&#39;</span><span class="p">,</span>
+                                                        <span class="s1">&#39;close_condition&#39;</span><span class="p">])</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">,</span> <span class="n">current_position</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_pool</span><span class="p">(</span><span class="n">current_position</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_position</span><span class="p">(</span><span class="n">current_position</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_position</span></div>
+
+
+<div class="viewcode-block" id="baktest.close_position">
+<a class="viewcode-back" href="../BackTest.html#BackTest.baktest.close_position">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">justif</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Close a position by its id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">close_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="nb">id</span><span class="p">)</span>
+        <span class="n">close_position</span> <span class="o">=</span> <span class="n">close_position</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="s1">&#39;Closing&#39;</span><span class="p">))</span> <span class="c1">#Ajouter étape de log du prix de closing</span>
+        <span class="n">close_position</span> <span class="o">=</span> <span class="n">close_position</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span><span class="n">justif</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="n">justif</span><span class="p">))</span>
+        <span class="n">close_position</span> <span class="o">=</span> <span class="n">close_position</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span><span class="n">close_price</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">CloseCol</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">id</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_pool</span><span class="p">(</span><span class="n">close_position</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_position</span><span class="p">(</span><span class="n">close_position</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="baktest.log_time">
+<a class="viewcode-back" href="../BackTest.html#BackTest.baktest.log_time">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">log_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">time_4_epoch</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">current_time</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">prct_of_run</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">length_of_data</span>
+            <span class="n">epoch</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">time_4_epoch</span>
+            <span class="n">time_between_epoch</span><span class="o">=</span><span class="n">current_time</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">step_time_n_1</span>
+            <span class="n">time_from_start</span><span class="o">=</span><span class="n">current_time</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;EPOCH : </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s1">  </span><span class="se">\n</span><span class="s1"> NUMBER OF LINES : </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="se">\n</span><span class="s1"> PRCT OF RUN : </span><span class="si">{</span><span class="n">prct_of_run</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1"> TIME BETWEEN EPOCH : </span><span class="si">{</span><span class="n">time_between_epoch</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1"> TIME FROM START : </span><span class="si">{</span><span class="n">time_from_start</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1"> EPOCH SIZE : </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">time_4_epoch</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;#&#39;</span><span class="o">*</span><span class="mi">20</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_path</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span> <span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">prct_of_run</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">time_between_epoch</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">time_from_start</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">time_4_epoch</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">step_time_n_1</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span></div>
+
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">=</span><span class="n">data</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">GRID_TRADING</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">src</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Code du module</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Gabriel Lebovic / Alexander Lunel.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.1</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
