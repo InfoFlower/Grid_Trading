@@ -1,7 +1,13 @@
+import polars as pl
+import time
+
 class baktest:
-    def __init__(self, data, strategy, money_balance, crypto_balance,TimeCol='Open Time',CloseCol='Close', log_path='data/trade_history/'):
+    def __init__(self, data, strategy, money_balance, crypto_balance,TimeCol='Open Time',CloseCol='Close', log_path='data/trade_history/',time_4_epoch=50000):
         """
         """# faire une structure?
+        self.start_time = time.time()
+        self.step_time_n_1=self.start_time
+        self.length_of_data=len(data)
         self.TimeCol=TimeCol
         self.CloseCol=CloseCol
         self.strategy = strategy 
@@ -10,12 +16,15 @@ class baktest:
         self.positions = pl.DataFrame()
         self.pool_hist=log_path+'pool_hist.csv'
         self.position_hist=log_path+'position_hist.csv'
+        self.time_4_epoch=time_4_epoch
+        
         self.orders=self.strategy(self.data[0][self.CloseCol], 0.01, 1)
         self.pool={'money_balance' : money_balance, 
                    'crypto_balance' : crypto_balance}
         
-        with open(self.position_hist, 'w') as f:
-            f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,state,justif,close_price,crypto_balance,money_balance')
+        self.log_path=log_path+'sio_time.csv'
+        with open(self.position_hist, 'w') as f:f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,state,justif,close_price,crypto_balance,money_balance')
+        with open(self.log_path,'w') as f:f.write('epoch,total_of_lines,prct_of_run,time_between_epoch,time_from_start,epoch_size')
     
     def __iter__(self):
         self.index = 0  # Reset index for iteration
@@ -36,19 +45,21 @@ class baktest:
         """
         Check if the time is conform to the strategy
         """
+        self.log_time()
         a=self.data_n_1[self.TimeCol]
         b=self.current_data[self.TimeCol]
         dif=a-b
-        if abs(b-a)>5000 :raise ValueError(f"Time between two data is too long : {dif}")
+        dif=dif.item()
+        #if abs(dif)>5000 :raise ValueError(f"Time between two data is too long : {dif}")
 
 
     def trigger(self):
         """
         Triger the order
         """
+        
         condition_open_buy = self.orders['buy_orders'][0]['open_condition'](self.orders, self.current_data[self.CloseCol], self.data_n_1[self.CloseCol])
         if condition_open_buy == 'BUY' and self.pool['money_balance']>self.orders['buy_orders'][0]['level']*self.orders['buy_orders'][0]['orders_params']['qty']:
-            print('buy')
             params = self.orders['buy_orders'][0]['orders_params']
             params['timestamp'] = self.current_data[self.TimeCol]
             params['entryprice'] = self.current_data[self.CloseCol]
@@ -58,7 +69,6 @@ class baktest:
 
         condition_open_sell = self.orders['sell_orders'][0]['open_condition'](self.orders, self.current_data[self.CloseCol], self.data_n_1[self.CloseCol])
         if condition_open_sell == 'SELL' and self.pool['crypto_balance']>self.orders['sell_orders'][0]['orders_params']['qty']:
-            print('sell')
             params = self.orders['sell_orders'][0]['orders_params']
             params['timestamp'] = self.current_data[self.TimeCol]
             params['entryprice'] = self.current_data[self.CloseCol]
@@ -179,30 +189,17 @@ class baktest:
         self.set_pool(close_position)
         self.log_position(close_position)
     
+    def log_time(self):
+        if self.index%self.time_4_epoch==0:
+            current_time=time.time()
+            prct_of_run=self.index/self.length_of_data
+            epoch=self.index/self.time_4_epoch
+            time_between_epoch=current_time-self.step_time_n_1
+            time_from_start=current_time-self.start_time
+            print(f'\n',f'EPOCH : {epoch}  \n NUMBER OF LINES : {self.index}\n PRCT OF RUN : {prct_of_run} \n TIME BETWEEN EPOCH : {time_between_epoch} \n TIME FROM START : {time_from_start} \n EPOCH SIZE : {self.time_4_epoch}',f'\n'*2,'#'*20)
+            with open(self.log_path,'a') as f : f.write(f'\n{epoch},{self.index},{prct_of_run},{time_between_epoch},{time_from_start},{self.time_4_epoch}')
+            self.step_time_n_1=time.time()
+
+
     def __call__(self,data):
         self.data=data
-
-if __name__ == '__main__':
-    import polars as pl
-    import MakeGrid as MakeGrid
-    from datetime import datetime
-    from strategies.Strategy_template import Strategy
-
-    strategy = Strategy('basic_grid', MakeGrid.Grid_Maker('basic_grid', 'grid_test'))
-    start_time = 153
-    data=pl.read_csv(f'data\OPE_DATA\DATA_RAW_S_ORIGIN_test_code\data_raw_BTCUSDT_{start_time}.csv', truncate_ragged_lines=True)
-    data=data[['Open time','Close']].to_numpy()
-    TimeCol=0
-    CloseCol=1
-    money_balance=1000000 #USD
-    crypto_balance=money_balance/data[0][CloseCol] #BTC
-    bktst=baktest(data, strategy, money_balance,crypto_balance,TimeCol,CloseCol)
-    for i in range(start_time, 154):
-        for _ in bktst:
-            pass
-        data=pl.read_csv(f'data\OPE_DATA\DATA_RAW_S_ORIGIN_test_code\data_raw_BTCUSDT_{i}.csv', truncate_ragged_lines=True)
-        data=data[['Open time','Close']].to_numpy()
-        bktst(data)
-        print(i)
-    with open(bktst.strategy.grid_maker.write_path, 'a') as f:
-        f.write(']')

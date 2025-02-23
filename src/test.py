@@ -7,5 +7,6 @@ for i in range(153,159):
     print(i)
     data=pl.concat([data,data_b])
 print(len(data))
+print(datetime.fromtimestamp(data))
 plt.plot(data['Close time'],data['Close'])
 plt.show()
