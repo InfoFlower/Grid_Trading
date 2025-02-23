@@ -4,6 +4,12 @@
 # Make sure to import your strategy in the main.py file.
 
 class Strategy:
+
+    """
+    def make_orders
+    def close_condition
+    def open_condition
+    """
     def __init__(self,name, Grider):
         self.grid_maker = Grider
 
