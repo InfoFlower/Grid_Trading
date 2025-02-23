@@ -11,6 +11,7 @@
 #                                            nb_orders : int, the number of orders to make
 #
 ######################################################################################################################################
+import json
 
 class Grid_Maker:
     def __init__(self, grid_type, grid_name, write_path='data/trade_history/grid/'):
@@ -24,9 +25,9 @@ class Grid_Maker:
         """
         self.grid_type = grid_type
         self.index=0
-        self.write_path = write_path+grid_name+'.csv'
-        with open(self.write_path, 'w') as f:
-            f.write('Index;Buy_orders;Sell_orders;Grid_origin\n')
+        self.write_path = write_path+grid_name+'.json'
+        with open(self.write_path, 'w', encoding='utf-8') as f:
+            json.dump([], f, ensure_ascii=False, indent=4)
 
     def __call__(self, args):
         self.index+=1
@@ -64,11 +65,44 @@ class Grid_Maker:
         
         grid={'index':self.index,
                 'buy_orders' : buy_orders,
-                'sell_orders': sell_orders, 
-                'origin' : args['grid_origin']}
+                'sell_orders': sell_orders}
         
         self.log_grid(grid)
+
         return grid
-    
-    def log_grid(self,grid):
-        pass
+                        
+        
+    def log_grid(self, grid):
+        """
+        
+        """
+        #LOAD GRID
+        with open(self.write_path) as json_file:
+            data = json.load(json_file)
+        
+        #Clean orders to remove open_condition, close_condition that contains functions
+        def clean_order(orders):
+            """
+            """
+            orders_list = []
+            for order in orders:
+                orders_list.append({k:v for k, v in order.items() if not callable(v)})
+            return orders_list
+
+        clean_grid = grid.copy()
+        buy_orders = clean_grid['buy_orders'].copy()
+        sell_orders = clean_grid['sell_orders'].copy()
+        
+        str_function_buy_orders = clean_order(buy_orders)
+        str_function_sell_orders = clean_order(sell_orders)
+
+        clean_grid['buy_orders'] = str_function_buy_orders
+        clean_grid['sell_orders'] = str_function_sell_orders
+        
+        #Append data to be dumped
+        data.append(clean_grid)
+
+        #DUMP GRID
+        with open(self.write_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+        

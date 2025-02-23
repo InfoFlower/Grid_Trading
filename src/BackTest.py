@@ -15,7 +15,7 @@ class baktest:
                    'crypto_balance' : crypto_balance}
         
         with open(self.position_hist, 'w') as f:
-            f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,state,justif,crypto_balance,money_balance')#A faire
+            f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,state,justif,close_price,crypto_balance,money_balance')
     
     def __iter__(self):
         self.index = 0  # Reset index for iteration
@@ -64,8 +64,8 @@ class baktest:
             params['entryprice'] = self.current_data[self.CloseCol]
             params['close_condition'] = self.orders['sell_orders'][0]['close_condition']
             self.open_position(params)
-            self.orders=self.strategy.update_grid()
-
+            self.orders['sell_orders']=self.orders['sell_orders'][1:]
+        
         Ids_to_close = [position['close_condition'](position,self.current_data[self.CloseCol], self.data_n_1[self.CloseCol]) for position in self.positions.to_dicts()]
         if len(Ids_to_close)>0 and all(Ids_to_close) is not None: 
             [self.close_position(*i) for i in Ids_to_close if i[0] is not False]
@@ -90,10 +90,6 @@ class baktest:
             self.pool['crypto_balance']+=position['qty'].item() * position['signe_buy'].item() * signe_open
             self.pool['money_balance']-=position['qty'].item()* self.current_data[self.CloseCol] * position['signe_buy'].item() * signe_open
 
-        
-
-        
-    
     def log_position(self, position):
         """
         log the position
@@ -134,7 +130,7 @@ class baktest:
             'stop_loss':float,
             'state' : string
             'justif' : string,
-            
+            'close_price' : float
         }
         
         """
@@ -148,6 +144,7 @@ class baktest:
         position_args['id'] = self.id_position
         position_args['state'] = 'Opening'
         position_args['justif'] = 'Opening'
+        position_args['close_price'] = -1
         self.id_position += 1
         current_position = pl.DataFrame(position_args).select(['id',
                                                        'timestamp', 
@@ -160,6 +157,7 @@ class baktest:
                                                         'stop_loss',
                                                         'state',
                                                         'justif',
+                                                        'close_price',
                                                         'close_condition'])
         
         self.positions = pl.concat([self.positions, current_position])
@@ -175,6 +173,7 @@ class baktest:
         close_position = self.positions.filter(pl.col("id") == id)
         close_position = close_position.with_columns(state=pl.lit('Closing')) #Ajouter étape de log du prix de closing
         close_position = close_position.with_columns(justif=pl.lit(justif))
+        close_position = close_position.with_columns(close_price=pl.lit(self.current_data[self.CloseCol]))
         self.positions = self.positions.filter(pl.col("id") != id)
 
         self.set_pool(close_position)

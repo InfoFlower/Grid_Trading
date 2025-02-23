@@ -1,0 +1,210 @@
+[
+    {
+        "index": 1,
+        "origin": 9345.0,
+        "buy_orders": [
+            {
+                "level": 9251.55,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": true
+                }
+            },
+            {
+                "level": 9158.1,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": true
+                }
+            },
+            {
+                "level": 9064.65,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": true
+                }
+            },
+            {
+                "level": 8971.2,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": true
+                }
+            },
+            {
+                "level": 8877.75,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": true
+                }
+            },
+            {
+                "level": 8784.3,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": true
+                }
+            },
+            {
+                "level": 8690.85,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": true
+                }
+            },
+            {
+                "level": 8597.4,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": true
+                }
+            },
+            {
+                "level": 8503.95,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": true
+                }
+            },
+            {
+                "level": 8410.5,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": true
+                }
+            }
+        ],
+        "sell_orders": [
+            {
+                "level": 9438.45,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": false
+                }
+            },
+            {
+                "level": 9531.9,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": false
+                }
+            },
+            {
+                "level": 9625.35,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": false
+                }
+            },
+            {
+                "level": 9718.8,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": false
+                }
+            },
+            {
+                "level": 9812.25,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": false
+                }
+            },
+            {
+                "level": 9905.7,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": false
+                }
+            },
+            {
+                "level": 9999.15,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": false
+                }
+            },
+            {
+                "level": 10092.6,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": false
+                }
+            },
+            {
+                "level": 10186.05,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": false
+                }
+            },
+            {
+                "level": 10279.5,
+                "orders_params": {
+                    "qty": 100,
+                    "leverage": 1,
+                    "take_profit": 0.01,
+                    "stop_loss": 0.005,
+                    "is_buy": false
+                }
+            }
+        ]
+    }
+]

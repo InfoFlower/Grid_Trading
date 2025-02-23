@@ -32,7 +32,7 @@ class Strategy:
         if position['is_buy']:
             stop_loss_price = position['entryprice']*(1-position['stop_loss'])
             take_profit_price = position['entryprice']*(1+position['take_profit'])
-            if   price_n <= stop_loss_price and price_n_1 >stop_loss_price : 
+            if price_n <= stop_loss_price and price_n_1 >stop_loss_price : 
                 return (position['id'], 'STOPLOSS BUY')
             elif price_n >= take_profit_price and price_n_1 < take_profit_price : 
                 return (position['id'], 'TAKEPROFIT BUY')
@@ -40,7 +40,7 @@ class Strategy:
         if position['is_buy']==False:
             stop_loss_price = position['entryprice']*(1+position['stop_loss'])
             take_profit_price = position['entryprice']*(1-position['take_profit'])
-            if price_n >=  stop_loss_price and price_n_1 <stop_loss_price: 
+            if price_n >=  stop_loss_price and price_n_1 < stop_loss_price: 
                 return (position['id'], 'STOPLOSS SELL')
             elif price_n <= take_profit_price and price_n_1 > take_profit_price: 
                 return (position['id'], 'TAKEPROFIT BUY')
