@@ -35,35 +35,40 @@ class Grid_Maker:
         else:
             raise ValueError(f"Unknown grid type: {self.grid_type}")
 
-    def update_grid(self, current_grid):
+    def update_grid(self,args):#ici aucune utilité, faire des grilles (donc strat avec besoin pour implémentation)
         pass
-        # make_order()
 
 
-    def make_order():
-        pass
+    def make_order(self,i,args,params):
+        signe_buy=-1
+        if params['is_buy']:signe_buy=1
+        return {'level' : args['grid_origin']-signe_buy*args['grid_origin']*(i*args['prct_of_intervall']),
+                        'orders_params' : params,
+                        'open_condition' : args['open_condition'],
+                        'close_condition' : args['close_condition']}
         
     def Make_Basic_Grid(self,args):
         """
-        make_order
+        Make a grid of orders
+            args : 
+                dict, the parameters of the grid
+            output :
+                dict, index of the grid, the grid of orders
         """
         buy_params = args['orders_params'].copy()
         buy_params['is_buy'] = True
-        buy_orders = [{'level' : args['grid_origin']-args['grid_origin']*(i*args['prct_of_intervall']),
-                        'orders_params' : buy_params,
-                        'open_condition' : args['open_condition'],
-                        'close_condition' : args['close_condition']} for i in range(1, args['nb_orders']+1)]
-        
+        buy_orders = [self.make_order(i,args,buy_params) for i in range(1, args['nb_orders']+1)]
         sell_params = args['orders_params'].copy()
         sell_params['is_buy'] = False
-        sell_orders = [{'level' : args['grid_origin']+args['grid_origin']*(i*args['prct_of_intervall']),
-                        'orders_params' : sell_params,
-                        'open_condition' : args['open_condition'],
-                        'close_condition' : args['close_condition']} for i in range(1, args['nb_orders']+1)]
+        sell_orders = [self.make_order(i,args,sell_params) for i in range(1, args['nb_orders']+1)]
         
-        with open(self.write_path, 'a') as f:
-            f.write(f"{self.index};\n{buy_orders};\n{sell_orders};\n{args['grid_origin']}\n")
-        return {'index':self.index,
+        grid={'index':self.index,
                 'buy_orders' : buy_orders,
                 'sell_orders': sell_orders, 
                 'origin' : args['grid_origin']}
+        
+        self.log_grid(grid)
+        return grid
+    
+    def log_grid(self,grid):
+        pass

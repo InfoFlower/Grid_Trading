@@ -23,9 +23,21 @@ class Strategy:
             - open_condition : function, the opening condition
             - closing_condition : function, the closing condition
         """
-        grid = self.grid_maker(grid_parameters)
+        self.grid_parameters=grid_parameters
+        grid = self.grid_maker(self.grid_parameters)
         return {'buy_orders' :grid['buy_orders'],'sell_orders' :grid['sell_orders']}
     
+
+    def update_grid(self):
+        """
+        current_grid : dict, the current grid
+        grid_parameters : dict, the parameters of the new grid
+        which_orders : str, 'buy_orders' or 'sell_orders'
+        """
+        grid = self.grid_maker(self.grid_parameters)
+        return {'buy_orders' :grid['buy_orders'],'sell_orders' :grid['sell_orders']}
+
+
     def close_condition(self, position, price_n, price_n_1):
         """
         """
@@ -47,6 +59,8 @@ class Strategy:
         return False, False
     
     def open_condition(self, orders, price_n, price_n_1):
+        price_n = float(price_n)
+        price_n_1 = float(price_n_1)
         if orders['buy_orders'][0]['level']>=price_n and orders['buy_orders'][0]['level']<price_n_1 :return "BUY"
         if orders['sell_orders'][0]['level']<=price_n and orders['sell_orders'][0]['level']>price_n_1 :return "SELL"
         return False
