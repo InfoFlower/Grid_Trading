@@ -3,58 +3,58 @@ import time
 
 class baktest:
     """
-        Classe de backtest qui constitue la couche opérationnelle permettant d'appliquer des stratégies
+        Classe de backtest qui constitue la couche opérationnelle permettant d'appliquer des stratégies\n
 
-        Itère sur data et évalue une fonction de trigger à chaque itération pour savoir si 
-            - un ordre doit être fill -> open_position
-            - une position doit être fermée -> close_position
+        Itère sur data et évalue une fonction de trigger à chaque itération pour savoir si:\n
+            •un ordre doit être fill -> open_position\n
+            •une position doit être fermée -> close_position\n
 
-        Met à jour la pool {money_balance,crypto_balance}
+        Met à jour la pool {money_balance,crypto_balance}\n
 
-        Log l'évolution des positions au cours du temps
+        Log l'évolution des positions au cours du temps\n
 
         Arguments:
-            data (np.ndarray) : Historical market data.
-            strategy (object) : Une trading strategy
-            money_balance (float) : Balance initiale en USD
-            crypto_balance (float) : Balance initiale en BTC
-            TimeCol (str) : Nom de la colonne timestamp
-            CloseCol (str) : Nom de la colonne du prix
-            log_path (str) : Chemin relatif du répertoire de log
-            time_4_epoch (int) : Nombre de ligne par epoch
+            - data (np.ndarray) : Historical market data.
+            - strategy (object) : Une trading strategy
+            - money_balance (float) : Balance initiale en USD
+            - crypto_balance (float) : Balance initiale en BTC
+            - TimeCol (str) : Nom de la colonne timestamp
+            - CloseCol (str) : Nom de la colonne du prix
+            - log_path (str) : Chemin relatif du répertoire de log
+            - time_4_epoch (int) : Nombre de ligne par epoch
 
         Attributes:
-            index (int) : Identifiant de la ligne courante
-            TimeCol (str or int) : TimeCol
-            CloseCol (str or int) : CloseCol
-            data (np.ndarray) : data
-            current_data (np.ndarray) : Ligne numéro index
-            data_n_1 (np.ndarray) : Ligne numéro index-1
-            strategy (object) : strategy
-            orders (dict) : Dictionnaire {buy_orders, sell_orders} contenant les listes des ordres
-            id_position (int) : Identifiant de la dernière position, incrémenté à l'ouverture d'une position
-            positions (polars.DataFrame) : Liste l'ensemble des positions actuellement ouvertes
-            pool (dict) : Dictionnaire {crypto_balance, money_balance}, mis à jour à chaque ouverture ou fermeture de position
-            position_hist (str) : Chemin vers le fichier csv de log des positions
-            log_path (str): log_path
+            - index (int) : Identifiant de la ligne courante
+            - TimeCol (str or int) : TimeCol
+            - CloseCol (str or int) : CloseCol
+            - data (np.ndarray) : data
+            - current_data (np.ndarray) : Ligne numéro index
+            - data_n_1 (np.ndarray) : Ligne numéro index-1
+            - strategy (object) : strategy
+            - orders (dict) : Dictionnaire {buy_orders, sell_orders} contenant les listes des ordres
+            - id_position (int) : Identifiant de la dernière position, incrémenté à l'ouverture d'une position
+            - positions (polars.DataFrame) : Liste l'ensemble des positions actuellement ouvertes
+            - pool (dict) : Dictionnaire {crypto_balance, money_balance}, mis à jour à chaque ouverture ou fermeture de position
+            - position_hist (str) : Chemin vers le fichier csv de log des positions
+            - log_path (str): log_path
 
             # A determiner
-            start_time
-            time_4_epoch (int)
-            step_time_n_1
-            length_of_data (int)
+            - start_time
+            - time_4_epoch (int)
+            - step_time_n_1
+            - length_of_data (int)
         
         Methods:
-            __iter__(): Initialise index
-            __next__(): Itère sur data et appelle trigger
-            check_time_conformity(): 
-            trigger(): Evalue si une position doit être ouverte ou fermée
-            set_pool(position): Met à jour la pool après qu'une position soit ouverte ou fermée
-            log_position(position): Log les changements d'état de self.positions dans un fichier csv
-            open_position(position_args): Ajoute une position dans self.positions
-            close_position(id, justif): Supprimer une position de self.positions
-            log_time(): Log des stats temporelles par epoch
-            __call__(data): Met à jour la data lors d'un changement de fichier
+            - __iter__(): Initialise index
+            - __next__(): Itère sur data et appelle trigger
+            - check_time_conformity(): 
+            - trigger(): Evalue si une position doit être ouverte ou fermée
+            - set_pool(position): Met à jour la pool après qu'une position soit ouverte ou fermée
+            - log_position(position): Log les changements d'état de self.positions dans un fichier csv
+            - open_position(position_args): Ajoute une position dans self.positions
+            - close_position(id, justif): Supprimer une position de self.positions
+            - log_time(): Log des stats temporelles par epoch
+            - __call__(data): Met à jour la data lors d'un changement de fichier
         """
     def __init__(self, data, strategy, money_balance, crypto_balance,TimeCol='Open Time',CloseCol='Close', log_path='data/trade_history/',time_4_epoch=50000):
         

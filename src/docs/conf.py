@@ -8,7 +8,10 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
+from dotenv import load_dotenv
+load_dotenv()
+WD = os.getenv("WD")
+sys.path.insert(0, os.path.abspath(f'{WD}/src/'))
 
 
 project = 'GRID_TRADING'

@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OPE.GetData &mdash; Documentation GRID_TRADING 0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=897fae25"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=e6b791cb"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            GRID_TRADING
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../OPE.html">OPE package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test.html">test module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GRID_TRADING</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Code du module</a></li>
+      <li class="breadcrumb-item active">OPE.GetData</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Code source de OPE.GetData</h1><div class="highlight"><pre>
+<span></span><span class="c1">######################################################################################################################################</span>
+<span class="c1">############################################### IMPORT LIBRARIES #####################################################################</span>
+<span class="c1">######################################################################################################################################</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span> 
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+<span class="c1">######################################################################################################################################</span>
+<span class="c1">############################################### Get DATA api calls #####################################################################</span>
+<span class="c1">######################################################################################################################################</span>
+
+
+<div class="viewcode-block" id="GetData">
+<a class="viewcode-back" href="../../OPE.GetData.html#OPE.GetData.GetData">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GetData</span><span class="p">:</span>
+<div class="viewcode-block" id="GetData.__init__">
+<a class="viewcode-back" href="../../OPE.GetData.html#OPE.GetData.GetData.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">cols</span><span class="p">,</span><span class="n">dirname</span><span class="p">,</span><span class="n">partiton</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span><span class="n">nb_core</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="n">suffixe</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">,</span><span class="n">path_sep</span><span class="o">=</span><span class="s1">&#39;/&#39;</span><span class="p">,</span><span class="n">ez_part</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="o">=</span><span class="n">cols</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">partion_maker</span><span class="o">=</span><span class="n">Make_Op_data</span><span class="p">(</span><span class="n">partiton</span><span class="p">,</span><span class="n">nb_core</span><span class="p">,</span><span class="n">suffixe</span><span class="p">,</span><span class="n">path_sep</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dirname</span><span class="o">=</span><span class="n">dirname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ez_part</span><span class="o">=</span><span class="n">ez_part</span></div>
+
+
+<div class="viewcode-block" id="GetData.transfo_rep">
+<a class="viewcode-back" href="../../OPE.GetData.html#OPE.GetData.GetData.transfo_rep">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">transfo_rep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">rep</span><span class="p">):</span>
+        <span class="n">full_data</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rep</span> <span class="p">:</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{}</span>
+            <span class="k">for</span> <span class="n">m</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="p">,</span><span class="n">i</span><span class="p">):</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">=</span><span class="n">v</span>
+            <span class="n">full_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">full_data</span></div>
+
+
+<div class="viewcode-block" id="GetData.get_first_available_date">
+<a class="viewcode-back" href="../../OPE.GetData.html#OPE.GetData.GetData.get_first_available_date">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_first_available_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">symbol</span><span class="p">):</span>
+        <span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://api.binance.com/api/v3/klines&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;symbol&quot;</span><span class="p">:</span> <span class="n">symbol</span><span class="p">,</span>
+            <span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="s2">&quot;1d&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;startTime&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">}</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Return the timestamp of the first available data</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="GetData.get_market_cap_data">
+<a class="viewcode-back" href="../../OPE.GetData.html#OPE.GetData.GetData.get_market_cap_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_market_cap_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">symbol</span><span class="p">,</span><span class="n">start_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">start_timestamp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span><span class="n">start_timestamp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_first_available_date</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">start_timestamp</span> <span class="ow">is</span> <span class="kc">None</span> <span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;None timestamp for </span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">, check the symbol&quot;</span><span class="p">)</span>
+        <span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://api.binance.com/api/v3/klines&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;symbol&quot;</span><span class="p">:</span> <span class="n">symbol</span><span class="p">,</span>
+            <span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="s2">&quot;1s&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;startTime&quot;</span><span class="p">:</span> <span class="n">start_timestamp</span><span class="p">,</span>
+            <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">1000</span>
+        <span class="p">}</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;data/data_raw_</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s1">.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">current_timestamp</span> <span class="o">=</span> <span class="n">start_timestamp</span>
+        <span class="k">while</span> <span class="n">current_timestamp</span> <span class="o">&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">):</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;startTime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_timestamp</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Getting data for </span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2"> from </span><span class="si">{</span><span class="n">current_timestamp</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;data/data_raw_</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s1">.csv&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]))</span>
+                <span class="k">if</span> <span class="n">data</span><span class="p">:</span> <span class="n">current_timestamp</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">else</span> <span class="p">:</span> <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span></div>
+
+        
+    
+<div class="viewcode-block" id="GetData.__call__">
+<a class="viewcode-back" href="../../OPE.GetData.html#OPE.GetData.GetData.__call__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">symbol</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Getting data for </span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_market_cap_data</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">partion_maker</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;data/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dirname</span><span class="si">}</span><span class="s1">/data_raw_</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s1">.csv&#39;</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1">######################################################################################################################################</span>
+<span class="c1">############################################### MAKE PARTITION OF DATA #####################################################################</span>
+<span class="c1">######################################################################################################################################</span>
+
+
+
+<div class="viewcode-block" id="Make_Op_data">
+<a class="viewcode-back" href="../../OPE.GetData.html#OPE.GetData.Make_Op_data">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Make_Op_data</span><span class="p">:</span>
+<div class="viewcode-block" id="Make_Op_data.__init__">
+<a class="viewcode-back" href="../../OPE.GetData.html#OPE.GetData.Make_Op_data.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">partition</span><span class="p">,</span><span class="n">nb_core</span><span class="p">,</span><span class="n">suffix</span><span class="p">,</span><span class="n">path_sep</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">partition</span><span class="o">=</span><span class="n">partition</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_init</span><span class="o">=</span><span class="s1">&#39;data/&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="o">=</span><span class="n">suffix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path_sep</span><span class="o">=</span><span class="n">path_sep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nb_core</span><span class="o">=</span><span class="n">nb_core</span></div>
+
+
+
+<div class="viewcode-block" id="Make_Op_data.make_partition">
+<a class="viewcode-back" href="../../OPE.GetData.html#OPE.GetData.Make_Op_data.make_partition">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_partition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function will create a file with the index of partition of the data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">read_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">read_path</span>
+        <span class="n">writer</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">write_index_path</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="c1">#Open the file to write/erase</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;NUM_core;ID_partition;First_ind;Last_ind;First_byte;Last_byte</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">i</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">start_time</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting time </span><span class="si">{</span><span class="n">start_time</span><span class="si">}</span><span class="s2"> done&quot;</span><span class="p">)</span>
+        <span class="n">partition_path</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;data/OPE_DATA/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">datatype</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">File_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">.csv&#39;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">read_path</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">i</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">partition_path</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">part_file</span><span class="p">:</span> <span class="n">part_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="n">i</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">+=</span><span class="mi">1</span>
+                <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">partition</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">time_partition</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start_time</span>
+                    <span class="n">start_time</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Partition </span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> done in </span><span class="si">{</span><span class="n">time_partition</span><span class="si">}</span><span class="s2"> seconds | </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">i</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+                    <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+=</span><span class="mi">1</span>
+                    <span class="n">i</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="n">i</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+                    <span class="n">i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="n">i</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+                    <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+=</span><span class="mi">1</span>
+                    <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_core</span>
+                    <span class="n">partition_path</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;data/OPE_DATA/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">datatype</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">File_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">.csv&#39;</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">partition_path</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">part_file</span><span class="p">:</span> <span class="n">part_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Partition </span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> done&quot;</span><span class="p">)</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Partition path : </span><span class="si">{</span><span class="n">partition_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Run done in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start_time</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Make_Op_data.make_file">
+<a class="viewcode-back" href="../../OPE.GetData.html#OPE.GetData.Make_Op_data.make_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">path</span><span class="p">,</span><span class="n">clean</span><span class="p">):</span>
+        <span class="n">Opath</span><span class="o">=</span><span class="n">path</span><span class="p">[:</span><span class="n">path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_sep</span><span class="p">)]</span>
+        <span class="n">Opath</span><span class="o">=</span><span class="n">Opath</span><span class="p">[</span><span class="n">path</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_sep</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span><span class="o">=</span><span class="n">path</span><span class="p">[</span><span class="n">path</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_sep</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_sep</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">File_name</span><span class="o">=</span><span class="n">path</span><span class="p">[</span><span class="n">path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_sep</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_index_path</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;data/OPE_DATA/</span><span class="si">{</span><span class="n">Opath</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">File_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s1">.csv&#39;</span>
+        <span class="k">if</span> <span class="n">Opath</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;data/OPE_DATA&#39;</span><span class="p">):</span> 
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">&#39;data/OPE_DATA/&#39;</span><span class="o">+</span><span class="n">Opath</span><span class="p">)</span>
+        <span class="k">if</span> <span class="sa">f</span><span class="s1">&#39;data/OPE_DATA/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">datatype</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;data/OPE_DATA/&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">clean</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">clean_partition</span><span class="p">()</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;data/OPE_DATA/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">datatype</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_path</span><span class="o">=</span><span class="n">path</span></div>
+
+    
+<div class="viewcode-block" id="Make_Op_data.clean_partition">
+<a class="viewcode-back" href="../../OPE.GetData.html#OPE.GetData.Make_Op_data.clean_partition">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clean_partition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;data/OPE_DATA/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">datatype</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;data/OPE_DATA/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">datatype</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">removedirs</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;data/OPE_DATA/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">datatype</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Make_Op_data.__call__">
+<a class="viewcode-back" href="../../OPE.GetData.html#OPE.GetData.Make_Op_data.__call__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">path</span><span class="p">,</span><span class="n">cols</span><span class="p">,</span><span class="n">clean</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="o">=</span><span class="n">cols</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">make_file</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">clean</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">make_partition</span><span class="p">()</span></div>
+</div>
+
+
+
+<span class="c1">######################################################################################################################################</span>
+<span class="c1">############################################### USE EXEMPLE #####################################################################</span>
+<span class="c1">######################################################################################################################################</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Open time&#39;</span><span class="p">,</span> <span class="s1">&#39;Open&#39;</span><span class="p">,</span> <span class="s1">&#39;High&#39;</span><span class="p">,</span> <span class="s1">&#39;Low&#39;</span><span class="p">,</span> <span class="s1">&#39;Close&#39;</span><span class="p">,</span> <span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="s1">&#39;Close time&#39;</span><span class="p">,</span> <span class="s1">&#39;Quote asset volume&#39;</span><span class="p">,</span> <span class="s1">&#39;Number of trades&#39;</span><span class="p">,</span> <span class="s1">&#39;Taker buy base asset volume&#39;</span><span class="p">,</span> <span class="s1">&#39;Taker buy quote asset volume&#39;</span><span class="p">,</span> <span class="s1">&#39;Ignore&#39;</span><span class="p">]</span>
+    <span class="n">symbol</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;BTCUSDT&#39;</span><span class="p">,</span><span class="s1">&#39;ADAUSDT&#39;</span><span class="p">,</span><span class="s1">&#39;DOGEUSDT&#39;</span><span class="p">,</span><span class="s1">&#39;DOTUSDT&#39;</span><span class="p">,</span><span class="s1">&#39;ETHUSDT&#39;</span><span class="p">,</span><span class="s1">&#39;SOLUSDT&#39;</span><span class="p">,</span><span class="s1">&#39;XRPUSDT&#39;</span><span class="p">]</span>
+    <span class="n">appel</span><span class="o">=</span><span class="n">GetData</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">symbol</span><span class="p">:</span>
+        <span class="n">appel</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2025, Gabriel Lebovic / Alexander Lunel.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

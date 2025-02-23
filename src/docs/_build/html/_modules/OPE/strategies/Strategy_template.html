@@ -1,0 +1,166 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OPE.strategies.Strategy_template &mdash; Documentation GRID_TRADING 0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=897fae25"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/translations.js?v=e6b791cb"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            GRID_TRADING
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../OPE.html">OPE package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../test.html">test module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">GRID_TRADING</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Code du module</a></li>
+      <li class="breadcrumb-item active">OPE.strategies.Strategy_template</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Code source de OPE.strategies.Strategy_template</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Description: This is a template for creating a new strategy. Copy this file and rename it to your strategy name.</span>
+<span class="c1"># You can then implement your strategy in the execute method.</span>
+<span class="c1"># You can also add any other methods or attributes that you need.</span>
+<span class="c1"># Make sure to import your strategy in the main.py file.</span>
+
+<div class="viewcode-block" id="Strategy">
+<a class="viewcode-back" href="../../../OPE.strategies.Strategy_template.html#OPE.strategies.Strategy_template.Strategy">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Strategy</span><span class="p">:</span>
+<div class="viewcode-block" id="Strategy.__init__">
+<a class="viewcode-back" href="../../../OPE.strategies.Strategy_template.html#OPE.strategies.Strategy_template.Strategy.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span> <span class="n">Grider</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid_maker</span> <span class="o">=</span> <span class="n">Grider</span></div>
+
+
+<div class="viewcode-block" id="Strategy.__call__">
+<a class="viewcode-back" href="../../../OPE.strategies.Strategy_template.html#OPE.strategies.Strategy_template.Strategy.__call__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">current_data_info</span> <span class="p">,</span> <span class="n">grid_params</span> <span class="p">,</span> <span class="n">order_params</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Exemple de structure de données :</span>
+<span class="sd">                    params = {</span>
+<span class="sd">                    current_data_info : Info du backtest sur market data</span>
+<span class="sd">                    grid_params: grid_params,</span>
+<span class="sd">                    &#39;orders_params&#39;: order_params,</span>
+<span class="sd">                    &#39;open_condition&#39;: self.open_condition, </span>
+<span class="sd">                    &#39;close_condition&#39;: self.close_condition}</span>
+<span class="sd">        </span>
+<span class="sd">        Output uniformisé pour grille</span>
+<span class="sd">            {</span>
+<span class="sd">            A FAIRE</span>
+<span class="sd">            }</span>
+
+<span class="sd">        Output uniformisé pour baktest</span>
+<span class="sd">            {</span>
+<span class="sd">            A FAIRE</span>
+<span class="sd">            }</span>
+<span class="sd">        !!!Wrapper à appeler dans le call pour uniformiser fonction d&#39;appel à la grille/baktest!!!</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+        
+<div class="viewcode-block" id="Strategy.wrapper_in">
+<a class="viewcode-back" href="../../../OPE.strategies.Strategy_template.html#OPE.strategies.Strategy_template.Strategy.wrapper_in">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrapper_in</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Strategy.make_orders">
+<a class="viewcode-back" href="../../../OPE.strategies.Strategy_template.html#OPE.strategies.Strategy_template.Strategy.make_orders">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_orders</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_parameters</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    
+<div class="viewcode-block" id="Strategy.close_condition">
+<a class="viewcode-back" href="../../../OPE.strategies.Strategy_template.html#OPE.strategies.Strategy_template.Strategy.close_condition">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close_condition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">price_n</span><span class="p">,</span> <span class="n">price_n_1</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    
+<div class="viewcode-block" id="Strategy.open_condition">
+<a class="viewcode-back" href="../../../OPE.strategies.Strategy_template.html#OPE.strategies.Strategy_template.Strategy.open_condition">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">open_condition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orders</span><span class="p">,</span> <span class="n">price_n</span><span class="p">,</span> <span class="n">price_n_1</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2025, Gabriel Lebovic / Alexander Lunel.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
