@@ -31,7 +31,7 @@ class Grid_Maker:
 
     def __call__(self, args):
         self.index+=1
-        if self.grid_type == 'basic_grid':
+        if self.grid_type == 'BasicGrid':
             return self.Make_Basic_Grid(args)
         else:
             raise ValueError(f"Unknown grid type: {self.grid_type}")
@@ -62,9 +62,8 @@ class Grid_Maker:
         sell_params = args['orders_params'].copy()
         sell_params['is_buy'] = False
         sell_orders = [self.make_order(i,args,sell_params) for i in range(1, args['nb_orders']+1)]
-        
         grid={'index':self.index,
-              'origin':args['grid_origin'],
+              'origin':args['grid_origin'].item(),
                 'sell_orders': sell_orders,
                 'buy_orders' : buy_orders}
         
@@ -74,32 +73,18 @@ class Grid_Maker:
                         
         
     def log_grid(self, grid):
-        """
-        
-        """
-        #Clean orders to remove open_condition, close_condition that contains functions
         def clean_order(orders):
-            """
-            """
             orders_list = []
             for order in orders:
                 orders_list.append({k:v for k, v in order.items() if not callable(v)})
             return orders_list
-
         clean_grid = grid.copy()
         buy_orders = clean_grid['buy_orders'].copy()
         sell_orders = clean_grid['sell_orders'].copy()
-        
         str_function_buy_orders = clean_order(buy_orders)
         str_function_sell_orders = clean_order(sell_orders)
-
-        clean_grid['buy_orders'] = str_function_buy_orders
-        clean_grid['sell_orders'] = str_function_sell_orders
-        
-        
-
-
-        #DUMP GRID
+        clean_grid['buy_orders'] = str(str_function_buy_orders)
+        clean_grid['sell_orders'] = str(str_function_sell_orders)
         with open(self.write_path, 'a', encoding='utf-8') as f:
             if self.index != 1 :f.write(f'\n,')   
             json.dump(clean_grid, f, ensure_ascii=False, indent=4)
