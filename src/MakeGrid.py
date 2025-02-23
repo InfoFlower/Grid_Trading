@@ -96,17 +96,12 @@ class Grid_Maker:
         clean_grid['buy_orders'] = str_function_buy_orders
         clean_grid['sell_orders'] = str_function_sell_orders
         
-        # Open the file in read mode and a temporary file to write the modified content
-        with open(self.write_path, 'r+') as f:
-            line = f.readlines()
-            line = line[:-1]
-            f.write(f'\n'.join(line))
+        
 
 
         #DUMP GRID
         with open(self.write_path, 'a', encoding='utf-8') as f:
-            f.write(f',\n')   
+            if self.index != 1 :f.write(f'\n,')   
             json.dump(clean_grid, f, ensure_ascii=False, indent=4)
-            f.write(f'\n]')
 
         
