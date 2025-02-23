@@ -54,7 +54,7 @@ class baktest:
             params['entryprice'] = self.current_data[self.CloseCol]
             params['close_condition'] = self.orders['buy_orders'][0]['close_condition']
             self.open_position(params)
-            self.orders=self.strategy.grid_maker.update_grid(current_grid = self.orders,wich_orders = 'sell_orders')
+            self.orders=self.strategy.update_grid()
 
         condition_open_sell = self.orders['sell_orders'][0]['open_condition'](self.orders, self.current_data[self.CloseCol], self.data_n_1[self.CloseCol])
         if condition_open_sell == 'SELL' and self.pool['crypto_balance']>self.orders['sell_orders'][0]['orders_params']['qty']:
@@ -64,7 +64,7 @@ class baktest:
             params['entryprice'] = self.current_data[self.CloseCol]
             params['close_condition'] = self.orders['sell_orders'][0]['close_condition']
             self.open_position(params)
-            self.orders=self.strategy.grid_maker.update_grid(current_grid = self.orders,wich_orders = 'buy_orders')
+            self.orders=self.strategy.update_grid()
 
         Ids_to_close = [position['close_condition'](position,self.current_data[self.CloseCol], self.data_n_1[self.CloseCol]) for position in self.positions.to_dicts()]
         if len(Ids_to_close)>0 and all(Ids_to_close) is not None: 
