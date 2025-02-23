@@ -4,7 +4,37 @@ import time
 class baktest:
     def __init__(self, data, strategy, money_balance, crypto_balance,TimeCol='Open Time',CloseCol='Close', log_path='data/trade_history/',time_4_epoch=50000):
         """
-        """# faire une structure?
+        A backtesting engine for evaluating trading strategies.
+
+        This class iterates over historical market data, applies a given strategy,
+        and manages trading positions based on predefined conditions.
+
+        Attributes:
+            data (list): Historical market data.
+            strategy (object): A trading strategy that defines buy/sell conditions.
+            money_balance (float): Initial money balance for trading.
+            crypto_balance (float): Initial cryptocurrency balance for trading.
+            TimeCol (str): Column name for timestamps in market data.
+            CloseCol (str): Column name for closing prices in market data.
+            log_path (str): Path to store trading logs.
+            time_4_epoch (int): Interval for logging execution time.
+            pool (dict): Dictionary managing available funds and crypto balance.
+            positions (pl.DataFrame): Dataframe storing open positions.
+            orders (dict): Dictionary of buy and sell orders.
+        
+        Methods:
+            __iter__(): Initializes iteration over the dataset.
+            __next__(): Processes the next data point in the dataset.
+            check_time_conformity(): Ensures time continuity in data.
+            trigger(): Evaluates buy/sell conditions and executes trades.
+            set_pool(position): Updates the account balance after trades.
+            log_position(position): Records trade positions in a log file.
+            open_position(position_args): Opens a new trade position.
+            close_position(id, justif): Closes an existing trade position.
+            log_time(): Logs execution statistics at intervals.
+            __call__(data): Updates the dataset for a new run.
+        """
+        # faire une structure?
         self.start_time = time.time()
         self.step_time_n_1=self.start_time
         self.length_of_data=len(data)

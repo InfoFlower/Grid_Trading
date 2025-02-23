@@ -19,12 +19,7 @@ Pour lancer la collecte des données veuillez lancer le fichier [GetData.py](src
 
 Pour lancer la stratégie veuillez lancer le fichier [main.py](main.py) avec python.
 
-**Les versions HTML des documents sont disponible dans GitHub avec :**
-- [Notebook de data_processing](collecting_processing.ipynb)
-- [Notebook de modélisation](modelisation.ipynb)
-
-L'ensemble des questions données dans le sujet ont leurs réponses dans les pages suivantes :
-
 
 ## Contributeurs
-[@Gabriel lebovic](https://github.com/InfoFlower)
+[@Gabriel LEBOVIC](https://github.com/InfoFlower)
+[@Alexander LUNEL](https://github.com/luludocteur)
