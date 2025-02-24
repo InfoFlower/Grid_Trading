@@ -88,19 +88,33 @@
 <div class="viewcode-block" id="Grid_Maker">
 <a class="viewcode-back" href="../../OPE.MakeGrid.html#OPE.MakeGrid.Grid_Maker">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Grid_Maker</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Classe permettant de créer la grille de grid trading.\n</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        - grid_type : Le type de grille</span>
+<span class="sd">        - grid_name : Le nom de la grille</span>
+<span class="sd">        - write_path : Le chemin relatif vers lequel on log les grilles</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        - grid_type : grid_type</span>
+<span class="sd">        - index : Identifiant de la grille, initialisé à 0</span>
+<span class="sd">        - write_path :  write_path+grid_name+&#39;.json&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    Methods:</span>
+<span class="sd">        - __call__() : Crée une nouvelle grille de type self.grid_type</span>
+<span class="sd">        - update_grid(args) : inutile</span>
+<span class="sd">        - make_order(i,args,params) : Construit un ordre de type buy or sell (params[is_buy])</span>
+<span class="sd">        - Make_Basic_Grid(args) : Construit une grille de type &#39;BasicGrid&#39;</span>
+<span class="sd">        - log_grid(grid) : Enregistre la création d&#39;une grille et append dans un .json</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="Grid_Maker.__init__">
 <a class="viewcode-back" href="../../OPE.MakeGrid.html#OPE.MakeGrid.Grid_Maker.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_type</span><span class="p">,</span> <span class="n">grid_name</span><span class="p">,</span> <span class="n">write_path</span><span class="o">=</span><span class="s1">&#39;data/trade_history/grid/&#39;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        STRUCTURE OF THE &#39;basic_grid&#39; arguments :</span>
-<span class="sd">            - grid_origin: float, the price of the first order</span>
-<span class="sd">            - prct_of_intervall : float, the percentage of the price between orders</span>
-<span class="sd">            - nb_orders : int, the number of orders to make</span>
-<span class="sd">            - open_condition : function, the opening condition</span>
-<span class="sd">            - closing_condition : function, the closing condition</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="bp">self</span><span class="o">.</span><span class="n">grid_type</span> <span class="o">=</span> <span class="n">grid_type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="mi">0</span>
+        <span class="c1">#Changer le nom du self.write_path pour self.grid_path ou qqchose de ce genre</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">write_path</span> <span class="o">=</span> <span class="n">write_path</span><span class="o">+</span><span class="n">grid_name</span><span class="o">+</span><span class="s1">&#39;.json&#39;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">write_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">)</span></div>
@@ -109,6 +123,16 @@
 <div class="viewcode-block" id="Grid_Maker.__call__">
 <a class="viewcode-back" href="../../OPE.MakeGrid.html#OPE.MakeGrid.Grid_Maker.__call__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Incrémente l&#39;identifiant de la grille et\n</span>
+<span class="sd">        Crée une nouvelle grille associée au grid_type.\n</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            - args (dict) : arguments de la grille et des ordres qu&#39;elle contient</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            - Make_Basic_Grid(args) (dict)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">+=</span><span class="mi">1</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_type</span> <span class="o">==</span> <span class="s1">&#39;BasicGrid&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Make_Basic_Grid</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
@@ -118,7 +142,10 @@
 
 <div class="viewcode-block" id="Grid_Maker.update_grid">
 <a class="viewcode-back" href="../../OPE.MakeGrid.html#OPE.MakeGrid.Grid_Maker.update_grid">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">update_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">args</span><span class="p">):</span><span class="c1">#ici aucune utilité, faire des grilles (donc strat avec besoin pour implémentation)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">args</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ici aucune utilité, faire des grilles (donc strat avec besoin pour implémentation).\n</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 
@@ -126,6 +153,9 @@
 <div class="viewcode-block" id="Grid_Maker.make_order">
 <a class="viewcode-back" href="../../OPE.MakeGrid.html#OPE.MakeGrid.Grid_Maker.make_order">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">args</span><span class="p">,</span><span class="n">params</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retourne un ordre au niveau i pour un type d&#39;ordre (params : buy or sell) et les args </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">signe_buy</span><span class="o">=-</span><span class="mi">1</span>
         <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;is_buy&#39;</span><span class="p">]:</span><span class="n">signe_buy</span><span class="o">=</span><span class="mi">1</span>
         <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;level&#39;</span> <span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;grid_origin&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">signe_buy</span><span class="o">*</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;grid_origin&#39;</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;prct_of_intervall&#39;</span><span class="p">]),</span>
@@ -138,18 +168,38 @@
 <a class="viewcode-back" href="../../OPE.MakeGrid.html#OPE.MakeGrid.Grid_Maker.Make_Basic_Grid">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">Make_Basic_Grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">args</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Make a grid of orders</span>
-<span class="sd">            args : </span>
-<span class="sd">                dict, the parameters of the grid</span>
-<span class="sd">            output :</span>
-<span class="sd">                dict, index of the grid, the grid of orders</span>
+<span class="sd">        Crée une grille simple, espacement linéaire des ordres autour de l&#39;origine\n</span>
+<span class="sd">        Même nb_orders pour les ordres d&#39;achats et les ordres de ventes.\n</span>
+
+<span class="sd">        Arguments: </span>
+<span class="sd">            - args (dict) : &#39;BasicGrid&#39; args</span>
+<span class="sd">                - grid_origin (float) : Origine de la grille ,entre les sell_orders et les buy_orders</span>
+<span class="sd">                - prct_of_intervall (float):  Pourcentage d&#39;écart entre chaque ordre</span>
+<span class="sd">                - nb_orders (int) : Nombre d&#39;ordre à créer à l&#39;achat et à la vente</span>
+<span class="sd">                - orders_params (dict) : Paramètres des ordres</span>
+<span class="sd">                    - qty (float) : Quantité de BTC à faire rentrer en position</span>
+<span class="sd">                    - is_buy (bool) : Ordre à l&#39;achat ou à la vente</span>
+<span class="sd">                    - leverage (float) : Multiple de levier à appliquer</span>
+<span class="sd">                    - take_profit (float) : Pourcentage de gain</span>
+<span class="sd">                    - stop_loss (float) : Pourcentage de perte</span>
+<span class="sd">                    - justif (str) : Justification de la prise de position de l&#39;ordre</span>
+<span class="sd">                - open_condition (function) : Fonction de condition d&#39;ouverture de l&#39;ordre</span>
+<span class="sd">                - closing_condition (function) : Fonction de condition de fermeture de l&#39;ordre</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            - grid (dict) : </span>
+<span class="sd">                - index (int) : identifiant de la grille</span>
+<span class="sd">                - origin (float) : Origine de la grille ,entre les sell_orders et les buy_orders</span>
+<span class="sd">                - sell_orders (list) : Liste des ordres de ventes</span>
+<span class="sd">                - buy_orders (list) : Liste des ordres d&#39;achats</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">buy_params</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;orders_params&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">buy_params</span><span class="p">[</span><span class="s1">&#39;is_buy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">buy_orders</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">make_order</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">args</span><span class="p">,</span><span class="n">buy_params</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;nb_orders&#39;</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+
         <span class="n">sell_params</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;orders_params&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">sell_params</span><span class="p">[</span><span class="s1">&#39;is_buy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">sell_orders</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">make_order</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">args</span><span class="p">,</span><span class="n">sell_params</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;nb_orders&#39;</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+        
         <span class="n">grid</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;index&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
               <span class="s1">&#39;origin&#39;</span><span class="p">:</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;grid_origin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
                 <span class="s1">&#39;sell_orders&#39;</span><span class="p">:</span> <span class="n">sell_orders</span><span class="p">,</span>
@@ -164,6 +214,12 @@
 <div class="viewcode-block" id="Grid_Maker.log_grid">
 <a class="viewcode-back" href="../../OPE.MakeGrid.html#OPE.MakeGrid.Grid_Maker.log_grid">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">log_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Enregistre l&#39;objet grille précédemment créer dans un fichier .json</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">            grid (dict): Informations sur la grille</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">clean_order</span><span class="p">(</span><span class="n">orders</span><span class="p">):</span>
             <span class="n">orders_list</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">orders</span><span class="p">:</span>

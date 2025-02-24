@@ -92,16 +92,73 @@
 <dt class="sig sig-object py" id="OPE.MakeGrid.Grid_Maker">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">OPE.MakeGrid.</span></span><span class="sig-name descname"><span class="pre">Grid_Maker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data/trade_history/grid/'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OPE/MakeGrid.html#Grid_Maker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OPE.MakeGrid.Grid_Maker" title="Lien vers cette définition"></a></dt>
 <dd><p>Bases : <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Classe permettant de créer la grille de grid trading.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>grid_type : Le type de grille</p></li>
+<li><p>grid_name : Le nom de la grille</p></li>
+<li><p>write_path : Le chemin relatif vers lequel on log les grilles</p></li>
+</ul>
+</dd>
+<dt>Attributes:</dt><dd><ul class="simple">
+<li><p>grid_type : grid_type</p></li>
+<li><p>index : Identifiant de la grille, initialisé à 0</p></li>
+<li><p>write_path :  write_path+grid_name+”.json”</p></li>
+</ul>
+</dd>
+<dt>Methods:</dt><dd><ul class="simple">
+<li><p>__call__() : Crée une nouvelle grille de type self.grid_type</p></li>
+<li><p>update_grid(args) : inutile</p></li>
+<li><p>make_order(i,args,params) : Construit un ordre de type buy or sell (params[is_buy])</p></li>
+<li><p>Make_Basic_Grid(args) : Construit une grille de type “BasicGrid”</p></li>
+<li><p>log_grid(grid) : Enregistre la création d’une grille et append dans un .json</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="OPE.MakeGrid.Grid_Maker.Make_Basic_Grid">
 <span class="sig-name descname"><span class="pre">Make_Basic_Grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OPE/MakeGrid.html#Grid_Maker.Make_Basic_Grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OPE.MakeGrid.Grid_Maker.Make_Basic_Grid" title="Lien vers cette définition"></a></dt>
-<dd><dl class="simple">
-<dt>Make a grid of orders</dt><dd><dl class="simple">
-<dt>args<span class="classifier"></span></dt><dd><p>dict, the parameters of the grid</p>
-</dd>
-<dt>output :</dt><dd><p>dict, index of the grid, the grid of orders</p>
+<dd><p>Crée une grille simple, espacement linéaire des ordres autour de l’origine</p>
+<p>Même nb_orders pour les ordres d’achats et les ordres de ventes.</p>
+<dl class="simple">
+<dt>Arguments: </dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>args (dict)<span class="classifier">“BasicGrid” args</span></dt><dd><ul>
+<li><p>grid_origin (float) : Origine de la grille ,entre les sell_orders et les buy_orders</p></li>
+<li><p>prct_of_intervall (float):  Pourcentage d’écart entre chaque ordre</p></li>
+<li><p>nb_orders (int) : Nombre d’ordre à créer à l’achat et à la vente</p></li>
+<li><dl class="simple">
+<dt>orders_params (dict)<span class="classifier">Paramètres des ordres</span></dt><dd><ul>
+<li><p>qty (float) : Quantité de BTC à faire rentrer en position</p></li>
+<li><p>is_buy (bool) : Ordre à l’achat ou à la vente</p></li>
+<li><p>leverage (float) : Multiple de levier à appliquer</p></li>
+<li><p>take_profit (float) : Pourcentage de gain</p></li>
+<li><p>stop_loss (float) : Pourcentage de perte</p></li>
+<li><p>justif (str) : Justification de la prise de position de l’ordre</p></li>
+</ul>
 </dd>
 </dl>
+</li>
+<li><p>open_condition (function) : Fonction de condition d’ouverture de l’ordre</p></li>
+<li><p>closing_condition (function) : Fonction de condition de fermeture de l’ordre</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>grid (dict)<span class="classifier"></span></dt><dd><ul>
+<li><p>index (int) : identifiant de la grille</p></li>
+<li><p>origin (float) : Origine de la grille ,entre les sell_orders et les buy_orders</p></li>
+<li><p>sell_orders (list) : Liste des ordres de ventes</p></li>
+<li><p>buy_orders (list) : Liste des ordres d’achats</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -109,38 +166,46 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="OPE.MakeGrid.Grid_Maker.__call__">
 <span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OPE/MakeGrid.html#Grid_Maker.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OPE.MakeGrid.Grid_Maker.__call__" title="Lien vers cette définition"></a></dt>
-<dd><p>Call self as a function.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="OPE.MakeGrid.Grid_Maker.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data/trade_history/grid/'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OPE/MakeGrid.html#Grid_Maker.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OPE.MakeGrid.Grid_Maker.__init__" title="Lien vers cette définition"></a></dt>
-<dd><dl class="simple">
-<dt>STRUCTURE OF THE “basic_grid” arguments :</dt><dd><ul class="simple">
-<li><p>grid_origin: float, the price of the first order</p></li>
-<li><p>prct_of_intervall : float, the percentage of the price between orders</p></li>
-<li><p>nb_orders : int, the number of orders to make</p></li>
-<li><p>open_condition : function, the opening condition</p></li>
-<li><p>closing_condition : function, the closing condition</p></li>
+<dd><p>Incrémente l’identifiant de la grille et</p>
+<p>Crée une nouvelle grille associée au grid_type.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>args (dict) : arguments de la grille et des ordres qu’elle contient</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>Make_Basic_Grid(args) (dict)</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="OPE.MakeGrid.Grid_Maker.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data/trade_history/grid/'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OPE/MakeGrid.html#Grid_Maker.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OPE.MakeGrid.Grid_Maker.__init__" title="Lien vers cette définition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="OPE.MakeGrid.Grid_Maker.log_grid">
 <span class="sig-name descname"><span class="pre">log_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OPE/MakeGrid.html#Grid_Maker.log_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OPE.MakeGrid.Grid_Maker.log_grid" title="Lien vers cette définition"></a></dt>
-<dd></dd></dl>
+<dd><p>Enregistre l’objet grille précédemment créer dans un fichier .json</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><p>grid (dict): Informations sur la grille</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="OPE.MakeGrid.Grid_Maker.make_order">
 <span class="sig-name descname"><span class="pre">make_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OPE/MakeGrid.html#Grid_Maker.make_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OPE.MakeGrid.Grid_Maker.make_order" title="Lien vers cette définition"></a></dt>
-<dd></dd></dl>
+<dd><p>Retourne un ordre au niveau i pour un type d’ordre (params : buy or sell) et les args</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="OPE.MakeGrid.Grid_Maker.update_grid">
 <span class="sig-name descname"><span class="pre">update_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OPE/MakeGrid.html#Grid_Maker.update_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OPE.MakeGrid.Grid_Maker.update_grid" title="Lien vers cette définition"></a></dt>
-<dd></dd></dl>
+<dd><p>ici aucune utilité, faire des grilles (donc strat avec besoin pour implémentation).</p>
+</dd></dl>
 
 </dd></dl>
 

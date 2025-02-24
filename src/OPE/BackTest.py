@@ -3,15 +3,15 @@ import time
 
 class baktest:
     """
-        Classe de backtest qui constitue la couche opérationnelle permettant d'appliquer des stratégies\n
+        Classe de backtest qui constitue la couche opérationnelle permettant d'appliquer des stratégies.\n
 
         Itère sur data et évalue une fonction de trigger à chaque itération pour savoir si:\n
             •un ordre doit être fill -> open_position\n
             •une position doit être fermée -> close_position\n
 
-        Met à jour la pool {money_balance,crypto_balance}\n
+        Met à jour la pool {money_balance,crypto_balance}.\n
 
-        Log l'évolution des positions au cours du temps\n
+        Log l'évolution des positions au cours du temps.\n
 
         Arguments:
             - data (np.ndarray) : Historical market data.

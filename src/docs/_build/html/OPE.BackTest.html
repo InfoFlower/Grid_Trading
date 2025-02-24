@@ -92,14 +92,14 @@
 <dt class="sig sig-object py" id="OPE.BackTest.baktest">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">OPE.BackTest.</span></span><span class="sig-name descname"><span class="pre">baktest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">money_balance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crypto_balance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TimeCol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Open</span> <span class="pre">Time'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CloseCol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Close'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data/trade_history/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_4_epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OPE/BackTest.html#baktest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OPE.BackTest.baktest" title="Lien vers cette définition"></a></dt>
 <dd><p>Bases : <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Classe de backtest qui constitue la couche opérationnelle permettant d’appliquer des stratégies</p>
+<p>Classe de backtest qui constitue la couche opérationnelle permettant d’appliquer des stratégies.</p>
 <p>Itère sur data et évalue une fonction de trigger à chaque itération pour savoir si:</p>
 <blockquote>
 <div><p>•un ordre doit être fill -&gt; open_position</p>
 <p>•une position doit être fermée -&gt; close_position</p>
 </div></blockquote>
-<p>Met à jour la pool {money_balance,crypto_balance}</p>
-<p>Log l’évolution des positions au cours du temps</p>
+<p>Met à jour la pool {money_balance,crypto_balance}.</p>
+<p>Log l’évolution des positions au cours du temps.</p>
 <dl>
 <dt>Arguments:</dt><dd><ul class="simple">
 <li><p>data (np.ndarray) : Historical market data.</p></li>

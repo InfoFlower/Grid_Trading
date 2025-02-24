@@ -77,15 +77,15 @@
 <a class="viewcode-back" href="../../OPE.BackTest.html#OPE.BackTest.baktest">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">baktest</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Classe de backtest qui constitue la couche opérationnelle permettant d&#39;appliquer des stratégies\n</span>
+<span class="sd">        Classe de backtest qui constitue la couche opérationnelle permettant d&#39;appliquer des stratégies.\n</span>
 
 <span class="sd">        Itère sur data et évalue une fonction de trigger à chaque itération pour savoir si:\n</span>
 <span class="sd">            •un ordre doit être fill -&gt; open_position\n</span>
 <span class="sd">            •une position doit être fermée -&gt; close_position\n</span>
 
-<span class="sd">        Met à jour la pool {money_balance,crypto_balance}\n</span>
+<span class="sd">        Met à jour la pool {money_balance,crypto_balance}.\n</span>
 
-<span class="sd">        Log l&#39;évolution des positions au cours du temps\n</span>
+<span class="sd">        Log l&#39;évolution des positions au cours du temps.\n</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            - data (np.ndarray) : Historical market data.</span>

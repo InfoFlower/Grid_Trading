@@ -44,7 +44,7 @@ class Strategy:
             - grid_origin: float, the price of the first order
             - prct_of_intervall : float, the percentage of the price between orders
             - nb_orders : int, the number of orders to make
-            - orders_hyperparams : dict, the parameters of the orders
+            - orders_params : dict, the parameters of the orders
                 'qty':100,
                 'is_buy':True,
                 'leverage':1,
