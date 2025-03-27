@@ -6,14 +6,17 @@
 import src.OPE.MakeGrid as MakeGrid
 from src.OPE.strategies.strategy_DumbStrat import Strategy
 from src.OPE.BackTest import baktest
-import time
 ##
 # OTHER PACKAGES
+import os
+import time
+from dotenv import load_dotenv
 import polars as pl
 import argparse
 from datetime import datetime
 
 start_time = datetime.fromtimestamp(time.time())
+WD = os.getenv('WD')
 print('Start time :', start_time)
 ###
 ##SETUP VARIABLES
@@ -42,7 +45,7 @@ print('General time to setup :', after_vars - start_time)
 ##
 #SETUP DATA
 if type_of_file=='full':
-    path='data\DATA_RAW_S_ORIGIN\data_raw_BTCUSDT.csv' ### A modif
+    path=f'{WD}data/OPE_DATA/data_raw_BTCUSDT_176.csv' ### A modif
 else :
     start_time = 153
     path=f'data\OPE_DATA\DATA_RAW_S_ORIGIN_test_code\data_raw_BTCUSDT_{start_time}.csv'
@@ -91,8 +94,6 @@ print('General time to setup :', after_init - start_time)
 ###
 ##RUN BACKTEST
 ###
-
-
 
 if type_of_file=='full':
     for _ in bktst:
