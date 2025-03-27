@@ -108,9 +108,9 @@ class Strategy:
         """
         Met à jour la grille (ATTENTION : il semble que le comportement soit strictement identique à __call__).\n
 
-        current_grid : dict, the current grid
-        grid_parameters : dict, the parameters of the new grid
-        which_orders : str, 'buy_orders' or 'sell_orders'
+        current_grid : dict, the current grid\n
+        grid_parameters : dict, the parameters of the new grid\n
+        which_orders : str, 'buy_orders' or 'sell_orders'\n
 
         Arguments:
             - current_price (float) : Prix au niveau n de l'itération
@@ -160,13 +160,14 @@ class Strategy:
     def open_condition(self, orders, price_n, price_n_1):
         """
         Définit la condition d'ouverture des ordres les plus proches du prix.\n
-        Teste donc 1 ordre d'achat et 1 ordre de vente
-        On ne peut pas ouvrir les deux ordres en même temps
+        Teste donc 1 ordre d'achat et 1 ordre de vente.\n
+        On ne peut pas ouvrir les deux ordres en même temps.\n
 
         Arguments:
             - orders (dict) : Ordre à tester 
             - price_n (float) : Prix au niveau n de l'itération
             - price_n_1 (float) : Prix au niveau n-1 de l'itération
+
         Returns:
             - str : Si ordre à ouvrir
             - False : Sinon

@@ -78,16 +78,42 @@
 <div class="viewcode-block" id="Strategy">
 <a class="viewcode-back" href="../../../OPE.strategies.strategy_DumbStrat.html#OPE.strategies.strategy_DumbStrat.Strategy">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Strategy</span><span class="p">:</span>
-
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    def make_orders</span>
-<span class="sd">    def close_condition</span>
-<span class="sd">    def open_condition</span>
+<span class="sd">    Implémente une Stratégie,\n </span>
+<span class="sd">    c&#39;est à dire une manière de créer les ordres dans la grille (grid_params et order_params)\n</span>
+<span class="sd">    et leurs conditions d&#39;ouverture et de fermeture (close_condition et open_condition)\n</span>
+
+<span class="sd">    Dans le cas de la DumbStrat, les paramètres des ordres et de la grille sont définis à l&#39;initialisation\n</span>
+<span class="sd">    et ne changeront pas pendant l&#39;itération.\n</span>
+
+<span class="sd">    Les ordres ont donc tous un RR = 2 (TP = 2*SL où TP = 1%), sans levier et avec une qty arbitraire\n</span>
+<span class="sd">    La grille crée 1 ordre de vente au dessus du prix et un ordre d&#39;achat en dessous du prix (±1%).\n</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        - name : Nom de la stratégie</span>
+<span class="sd">        - Grider : Instance de la classe MakeGrid.Grid_Maker</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        - grid_maker (object) : Grider</span>
+<span class="sd">        - grid_params (dict) : Paramètres de la grille</span>
+<span class="sd">        - order_params (dict) : Paramètres des ordres</span>
+<span class="sd">        - grid_parameters (dict) : Combinaison des paramètres d&#39;ordre et de grille</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        - __call__(current_price) : Process les paramètres et les passe dans make_order</span>
+<span class="sd">        - set_grid_params : Définit les paramètres de la grille</span>
+<span class="sd">        - set_order_params : Définit les paramètres des ordres</span>
+<span class="sd">        - make_orders(grid_parameters) : Génère une grille grâce à grid_maker</span>
+<span class="sd">        - update_grid(current_price) : Met à jour la grille (ATTENTION : il semble que le comportement soit strictement identique à __call__)</span>
+<span class="sd">        - close_condition(position, price_n, price_n_1) : Définit la condition de fermeture d&#39;une position</span>
+<span class="sd">        - open_condition(orders, price_n, price_n_1) : Définit la condition d&#39;ouverture d&#39;une position</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#Built in function setup</span>
 <div class="viewcode-block" id="Strategy.__init__">
 <a class="viewcode-back" href="../../../OPE.strategies.strategy_DumbStrat.html#OPE.strategies.strategy_DumbStrat.Strategy.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span> <span class="n">Grider</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">grid_maker</span> <span class="o">=</span> <span class="n">Grider</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">grid_params</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_grid_params</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">order_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_order_params</span><span class="p">()</span></div>
@@ -97,16 +123,13 @@
 <a class="viewcode-back" href="../../../OPE.strategies.strategy_DumbStrat.html#OPE.strategies.strategy_DumbStrat.Strategy.__call__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">current_price</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        args :</span>
-<span class="sd">            current_price : current_price</span>
-<span class="sd">            grid_params :</span>
-<span class="sd">                prct_of_intervall : intervall between grid</span>
-<span class="sd">                nb_orders : </span>
-<span class="sd">            order_params :</span>
-<span class="sd">                &#39;qty&#39;:quantity_of_btc_to_sell/buy,</span>
-<span class="sd">                &#39;leverage&#39;: leverage to apply at this order,</span>
-<span class="sd">                &#39;take_profit&#39;: TP_close_condition,</span>
-<span class="sd">                &#39;stop_loss&#39;: SL_close_condition</span>
+<span class="sd">        Appelle self.make_orders.\n</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            - current_price (float) : Prix au niveau n de l&#39;itération</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            - self.make_orders</span>
 <span class="sd">        &quot;&quot;&quot;</span> 
         <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;grid_origin&#39;</span><span class="p">:</span> <span class="n">current_price</span><span class="p">,</span> 
                     <span class="s1">&#39;prct_of_intervall&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_params</span><span class="p">[</span><span class="s1">&#39;prct_of_intervall&#39;</span><span class="p">],</span> 
@@ -122,19 +145,13 @@
 <a class="viewcode-back" href="../../../OPE.strategies.strategy_DumbStrat.html#OPE.strategies.strategy_DumbStrat.Strategy.make_orders">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_orders</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_parameters</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        grid_parameters :</span>
-<span class="sd">            - grid_origin: float, the price of the first order</span>
-<span class="sd">            - prct_of_intervall : float, the percentage of the price between orders</span>
-<span class="sd">            - nb_orders : int, the number of orders to make</span>
-<span class="sd">            - orders_params : dict, the parameters of the orders</span>
-<span class="sd">                &#39;qty&#39;:100,</span>
-<span class="sd">                &#39;is_buy&#39;:True,</span>
-<span class="sd">                &#39;leverage&#39;:1,</span>
-<span class="sd">                &#39;take_profit&#39;:0,</span>
-<span class="sd">                &#39;stop_loss&#39;:0,</span>
-<span class="sd">                &#39;justif&#39; : &#39;justif&#39;</span>
-<span class="sd">            - open_condition : function, the opening condition</span>
-<span class="sd">            - closing_condition : function, the closing condition</span>
+<span class="sd">        Génère une grille grâce à grid_maker.\n</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            - grid_parameters (dict) : Combinaison des paramètres d&#39;ordre et de grille</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            - dict : Dictionnaire {&#39;buy_orders&#39;, &#39;sell_orders&#39;} contenant les listes d&#39;ordres d&#39;achat et de vente</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">grid_parameters</span><span class="o">=</span><span class="n">grid_parameters</span>
         <span class="n">grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_maker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid_parameters</span><span class="p">)</span>
@@ -144,6 +161,12 @@
 <div class="viewcode-block" id="Strategy.set_grid_params">
 <a class="viewcode-back" href="../../../OPE.strategies.strategy_DumbStrat.html#OPE.strategies.strategy_DumbStrat.Strategy.set_grid_params">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_grid_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Définit les paramètres de la grille.\n</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            - dict : Dictionnaire {&#39;prct_of_intervall&#39;, &#39;nb_orders&#39;} </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;prct_of_intervall&#39;</span> <span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
                            <span class="s1">&#39;nb_orders&#39;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">}</span></div>
 
@@ -157,6 +180,12 @@
 <div class="viewcode-block" id="Strategy.set_order_params">
 <a class="viewcode-back" href="../../../OPE.strategies.strategy_DumbStrat.html#OPE.strategies.strategy_DumbStrat.Strategy.set_order_params">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_order_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Définit les paramètres des ordres.\n</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            - dict : Dictionnaire {&#39;qty&#39;, &#39;leverage&#39;, &#39;take_profit&#39;, &#39;stop_loss&#39;} </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;qty&#39;</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span>
                 <span class="s1">&#39;leverage&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
                 <span class="s1">&#39;take_profit&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
@@ -168,9 +197,18 @@
 <a class="viewcode-back" href="../../../OPE.strategies.strategy_DumbStrat.html#OPE.strategies.strategy_DumbStrat.Strategy.update_grid">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">update_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_price</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Met à jour la grille (ATTENTION : il semble que le comportement soit strictement identique à __call__).\n</span>
+
 <span class="sd">        current_grid : dict, the current grid</span>
 <span class="sd">        grid_parameters : dict, the parameters of the new grid</span>
 <span class="sd">        which_orders : str, &#39;buy_orders&#39; or &#39;sell_orders&#39;</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            - current_price (float) : Prix au niveau n de l&#39;itération</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            - dict : Dictionnaire {&#39;buy_orders&#39;, &#39;sell_orders&#39;} contenant les listes d&#39;ordres d&#39;achat et de vente</span>
+<span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">grid_parameters</span><span class="p">[</span><span class="s1">&#39;grid_origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_price</span>
         <span class="n">grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_maker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid_parameters</span><span class="p">)</span>
@@ -182,12 +220,19 @@
 <a class="viewcode-back" href="../../../OPE.strategies.strategy_DumbStrat.html#OPE.strategies.strategy_DumbStrat.Strategy.close_condition">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">close_condition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">price_n</span><span class="p">,</span> <span class="n">price_n_1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        in :</span>
-<span class="sd">            position</span>
-<span class="sd">            price_n</span>
-<span class="sd">            price_n_1</span>
-<span class="sd">        Output Struct :</span>
-<span class="sd">            Position_id à fermer, justif de fermeture</span>
+<span class="sd">        Définit la condition de fermeture d&#39;une position.\n</span>
+<span class="sd">        Si la condition est rempli retourne l&#39;id de cette position.\n</span>
+
+<span class="sd">        Dans ce cas, on teste juste si le prix a passé un palier de TP ou SL</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            - position (dict) : Position à tester</span>
+<span class="sd">            - price_n (float) : Prix au niveau n de l&#39;itération</span>
+<span class="sd">            - price_n_1 (float) : Prix au niveau n-1 de l&#39;itération</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            - (int, str) : Si la position doit être fermée</span>
+<span class="sd">            - (False, False) : Si la position reste ouverte</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">position</span><span class="p">[</span><span class="s1">&#39;is_buy&#39;</span><span class="p">]:</span>
             <span class="n">stop_loss_price</span> <span class="o">=</span> <span class="n">position</span><span class="p">[</span><span class="s1">&#39;entryprice&#39;</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">position</span><span class="p">[</span><span class="s1">&#39;stop_loss&#39;</span><span class="p">])</span>
@@ -210,6 +255,19 @@
 <div class="viewcode-block" id="Strategy.open_condition">
 <a class="viewcode-back" href="../../../OPE.strategies.strategy_DumbStrat.html#OPE.strategies.strategy_DumbStrat.Strategy.open_condition">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">open_condition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orders</span><span class="p">,</span> <span class="n">price_n</span><span class="p">,</span> <span class="n">price_n_1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Définit la condition d&#39;ouverture des ordres les plus proches du prix.\n</span>
+<span class="sd">        Teste donc 1 ordre d&#39;achat et 1 ordre de vente</span>
+<span class="sd">        On ne peut pas ouvrir les deux ordres en même temps</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            - orders (dict) : Ordre à tester </span>
+<span class="sd">            - price_n (float) : Prix au niveau n de l&#39;itération</span>
+<span class="sd">            - price_n_1 (float) : Prix au niveau n-1 de l&#39;itération</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            - str : Si ordre à ouvrir</span>
+<span class="sd">            - False : Sinon</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">price_n</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">price_n</span><span class="p">)</span>
         <span class="n">price_n_1</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">price_n_1</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">orders</span><span class="p">[</span><span class="s1">&#39;buy_orders&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;level&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="n">price_n</span> <span class="ow">and</span> <span class="n">orders</span><span class="p">[</span><span class="s1">&#39;buy_orders&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;level&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="n">price_n_1</span> <span class="p">:</span><span class="k">return</span> <span class="s2">&quot;BUY&quot;</span>
