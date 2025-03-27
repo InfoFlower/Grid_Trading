@@ -105,8 +105,10 @@ class baktest:
         if self.index < len(self.data)-1:
             self.index += 1
             self.current_data = self.data[self.index]
+            #TODO : une fonction qui permet d'envoyer les infos du backtest au reporting (self.current_data, self.orders, self.positions, self.pool)
             self.check_time_conformity()
             self.trigger()
+
             return self.current_data
         else:
             raise StopIteration
