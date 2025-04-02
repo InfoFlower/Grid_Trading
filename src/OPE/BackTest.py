@@ -56,7 +56,7 @@ class baktest:
             - log_time(): Log des stats temporelles par epoch
             - __call__(data): Met à jour la data lors d'un changement de fichier
         """
-    def __init__(self, data, strategy, money_balance, crypto_balance,TimeCol='Open Time',CloseCol='Close', log_path='data/trade_history/',time_4_epoch=50000):
+    def __init__(self, data, strategy, reporting, money_balance, crypto_balance,TimeCol='Open Time',CloseCol='Close', log_path='data/trade_history/',time_4_epoch=50000):
         
         # faire une structure?
         self.start_time = time.time()
@@ -64,9 +64,10 @@ class baktest:
         self.length_of_data=len(data)
         self.time_4_epoch=time_4_epoch
 
-        self.TimeCol=TimeCol
-        self.CloseCol=CloseCol
+        self.TimeCol = TimeCol
+        self.CloseCol = CloseCol
         self.strategy = strategy
+        self.reporting = reporting
         self.data = data
         self.id_position = 0
         self.positions = pl.DataFrame()
@@ -101,6 +102,8 @@ class baktest:
         Raises:
             StopIteration: Si toutes les lignes ont été parcourues.
         """
+        while not self.reporting.running:
+            time.sleep(0.1)
         self.data_n_1 = self.data[self.index]
         if self.index < len(self.data)-1:
             self.index += 1

@@ -6,6 +6,7 @@
 import src.OPE.MakeGrid as MakeGrid
 from src.OPE.strategies.strategy_DumbStrat import Strategy
 from src.OPE.BackTest import baktest
+from src.OPE.reporting.app import Reporting
 ##
 # OTHER PACKAGES
 import os
@@ -82,7 +83,8 @@ time_4_epoch=50000
 ###
 grid_maker = MakeGrid.Grid_Maker(GridType, GridName)
 strategy = Strategy(StratName, grid_maker)
-bktst=baktest(data, strategy, money_balance,crypto_balance,TimeCol,CloseCol,time_4_epoch=500000)
+reporting = Reporting()
+bktst=baktest(data, strategy, reporting, money_balance,crypto_balance,TimeCol,CloseCol,time_4_epoch=500000)
 
 
 print('\n'*2, '#'*20,'\n'*2)
