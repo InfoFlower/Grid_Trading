@@ -1,5 +1,10 @@
+import os
 import polars as pl
 import time
+import shutil
+from dotenv import load_dotenv
+load_dotenv()
+WD = os.getenv('WD')
 
 class baktest:
     """
@@ -56,31 +61,46 @@ class baktest:
             - log_time(): Log des stats temporelles par epoch
             - __call__(data): Met à jour la data lors d'un changement de fichier
         """
-    def __init__(self, data, strategy, reporting, money_balance, crypto_balance,TimeCol='Open Time',CloseCol='Close', log_path='data/trade_history/',time_4_epoch=50000):
+    BACKTEST_ID = 0
+    def __init__(self, data_path, strategy, money_balance, crypto_balance,TimeCol='Open Time',CloseCol='Close',time_4_epoch=50000):
+        self.id = self.__class__.BACKTEST_ID + 1
+
+        self.data = pl.read_csv(data_path, truncate_ragged_lines=True)
+        self.data = self.data[['Open time','Close']]
+        self.data = self.data.to_numpy()
+
         
         # faire une structure?
         self.start_time = time.time()
-        self.step_time_n_1=self.start_time
-        self.length_of_data=len(data)
-        self.time_4_epoch=time_4_epoch
+        self.step_time_n_1 = self.start_time
+        self.length_of_data = len(self.data)
+        self.time_4_epoch = time_4_epoch
 
         self.TimeCol = TimeCol
         self.CloseCol = CloseCol
         self.strategy = strategy
-        self.reporting = reporting
-        self.data = data
+        
         self.id_position = 0
         self.positions = pl.DataFrame()
-        
         self.orders=self.strategy(self.data[0][self.CloseCol])
         self.pool={'money_balance' : money_balance, 
                    'crypto_balance' : crypto_balance}
         
-        self.position_hist=log_path+'position_hist.csv'
-        #TODO CHANGE self.log_path pour self.sio_time_path ou qqchose du genre
-        self.log_path=log_path+'sio_time.csv'
-        with open(self.position_hist, 'w') as f:f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,state,justif,close_price,crypto_balance,money_balance')
-        with open(self.log_path,'w') as f:f.write('epoch,total_of_lines,prct_of_run,time_between_epoch,time_from_start,epoch_size')
+        #PATHS
+        #TODO : Ajouter une classe Logger qui s'occupe de toutes les logs
+        self.log_path = f'{WD}/src/OPE/reporting/BACKTESTS/{self.id}/'
+        self.data_hist=self.log_path+'data.csv'
+        self.positions_hist=self.log_path+'positions.csv'
+        self.orders_hist=self.log_path+'orders.json'
+        self.sio_time=self.log_path+'sio_time.csv'
+
+        os.mkdir(self.log_path)#TODO : utils create_directory
+
+        with open(self.positions_hist, 'w') as f:f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,state,justif,close_price,crypto_balance,money_balance')
+        with open(self.data_hist, 'w') as f:f.write('Open Time,Close')
+        with open(self.sio_time,'w') as f:f.write('epoch,total_of_lines,prct_of_run,time_between_epoch,time_from_start,epoch_size')
+        # with open(self.orders_hist, 'w', encoding='utf-8') as f:
+        #     f.write('[')
     
     def __iter__(self):
         """
@@ -102,16 +122,14 @@ class baktest:
         Raises:
             StopIteration: Si toutes les lignes ont été parcourues.
         """
-        while not self.reporting.running:
-            time.sleep(0.1)
         self.data_n_1 = self.data[self.index]
         if self.index < len(self.data)-1:
             self.index += 1
             self.current_data = self.data[self.index]
-            #TODO : une fonction qui permet d'envoyer les infos du backtest au reporting (self.current_data, self.orders, self.positions, self.pool)
+            #TODO : une fonction qui permet d'envoyer les infos du backtest vers reporting (self.current_data, self.orders, self.positions, self.pool)
             self.check_time_conformity()
             self.trigger()
-
+            self.log_data()
             return self.current_data
         else:
             raise StopIteration
@@ -257,7 +275,7 @@ class baktest:
 
         self.set_pool(close_position)
         self.log_position(close_position)
-    
+
     def log_time(self):
         """
         Log les statistiques temporelles pour chaque epoch.
@@ -269,8 +287,14 @@ class baktest:
             time_between_epoch=current_time-self.step_time_n_1
             time_from_start=current_time-self.start_time
             print(f'\n',f'EPOCH : {epoch}  \n NUMBER OF LINES : {self.index}\n PRCT OF RUN : {prct_of_run} \n TIME BETWEEN EPOCH : {time_between_epoch} \n TIME FROM START : {time_from_start} \n EPOCH SIZE : {self.time_4_epoch}',f'\n'*2,'#'*20)
-            with open(self.log_path,'a') as f : f.write(f'\n{epoch},{self.index},{prct_of_run},{time_between_epoch},{time_from_start},{self.time_4_epoch}')
+            with open(self.sio_time,'a') as f : f.write(f'\n{epoch},{self.index},{prct_of_run},{time_between_epoch},{time_from_start},{self.time_4_epoch}')
             self.step_time_n_1=time.time()
+
+    def log_data(self):
+        """
+        Enregistre l'évolution du prix en fonction du TSP
+        """
+
     
     def log_position(self, position):
         """
@@ -283,5 +307,5 @@ class baktest:
         for i in [self.pool['crypto_balance'],self.pool['money_balance']]:
             info.append(i)
 
-        with open(self.position_hist, 'a') as f:
+        with open(self.positions_hist, 'a') as f:
             f.write('\n'+','.join([str(i) for i in info if not callable(i)]))

@@ -1,28 +1,36 @@
-from dash import Dash, dcc, html, Input, Output, callback
-import plotly.express as px
-import polars as pl
+import os
+import sys
 import keyboard
+import polars as pl
+import plotly.express as px
+from dash import Dash, dcc, html, Input, Output, callback
+from dotenv import load_dotenv
+load_dotenv()
+WD = os.getenv('WD')
+ETL_folder_relative = os.path.dirname(WD)
+sys.path.append(ETL_folder_relative)
+
+
+import src.OPE.MakeGrid as MakeGrid
+from src.OPE.strategies.strategy_DumbStrat import Strategy
+from src.OPE.BackTest import baktest
 
 
 app = Dash(__name__)
 
-global running
-
-running = True
-speed = 1.0
+init_state = {"Running": True, "Speed": 1.0}
 
 app.layout = html.Div([
     dcc.Tabs(id='tabs', value='tab-1', children=[
         dcc.Tab(label='LIVE', value='tab-1'),
         dcc.Tab(label='AFTER', value='tab-2')
     ]),
-    html.Div(id="tab-content")
+    dcc.Store(id='sim_state', data=init_state),
+    html.Div(id="tab_content")
 ])
 
-#app.callback(Output("tab-content", "children"), Input("tabs", "value"))(render_tab)
-
 @callback(
-        Output("tab-content", "children"), 
+        Output("tab_content", "children"), 
         Input("tabs", "value")
         )
 def render_tab(value_tab):
@@ -45,7 +53,7 @@ def render_tab(value_tab):
     else:
         raise ValueError
 
-@callback(Output("status", "children"), Input("pause-button", "n_clicks")) 
+@callback(Output("status", "children"), Input("pause-button", "n_clicks"), prevent_initial_call=True, suppress_callback_exceptions=True) 
 def toggle_pause(n_clicks):
     """
     """
@@ -53,12 +61,34 @@ def toggle_pause(n_clicks):
     print(running)
     running = not running
     return running
+
+def run_backtest():
+    """
+    Crée une instance de BackTest
+    et run la strategy associée
+    """
+    GridType = 'BasicGrid'
+    GridName='GridPoc'
+    grid_maker = MakeGrid.Grid_Maker(GridType, GridName)
+
+    StratName = 'DumbStrat'
+    strategy = Strategy(StratName, grid_maker)
+
+    data_path = f'{WD}/data/OPE_DATA/data_raw_BTCUSDT_176.csv'
+    money_balance = 10000
+    crypto_balance = 100
+    TimeCol = 0
+    CloseCol = 1
+    bktst=baktest(data_path, strategy, money_balance,crypto_balance,TimeCol,CloseCol,time_4_epoch=500000)
+    for _ in bktst:
+        pass
+    with open(bktst.strategy.grid_maker.write_path, 'a') as f:f.write(']')
             
 
 
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    run_backtest()
 
 

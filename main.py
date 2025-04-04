@@ -16,6 +16,7 @@ import polars as pl
 import argparse
 from datetime import datetime
 
+load_dotenv()
 start_time = datetime.fromtimestamp(time.time())
 WD = os.getenv('WD')
 print('Start time :', start_time)
@@ -83,8 +84,7 @@ time_4_epoch=50000
 ###
 grid_maker = MakeGrid.Grid_Maker(GridType, GridName)
 strategy = Strategy(StratName, grid_maker)
-reporting = Reporting()
-bktst=baktest(data, strategy, reporting, money_balance,crypto_balance,TimeCol,CloseCol,time_4_epoch=500000)
+bktst=baktest(data, strategy, money_balance,crypto_balance,TimeCol,CloseCol,time_4_epoch=500000)
 
 
 print('\n'*2, '#'*20,'\n'*2)

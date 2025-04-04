@@ -121,7 +121,7 @@ class Grid_Maker:
 
         return grid
                         
-        
+    #TODO : Ajouter une classe Logger qui s'occupe de toutes les logs
     def log_grid(self, grid):
         """
         Enregistre l'objet grille précédemment créer dans un fichier .json
