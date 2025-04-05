@@ -62,15 +62,38 @@ class baktest:
             - __call__(data): Met à jour la data lors d'un changement de fichier
         """
     BACKTEST_ID = 0
-    def __init__(self, data_path, strategy, money_balance, crypto_balance,TimeCol='Open Time',CloseCol='Close',time_4_epoch=50000):
+    def __init__(self, data_path, strategy, money_balance, crypto_balance, log_path, TimeCol='Open Time',CloseCol='Close', time_4_epoch=50000):
         self.id = self.__class__.BACKTEST_ID + 1
 
+        #PATHS
+        #TODO : Ajouter une classe Logger qui s'occupe de toutes les logs
+        self.log_path = log_path
+        self.backtest_log_path = self.log_path+f'{self.id}/'
+        self.data_hist=self.backtest_log_path+'data.csv'
+        self.positions_hist=self.backtest_log_path+'positions.csv'
+        self.orders_hist=self.backtest_log_path+'orders.json'
+        self.sio_time=self.backtest_log_path+'sio_time.csv'
+
+        #Vide le repertoire de log des backtest
+        #A mieux gérer dans le future, juste pour dev
+        for file_name in os.listdir(self.log_path):
+            shutil.rmtree(self.log_path+str(file_name))
+    
+        os.mkdir(self.backtest_log_path)#TODO : utils create_directory
+
         self.data = pl.read_csv(data_path, truncate_ragged_lines=True)
+        self.data[['Open time','Open','High','Low','Close']].write_csv(self.data_hist)
+
+        with open(self.positions_hist, 'w') as f:f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,state,justif,close_price,crypto_balance,money_balance')
+        with open(self.sio_time,'w') as f:f.write('epoch,total_of_lines,prct_of_run,time_between_epoch,time_from_start,epoch_size')
+        # with open(self.orders_hist, 'w', encoding='utf-8') as f:
+        #     f.write('[')
+
         self.data = self.data[['Open time','Close']]
         self.data = self.data.to_numpy()
 
         
-        # faire une structure?
+        # faire une structure? #TODO CARRÉMENT FAIRE DES STRUCTURES
         self.start_time = time.time()
         self.step_time_n_1 = self.start_time
         self.length_of_data = len(self.data)
@@ -86,21 +109,7 @@ class baktest:
         self.pool={'money_balance' : money_balance, 
                    'crypto_balance' : crypto_balance}
         
-        #PATHS
-        #TODO : Ajouter une classe Logger qui s'occupe de toutes les logs
-        self.log_path = f'{WD}/src/OPE/reporting/BACKTESTS/{self.id}/'
-        self.data_hist=self.log_path+'data.csv'
-        self.positions_hist=self.log_path+'positions.csv'
-        self.orders_hist=self.log_path+'orders.json'
-        self.sio_time=self.log_path+'sio_time.csv'
-
-        os.mkdir(self.log_path)#TODO : utils create_directory
-
-        with open(self.positions_hist, 'w') as f:f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,state,justif,close_price,crypto_balance,money_balance')
-        with open(self.data_hist, 'w') as f:f.write('Open Time,Close')
-        with open(self.sio_time,'w') as f:f.write('epoch,total_of_lines,prct_of_run,time_between_epoch,time_from_start,epoch_size')
-        # with open(self.orders_hist, 'w', encoding='utf-8') as f:
-        #     f.write('[')
+        
     
     def __iter__(self):
         """
@@ -129,7 +138,6 @@ class baktest:
             #TODO : une fonction qui permet d'envoyer les infos du backtest vers reporting (self.current_data, self.orders, self.positions, self.pool)
             self.check_time_conformity()
             self.trigger()
-            self.log_data()
             return self.current_data
         else:
             raise StopIteration
@@ -196,7 +204,6 @@ class baktest:
 
         if position['state'].item() == 'Opening':
             signe_open = 1
-            #SET POOL
             self.pool['crypto_balance']+=position['qty'].item() * position['signe_buy'].item() * signe_open
             self.pool['money_balance']-=position['qty'].item()*position['entryprice'].item() * position['signe_buy'].item() * signe_open
         elif position['state'].item() == 'Closing' :
@@ -267,6 +274,7 @@ class baktest:
             id (int): Identifiant de la position à fermer.
             justif (str): Justification de la fermeture.
         """
+        print('CLOSE POSITION')
         close_position = self.positions.filter(pl.col("id") == id)
         close_position = close_position.with_columns(state=pl.lit('Closing')) #Ajouter étape de log du prix de closing
         close_position = close_position.with_columns(justif=pl.lit(justif))
@@ -290,11 +298,6 @@ class baktest:
             with open(self.sio_time,'a') as f : f.write(f'\n{epoch},{self.index},{prct_of_run},{time_between_epoch},{time_from_start},{self.time_4_epoch}')
             self.step_time_n_1=time.time()
 
-    def log_data(self):
-        """
-        Enregistre l'évolution du prix en fonction du TSP
-        """
-
     
     def log_position(self, position):
         """
@@ -303,6 +306,7 @@ class baktest:
         Parameters:
             position (polars.DataFrame): Informations sur la position à enregistrer.
         """
+        print('LOG POSITION')
         info = list(position.rows()[0])
         for i in [self.pool['crypto_balance'],self.pool['money_balance']]:
             info.append(i)
