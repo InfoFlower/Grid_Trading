@@ -12,7 +12,8 @@ load_dotenv()
 WD = os.getenv('WD')
 sys.path.append(WD)
 
-
+from config import REPORTING_LOG_PATH
+from pages import display_page1
 from src.OPE.MakeGrid import Grid_Maker
 from src.OPE.strategies.strategy_DumbStrat import Strategy
 from src.OPE.BackTest import baktest
@@ -20,8 +21,6 @@ from DataIterator import DataIterator
 
 
 app = Dash(__name__)
-
-#init_state = {"Running": False, "Speed": 1.0}
 
 app.layout = html.Div([
     dcc.Tabs(id='tabs', value='tab-1', children=[
@@ -36,9 +35,7 @@ app.layout = html.Div([
     html.Div(id="tab_content")
 ])
 
-REPORTING_LOG_PATH = f'{WD}src/OPE/reporting/BACKTESTS/'
-
-@callback(Output("tab_content", "children"), 
+@app.callback(Output("tab_content", "children"), 
         Input("tabs", "value"))
 def render_tab(value_tab):
     """
@@ -46,16 +43,8 @@ def render_tab(value_tab):
     """
     print(value_tab)
     if value_tab == "tab-1":
-        
-        #TODO : mettre ces returns dans des fichiers différents
-        return html.Div([
-            html.H1("LIVE"),
-            dcc.Dropdown(id = 'dropdown_backtest', options=os.listdir(REPORTING_LOG_PATH), value = 2),
-            html.Button("Confirmer backtest", id='ok_backtest', n_clicks=0),
-            html.Button("Pause/Reprendre", id="pause_button", n_clicks=0),
-            dcc.Graph(id='candlestick_chart'),
-            html.Div(id="status", children="Simulation en cours")
-        ])
+        return html.Div(display_page1())
+
     elif value_tab == "tab-2":
         return html.Div([
             html.H1("AFTER"),
@@ -64,18 +53,20 @@ def render_tab(value_tab):
     else:
         raise ValueError
     
-@callback([Output('store_pause', 'data', allow_duplicate=True),
-           Output('refresh_live', 'disabled', allow_duplicate=True),
-           Output('store_backtest_running', 'data')],
-        Input('ok_backtest', 'n_clicks'),
-          State('dropdown_backtest', 'value'),
-          State('store_pause', 'data'),
-          State('store_backtest_running', 'data'),
+@app.callback(Output('store_backtest_running', 'data'),
+            Input('ok_backtest', 'n_clicks'),
+            [State('dropdown_backtest', 'value'),
+            State('store_pause', 'data'),
+            State('store_backtest_running', 'data')],
            prevent_initial_call=True)
 def choose_bt_dropdown(n_clicks, dropdown_value, pause, bt_running):
     """
     
     """
+    print('choose_bt_dropdown:', n_clicks,
+          'dropdown_value :',dropdown_value,
+          'pause:',pause,
+          'bt_running:', bt_running)
     if pause is True and bt_running is False:
         
         data_path = REPORTING_LOG_PATH+f'{dropdown_value}/data.csv'
@@ -85,33 +76,37 @@ def choose_bt_dropdown(n_clicks, dropdown_value, pause, bt_running):
 
         thread = threading.Thread(target=di.iterate)
         thread.start()
-        
+
         pause = False
         bt_running = True
     else:
         dash.exceptions.PreventUpdate
-    return pause, pause, bt_running
+    return bt_running
 
 
-@callback(Input('refresh_live', 'n_intervals'))
-def todo(n_intervals):#Update graph
+@app.callback(Input('refresh_live', 'n_intervals'),
+              State('refresh_live', 'disabled'),
+              prevent_initial_call=True)
+def get_queue(n_intervals, disabled):#Update graph
+    print('live state:', not disabled)
     if not di.data_queue.empty():
         print("QUEUE")
-        print(di.data_queue.get())
+        print(di.data_queue.get()['Open time'].item())
     else:
-        print('empty')
+        pass
 
-
-@callback([Output('store_pause', 'data'), 
+@app.callback([Output('store_pause', 'data'), 
            Output('refresh_live', 'disabled')],
-           Input('pause_button', 'n_clicks'),
+           [Input('pause_button', 'n_clicks'),
+            Input('store_backtest_running', 'data')],
            State('store_pause', 'data'),
-           State('store_backtest_running', 'data'),
            prevent_initial_call=True)
-def pause(n_clicks, pause, bt_running):
+def pause(n_clicks, bt_running, pause):
     """
     """
+    print('AVANT pause:',pause, 'n_clicks', n_clicks)
     if bt_running:
+        print('ahah')
         if pause:
             #C'est pauser -> reprendre
             pause = False
@@ -121,8 +116,9 @@ def pause(n_clicks, pause, bt_running):
             pause = True
             di.pause()
     else:
+        print('hihi')
         raise dash.exceptions.PreventUpdate
-    
+    print('APRES pause:',pause)
     return pause, pause
     
 

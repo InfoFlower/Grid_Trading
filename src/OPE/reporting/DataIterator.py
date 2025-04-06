@@ -28,20 +28,14 @@ class DataIterator:
     #     self.stop_event.set()
     #     self.resume()
 
-    def iterate(self):#update_callback
+    def iterate(self):
         while self.current_index < len(self.data):
             self.pause_event.wait()
             with self.lock:
                 speed = self.speed
             item = self.data[self.current_index, :]
-            print(item)
-            #update_callback(item)
+            print('iterate',item.select('Open time').item())
+
             self.data_queue.put(item.to_dict())
             self.current_index += 1
             time.sleep(speed)
-
-if __name__ == "__main__":
-
-    data = pl.read_csv('/Users/alexanderlunel/Documents/Crypto/Grid_Trading_Gabriel/Grid_Trading/src/OPE/reporting/BACKTESTS/1/data.csv')
-    di = DataIterator(data)
-    di.iterate()
