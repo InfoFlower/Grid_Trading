@@ -131,6 +131,7 @@ def test_figure(data, fig_data):
     
 
 @app.callback(Output('candlestick_chart', 'figure', allow_duplicate=True),
+              Output('store_open_positions', 'data'),
                Input('store_current_data', 'data'),
                State('store_open_positions', 'data'),
                prevent_initial_call=True)
@@ -147,20 +148,21 @@ def update_graph(new_data, open_positions):
     patched_figure['data'][0]['close'].append(new_data['Close'][0])
     #patched_figure['layout']['xaxis']['range'][-1] = new_data['Open time'][0] +
  
-    patched_figure = update_position_event(new_data, open_positions, patched_figure)
+    patched_figure, open_positions = update_position_event(new_data, open_positions, patched_figure)
 
-    return patched_figure
+    return patched_figure, open_positions
 
 def update_position_event(new_data, open_positions, patched_figure):
     """
     """
-
-    def open_position(position_event, open_positions, patched_figure):
+    print(open_positions)
+    
+    def open_position(position_event):
         """
         
         """
         id = position_event.pop('id')
-        #open_positions[id] = position_event
+        open_positions[id] = position_event
         #print(go.Scatter(x=[position_event['timestamp']], y=[position_event['entryprice']], mode='lines', name=f'position_{id}'))
         patched_figure['data'].append({'type':'scatter',
                                        'name':f'position_{id}',
@@ -168,7 +170,12 @@ def update_position_event(new_data, open_positions, patched_figure):
                                        'y':[position_event['entryprice'], position_event['entryprice']],
                                        'mode':'lines'})
 
-        return patched_figure
+    
+    def prolong_open_positions(id):
+        """
+        """
+        #patched_figure['data']
+        pass
 
     if di.position_event.select(pl.col("timestamp").dt.strftime('%Y-%m-%dT%H:%M:%S').is_in([new_data['Open time'][0]])).to_series().any():
         #print(di.position_event)
@@ -177,10 +184,18 @@ def update_position_event(new_data, open_positions, patched_figure):
         #print(di.position_event)
         for position_event in positions_event.iter_rows(named=True):
             #print(position_event)
-            if position_event['justif'] == 'Opening':
-                patched_figure = open_position(position_event, open_positions, patched_figure)
+            if position_event['state'] == 'Opening':
+                open_position(position_event)
 
-    return patched_figure  
+            if position_event['state'] == 'Closing':
+                #TODO : closing_position
+                pass
+
+    if open_positions != {}:
+        for position_id in open_positions.keys():
+            prolong_open_positions(id)
+
+    return patched_figure, open_positions
 
 
 #Crée une instance de Backtest,
