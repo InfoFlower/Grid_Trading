@@ -5,17 +5,20 @@ import polars as pl
 from config import REPORTING_LOG_PATH
 
 class DataIterator:
-    def __init__(self, data_path, every, initial_speed=1):
+    def __init__(self, data_path, every, position_event_path, initial_speed=1):
         """
 
         STRUCTURE = ['Open time', 'Open', 'High', 'Low', 'Close']
         
         """
+        # LOAD et TRANSFORM
         self.every = every
         self.data = pl.read_csv(data_path)
+        self.position_event = pl.read_csv(position_event_path)
         self.to_datetime()
         self.resample()
-        print(self.data.head())
+
+        
 
         self.pause_event = threading.Event()
         self.pause_event.set()
@@ -28,10 +31,24 @@ class DataIterator:
         
     def to_datetime(self):
         """
+        'Open time' en datatime
         """
         self.data = self.data.with_columns(pl.from_epoch(pl.col("Open time"), time_unit="ms"))
+        self.position_event = self.position_event.with_columns(pl.from_epoch(pl.col("timestamp"), time_unit="ms"))
         
     def resample(self):
+        """
+        Resample en fonction de every.
+        every est une période sur laquelle on retravaille les bougies de 1 secondes actuellement
+        Pour every="1m", on modifie les bougies pour que chacune d'elles représente l'évolution d'une minute.
+
+            Open = Open de la première bougie de la période
+            High = Max(High) sur la période
+            Low = Min(Low) sur la période
+            Close = Close de la dernière bougie de la période
+
+        self.every in ("1m", "15m", "1h", ...)
+        """
         self.data = self.data.group_by_dynamic(
                     index_column="Open time", 
                     every=self.every, 
@@ -41,6 +58,8 @@ class DataIterator:
                         High = pl.col("High").max(),
                         Low = pl.col("Low").min(),
                         Close = pl.col("Close").last())
+        
+        self.position_event = self.position_event.with_columns(pl.col("timestamp").dt.truncate(self.every))
 
     def set_speed(self, speed):
         with self.lock:
@@ -62,6 +81,7 @@ class DataIterator:
             self.pause_event.wait()
             with self.lock:
                 speed = self.speed
+                
             item = self.data[self.current_index, :]
 
             item = {key: value.to_list() for key, value in item.to_dict().items()}

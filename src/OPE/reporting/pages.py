@@ -24,7 +24,8 @@ def display_page1():
             html.Button("Confirmer backtest", id='ok_backtest', n_clicks=0),
             html.Button("Pause/Reprendre", id="pause_button", n_clicks=0),
             dcc.Graph(id='candlestick_chart', figure={'data':[
-                                                {'type': 'candlestick',  
+                                                {'type': 'candlestick',
+                                                'name':'candle_chart', 
                                                 'x': [],               
                                                 'open': [],
                                                 'high': [],

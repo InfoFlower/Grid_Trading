@@ -70,7 +70,7 @@ class baktest:
         self.log_path = log_path
         self.backtest_log_path = self.log_path+f'{self.id}/'
         self.data_hist=self.backtest_log_path+'data.csv'
-        self.positions_hist=self.backtest_log_path+'positions.csv'
+        self.position_event=self.backtest_log_path+'position_event.csv'
         self.orders_hist=self.backtest_log_path+'orders.json'
         self.sio_time=self.backtest_log_path+'sio_time.csv'
 
@@ -81,14 +81,17 @@ class baktest:
     
         os.mkdir(self.backtest_log_path)#TODO : utils create_directory
 
+
         self.data = pl.read_csv(data_path, truncate_ragged_lines=True)
         self.data[['Open time','Open','High','Low','Close']].write_csv(self.data_hist)
 
-        with open(self.positions_hist, 'w') as f:f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,state,justif,close_price,crypto_balance,money_balance')
+        with open(self.position_event, 'w') as f:f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,state,justif,close_price,crypto_balance,money_balance')
         with open(self.sio_time,'w') as f:f.write('epoch,total_of_lines,prct_of_run,time_between_epoch,time_from_start,epoch_size')
         # with open(self.orders_hist, 'w', encoding='utf-8') as f:
         #     f.write('[')
 
+
+        #TODO : Changer la structure de data -> ['Open time','Open','High','Low','Close']
         self.data = self.data[['Open time','Close']]
         self.data = self.data.to_numpy()
 
@@ -279,6 +282,7 @@ class baktest:
         close_position = close_position.with_columns(state=pl.lit('Closing')) #Ajouter étape de log du prix de closing
         close_position = close_position.with_columns(justif=pl.lit(justif))
         close_position = close_position.with_columns(close_price=pl.lit(self.current_data[self.CloseCol]))
+        close_position = close_position.with_columns(pl.lit(int(self.current_data[self.TimeCol])).alias("timestamp"))
         self.positions = self.positions.filter(pl.col("id") != id)
 
         self.set_pool(close_position)
@@ -311,5 +315,5 @@ class baktest:
         for i in [self.pool['crypto_balance'],self.pool['money_balance']]:
             info.append(i)
 
-        with open(self.positions_hist, 'a') as f:
+        with open(self.position_event, 'a') as f:
             f.write('\n'+','.join([str(i) for i in info if not callable(i)]))
