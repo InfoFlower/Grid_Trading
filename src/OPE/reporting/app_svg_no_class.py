@@ -1,6 +1,8 @@
 import os
 import sys
 import keyboard
+import json
+import pandas as pd
 import polars as pl
 import threading
 import plotly.graph_objects as go
@@ -124,7 +126,8 @@ def pause(n_clicks, bt_running, pause):
 @app.callback(Input('store_current_data', 'data'),
               State('candlestick_chart', 'figure'))
 def test_figure(data, fig_data):
-    print(fig_data)
+    #print(fig_data)
+    pass
     
 
 @app.callback(Output('candlestick_chart', 'figure', allow_duplicate=True),
@@ -142,7 +145,8 @@ def update_graph(new_data, open_positions):
     patched_figure['data'][0]['high'].append(new_data['High'][0])
     patched_figure['data'][0]['low'].append(new_data['Low'][0])
     patched_figure['data'][0]['close'].append(new_data['Close'][0])
-
+    #patched_figure['layout']['xaxis']['range'][-1] = new_data['Open time'][0] +
+ 
     patched_figure = update_position_event(new_data, open_positions, patched_figure)
 
     return patched_figure
@@ -158,29 +162,19 @@ def update_position_event(new_data, open_positions, patched_figure):
         id = position_event.pop('id')
         #open_positions[id] = position_event
         #print(go.Scatter(x=[position_event['timestamp']], y=[position_event['entryprice']], mode='lines', name=f'position_{id}'))
-        patched_figure['data'].append({'type':'line',
+        patched_figure['data'].append({'type':'scatter',
                                        'name':f'position_{id}',
-                                       'x0':position_event['timestamp'],
-                                       'x1':position_event['timestamp'],
-                                       'xref':'paper',
-                                       'y0':position_event['entryprice'],
-                                       'y1':position_event['entryprice'],
-                                       'line': {'color': 'red', 'width': 2}})
-        patched_figure['data'].append({'type':'line',
-                                       'name':f'position_{id}',
-                                       'x0':position_event['timestamp'],
-                                       'x1':position_event['timestamp'],
-                                       'xref':'paper',
-                                       'y0':position_event['entryprice'],
-                                       'y1':position_event['entryprice'],
-                                       'line': {'color': 'red', 'width': 2}})
+                                       'x':[position_event['timestamp'], position_event['timestamp'] + pd.to_timedelta(di.every)],
+                                       'y':[position_event['entryprice'], position_event['entryprice']],
+                                       'mode':'lines'})
 
         return patched_figure
 
     if di.position_event.select(pl.col("timestamp").dt.strftime('%Y-%m-%dT%H:%M:%S').is_in([new_data['Open time'][0]])).to_series().any():
+        #print(di.position_event)
         
         positions_event = di.position_event.filter(pl.col('timestamp').dt.strftime('%Y-%m-%dT%H:%M:%S')==new_data['Open time'][0])
-        
+        #print(di.position_event)
         for position_event in positions_event.iter_rows(named=True):
             #print(position_event)
             if position_event['justif'] == 'Opening':

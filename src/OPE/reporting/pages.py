@@ -7,8 +7,31 @@ from config import REPORTING_LOG_PATH
 backtest_dirs = os.listdir(REPORTING_LOG_PATH)
 def display_page1():
     """
-    
+    ,
+                                                'layout':{
+                                                    'xaxis':{
+                                                        'autorange':False
+                                                    }
+                                                }
     """
+    fig = go.Figure(
+        go.Candlestick(
+            x=[],
+            open=[],
+            high=[],
+            low=[],
+            close=[],
+            name='candle_chart'
+        )
+    )
+    # fig.update_layout(
+    # xaxis=dict(
+    #     autorange=False,
+    #     range=['2017-10-01', '2017-10-02']  # Exemple de plage de dates
+    #     )
+    # )
+    
+
     return [
             html.H1("LIVE"),
             dcc.Dropdown(id = 'dropdown_backtest', options=backtest_dirs, value = backtest_dirs[0]),
@@ -23,15 +46,5 @@ def display_page1():
                                             value='5m'),
             html.Button("Confirmer backtest", id='ok_backtest', n_clicks=0),
             html.Button("Pause/Reprendre", id="pause_button", n_clicks=0),
-            dcc.Graph(id='candlestick_chart', figure={'data':[
-                                                {'type': 'candlestick',
-                                                'name':'candle_chart', 
-                                                'x': [],               
-                                                'open': [],
-                                                'high': [],
-                                                'low': [],
-                                                'close': []}
-                                                ]
-                                            }
-                                        )
-                                    ]
+            dcc.Graph(id='candlestick_chart', figure=fig)
+            ]
