@@ -5,6 +5,7 @@ import json
 import pandas as pd
 import polars as pl
 import threading
+from datetime import datetime
 import plotly.graph_objects as go
 import dash
 from dash import Dash, dcc, html, Input, State, Output, Patch, callback
@@ -34,7 +35,7 @@ app.layout = html.Div([
     dcc.Store(id='store_pause', data=True),
     dcc.Store(id='store_current_data', data={}),
     dcc.Store(id='store_open_positions', data={}),
-    dcc.Interval(id='refresh_live', interval = 1000, n_intervals=0, disabled=True),
+    dcc.Interval(id='refresh_live', interval = 250, n_intervals=0, disabled=True),
     html.Div(id="tab_content", children=display_page1())
 ])
 
@@ -123,47 +124,49 @@ def pause(n_clicks, bt_running, pause):
     print('APRES pause:',pause)
     return pause, pause
 
-@app.callback(Input('store_current_data', 'data'),
-              State('candlestick_chart', 'figure'))
-def test_figure(data, fig_data):
-    #print(fig_data)
-    pass
+# @app.callback(Input('store_current_data', 'data'),
+#               State('candlestick_chart', 'figure.data'))
+# def test_figure(data, fig_data):
+#     print(fig_data)
+#     pass
     
 
 @app.callback(Output('candlestick_chart', 'figure', allow_duplicate=True),
-              Output('store_open_positions', 'data'),
                Input('store_current_data', 'data'),
-               State('store_open_positions', 'data'),
+               State('candlestick_chart', 'figure'),
                prevent_initial_call=True)
-def update_graph(new_data, open_positions):
+def update_graph(new_data, fig_data):
     """
     """
+
+    fig_data = fig_data['data']
+    #print(fig_data)
+    fig_data_names = [trace['name'] for trace in fig_data]
+    
 
     patched_figure = Patch()
-
+    print(new_data['Open time'][0])
     patched_figure['data'][0]['x'].append(new_data['Open time'][0])
     patched_figure['data'][0]['open'].append(new_data['Open'][0])
     patched_figure['data'][0]['high'].append(new_data['High'][0])
     patched_figure['data'][0]['low'].append(new_data['Low'][0])
     patched_figure['data'][0]['close'].append(new_data['Close'][0])
-    #patched_figure['layout']['xaxis']['range'][-1] = new_data['Open time'][0] +
  
-    patched_figure, open_positions = update_position_event(new_data, open_positions, patched_figure)
+    update_position_event(new_data, patched_figure, fig_data_names)
 
-    return patched_figure, open_positions
+    return patched_figure
 
-def update_position_event(new_data, open_positions, patched_figure):
+def update_position_event(new_data, patched_figure, fig_data_names):
     """
     """
-    print(open_positions)
+
     
     def open_position(position_event):
         """
         
         """
         id = position_event.pop('id')
-        open_positions[id] = position_event
-        #print(go.Scatter(x=[position_event['timestamp']], y=[position_event['entryprice']], mode='lines', name=f'position_{id}'))
+
         patched_figure['data'].append({'type':'scatter',
                                        'name':f'position_{id}',
                                        'x':[position_event['timestamp'], position_event['timestamp'] + pd.to_timedelta(di.every)],
@@ -171,31 +174,73 @@ def update_position_event(new_data, open_positions, patched_figure):
                                        'mode':'lines'})
 
     
-    def prolong_open_positions(id):
+    def prolong_open_positions(data_index):
         """
         """
-        #patched_figure['data']
-        pass
+        patched_figure['data'][data_index]['x'][1] = datetime.fromisoformat(new_data['Open time'][0]) + pd.to_timedelta(di.every)
+
+    def closing_position(data_index, position_event, no_open=False):
+        if not no_open:
+            #position_event ne contient qu'une seule ligne
+            patched_figure['data'][data_index]['name'] = f'closed_position_{position_event['id']}'
+            patched_figure['data'][data_index]['x'][1] = position_event['timestamp']
+            patched_figure['data'][data_index]['y'][1] = position_event['close_price']
+        elif no_open:
+            #position_event contient deux lignes, une d'open et l'autre de close
+            opening_position = position_event.filter(pl.col("state") == 'Opening')
+            closing_position = position_event.filter(pl.col("state") == 'Closing')
+            patched_figure['data'].append({'type':'scatter',
+                                       'name':f'closed_position_{closing_position['id']}',
+                                       'x':[opening_position['timestamp'], closing_position['timestamp']],
+                                       'y':[opening_position['entryprice'], closing_position['close_price']],
+                                       'mode':'lines'})
+
+
+    if any(name.startswith('position') for name in fig_data_names):
+        for fig_data_index, name in enumerate(fig_data_names):
+            if name.startswith('position'):
+                prolong_open_positions(fig_data_index)
 
     if di.position_event.select(pl.col("timestamp").dt.strftime('%Y-%m-%dT%H:%M:%S').is_in([new_data['Open time'][0]])).to_series().any():
-        #print(di.position_event)
         
         positions_event = di.position_event.filter(pl.col('timestamp').dt.strftime('%Y-%m-%dT%H:%M:%S')==new_data['Open time'][0])
-        #print(di.position_event)
+        
+
+        ids_with_two_occurrences = (
+                    positions_event.clone().group_by("id")
+                    .count()
+                    .filter(pl.col("count") == 2)
+                    .select("id")
+                    .to_series()
+                    .to_list()
+                )
+        if ids_with_two_occurrences != []:
+            double_positions_event = positions_event.filter(pl.col('id').is_in(ids_with_two_occurrences))
+            positions_event = positions_event.filter(~pl.col('id').is_in(ids_with_two_occurrences)) 
+            print('AAA', double_positions_event)
+        else :
+            double_positions_event = None
+
+        #Si il n'y qu'un évènement par position et par timeframe
+        print('BBB', positions_event)
         for position_event in positions_event.iter_rows(named=True):
             #print(position_event)
+            if position_event['state'] == 'Closing':
+                fig_data_index = fig_data_names.index(f'position_{position_event['id']}')
+                closing_position(fig_data_index, position_event)
             if position_event['state'] == 'Opening':
                 open_position(position_event)
 
-            if position_event['state'] == 'Closing':
-                #TODO : closing_position
-                pass
+        # Si il y a 2 évènements par position et par timeframe, 
+        # alors on doit fermer la position avant qu'elle soit ouverte
+        # puisque les deux évènements se produisent en même temps
+        if double_positions_event is not None:
+            for position_id in ids_with_two_occurrences:
+                double_position_event_for_id = double_positions_event.filter(pl.col("id") == position_id)
+                print('CCC', double_position_event_for_id)
+                closing_position(fig_data_index, double_position_event_for_id, no_open=True)
+                
 
-    if open_positions != {}:
-        for position_id in open_positions.keys():
-            prolong_open_positions(id)
-
-    return patched_figure, open_positions
 
 
 #Crée une instance de Backtest,
