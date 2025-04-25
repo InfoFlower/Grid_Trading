@@ -109,19 +109,21 @@ def get_queue(n_intervals):
 def pause(n_clicks, bt_running, pause):
     """
     """
-    print('AVANT pause:',pause, 'n_clicks', n_clicks)
+    
     if bt_running:
         if pause:
             #C'est pauser -> reprendre
             pause = False
+            print('RESUME')
             di.resume()
         elif not pause:
-        #Ca tourne -> pauser
+            #Ca tourne -> pauser
             pause = True
+            print('PAUSE')
             di.pause()
     else:
         raise dash.exceptions.PreventUpdate
-    print('APRES pause:',pause)
+
     return pause, pause
 
 # @app.callback(Input('store_current_data', 'data'),
@@ -189,10 +191,15 @@ def update_position_event(new_data, patched_figure, fig_data_names):
             #position_event contient deux lignes, une d'open et l'autre de close
             opening_position = position_event.filter(pl.col("state") == 'Opening')
             closing_position = position_event.filter(pl.col("state") == 'Closing')
-            patched_figure['data'].append({'type':'scatter',
+            print({'type':'scatter',
                                        'name':f'closed_position_{closing_position['id']}',
                                        'x':[opening_position['timestamp'], closing_position['timestamp']],
                                        'y':[opening_position['entryprice'], closing_position['close_price']],
+                                       'mode':'lines'})
+            patched_figure['data'].append({'type':'scatter',
+                                       'name':f'closed_position_{closing_position['id']}',
+                                       'x':[opening_position['timestamp'].item(), closing_position['timestamp'].item()],
+                                       'y':[opening_position['entryprice'].item(), closing_position['close_price'].item()],
                                        'mode':'lines'})
 
 

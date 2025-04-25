@@ -5,7 +5,7 @@ import polars as pl
 from config import REPORTING_LOG_PATH
 
 class DataIterator:
-    def __init__(self, data_path, every, position_event_path, initial_speed=0.25):
+    def __init__(self, data_path, every, position_event_path, initial_speed=1):
         """
 
         STRUCTURE = ['Open time', 'Open', 'High', 'Low', 'Close']
