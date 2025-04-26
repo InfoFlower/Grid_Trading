@@ -81,10 +81,10 @@ DataStructure = { 'TimeCol' : 0,
 
 data=data.to_numpy()
 #Setup Grid Parameters
-GridOrders_params = {'qty':100, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.01/2, 'justif' : 'init', 'state' : 'open'}
+GridOrders_params = {'qty':0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.01/2, 'justif' : 'init', 'state' : 'open'}
 Grid_Metadata = {'prct_of_intervall' : 0.01, 'nb_orders' : 1}
 #Set initial balance
-money_balance= 100000000000 #USD
+money_balance= 1000
 crypto_balance= money_balance/data[0][DataStructure['CloseCol']] #BTC
 time_4_epoch=50000
 

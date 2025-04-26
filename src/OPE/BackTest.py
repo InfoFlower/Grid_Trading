@@ -149,6 +149,7 @@ class baktest:
             StopIteration: Si toutes les lignes ont été parcourues.
         """
         self.data_n_1 = self.data[self.index]
+        
         if self.index < len(self.data)-1 or self.index == self.end_index:
             self.index += 1
             self.current_data = self.data[self.index]
@@ -160,7 +161,7 @@ class baktest:
             send_log={'BackTest':self.Log_data}
             self.logger(send_log)
             raise StopIteration
-    
+            
     def __call__(self,data):
         """
         Met à jour les données de marché lors d'un changement de fichier.
@@ -224,8 +225,7 @@ class baktest:
             for order in self.orders[order_type]:
                 condition_open = order['open_condition'](order,order_type, self.current_data, self.struct,self.data_n_1[self.CloseCol])
                 if (condition_open[1] == 'buy_orders'  and self.pool['money_balance']>order['level']*order['orders_params']['qty'])\
-                    or (condition_open[1] == 'sell_orders' and self.pool['crypto_balance']>order['orders_params']['qty'])\
-                    and i<10:
+                    or (condition_open[1] == 'sell_orders' and self.pool['crypto_balance']>order['orders_params']['qty']):
                     self.open_position(order,order_type)
 
     def open_position(self,order, order_type):
@@ -249,6 +249,7 @@ class baktest:
             int: Identifiant de la position ouverte.
 
         """
+        print(1)
         position_args = order['orders_params']
         position_args['timestamp'] = int(self.current_data[self.TimeCol])
         position_args['entryprice'] = self.current_data[self.CloseCol]
@@ -287,8 +288,8 @@ class baktest:
             id (int): Identifiant de la position à fermer.
             justif (str): Justification de la fermeture.
         """
+        print(2)
         close_position = self.positions.filter(pl.col("id") == id)
-        self.log_position(close_position, order_type=None)
         close_position = close_position.with_columns(state=pl.lit('Closing')) #Ajouter étape de log du prix de closing
         close_position = close_position.with_columns(justif=pl.lit(justif))
         close_position = close_position.with_columns(close_price=pl.lit(self.current_data[self.CloseCol]))
@@ -296,6 +297,7 @@ class baktest:
         self.positions = self.positions.filter(pl.col("id") != id)
         self.set_pool(close_position)
         self.old_log_position(close_position)
+        self.log_position(close_position, order_type=None)
 
 ###
 #Fonctions de log
@@ -317,7 +319,6 @@ class baktest:
             EntryPrice = position_args['entryprice'].item()
             EntryPrice = position_args['entryprice'].item()
 
-        print(self.pool['crypto_balance'].item())
         self.pos_log = {'Position_ID' :  self.id_position, 
                         'OrderId' : OrderId,
                         'Grid_ID': self.orders['metadatas']['grid_index'],
@@ -326,7 +327,7 @@ class baktest:
                         'EventCode' : justif,
                         'PositionQty' : Quantity,
                         'PositionClosePrice' : EntryPrice,
-                        'CryptoBalance' : self.pool['crypto_balance'].item(),
+                        'CryptoBalance' : self.pool['crypto_balance'],
                         'MoneyBalance' : self.pool['money_balance']}
         
 
@@ -361,7 +362,7 @@ class baktest:
             position (polars.DataFrame): Informations sur la position à enregistrer.
         """
         info = list(position.rows()[0])
-        for i in [self.pool['crypto_balance'].item(),self.pool['money_balance']]:
+        for i in [self.pool['crypto_balance'],self.pool['money_balance']]:
             info.append(i)
 
         with open(self.position_event, 'a') as f:

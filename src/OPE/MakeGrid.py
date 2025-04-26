@@ -74,11 +74,10 @@ class Grid_Maker:
         Retourne un ordre au niveau i pour un type d'ordre (params : buy or sell) et les args 
         """
         self.order_index+=1
-        if need_signed:
-            signe_buy=-1
+        signe_buy=-1
+        if need_signed: 
             if params['is_buy']:signe_buy=1
-        else: signe_buy=1
-        return {'index':self.order_index,'level' : args['grid_origin']+signe_buy*args['grid_origin']*(intervall*args['prct_of_intervall']),
+        return {'index':self.order_index,'level' : args['grid_origin']-signe_buy*args['grid_origin']*(intervall*args['prct_of_intervall']),
                         'orders_params' : params,
                         'open_condition' : args['open_condition'],
                         'close_condition' : args['close_condition'],

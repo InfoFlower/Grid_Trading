@@ -141,7 +141,7 @@ class Strategy:
             if (price_n >=  stop_loss_price and price_n_1 <stop_loss_price) or  Low_n <= stop_loss_price <= High_n:
                 return (position['id'], 'STOPLOSS SELL')
             elif (price_n <= take_profit_price and price_n_1 > take_profit_price) or  Low_n <= take_profit_price <= High_n:  
-                return (position['id'], 'TAKEPROFIT BUY')
+                return (position['id'], 'TAKEPROFIT SELL')
         return False, False
 
     def open_condition(self, order, order_type, current_n, current_n_struct, price_n_1):
