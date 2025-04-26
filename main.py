@@ -28,6 +28,26 @@ argparser = argparse.ArgumentParser()
 argparser.add_argument('--type_of_file', type=str, default='full')
 args=argparser.parse_args()
 type_of_file=args.type_of_file
+
+# print('\n'*2, '#'*20,'\n'*2)
+# print('STARTING PROCESS AYAAAAAA')
+# print('\n'*2, '#'*20,'\n'*2)
+
+
+# after_vars = datetime.fromtimestamp(time.time())
+# print('After vars :', after_vars)
+# print('Time to setup vars :', after_vars - start_time)
+# print('General time to setup :', after_vars - start_time)
+
+
+# print('\n'*2, '#'*20,'\n'*2)
+# after_data = datetime.fromtimestamp(time.time())
+# print('After data :', after_data)
+# print('Time to setup data :', after_data - after_vars)
+# print('General time to setup :', after_data - start_time)
+
+
+
 ##
 #Set Grid and Strategy names
 GridType = 'BasicGrid'
@@ -35,17 +55,6 @@ StratName = 'DumbStrat'
 GridName='GridPoc'
 
 GridFullName = f'{StratName}_{GridType}_{GridName}'
-
-print('\n'*2, '#'*20,'\n'*2)
-print('STARTING PROCESS AYAAAAAA')
-print('\n'*2, '#'*20,'\n'*2)
-
-
-after_vars = datetime.fromtimestamp(time.time())
-print('After vars :', after_vars)
-print('Time to setup vars :', after_vars - start_time)
-print('General time to setup :', after_vars - start_time)
-
 ##
 #SETUP DATA
 if type_of_file=='full':
@@ -56,19 +65,17 @@ else :
     path=f'data\OPE_DATA\DATA_RAW_S_ORIGIN_test_code\data_raw_BTCUSDT_{start_time}.csv'
 
 data=pl.read_csv(path, truncate_ragged_lines=True)
-
-print('\n'*2, '#'*20,'\n'*2)
-after_data = datetime.fromtimestamp(time.time())
-print('After data :', after_data)
-print('Time to setup data :', after_data - after_vars)
-print('General time to setup :', after_data - start_time)
-
 ##
 #SETUP DATA COLUMNS
-DataStructure = {'TimeCol' : 'Open time',
-                 'CloseCol' :'Close',
-                 'LowCol' : 'Low', 
-                 'HighCol' : 'High'}
+DataStructure = {'TimeCol' : 'Open time', 'CloseCol' : 'Close', 'LowCol' : 'Low',  'HighCol' : 'High'}
+#Setup Grid Parameters
+GridOrders_params = {'qty':0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.01/2, 'justif' : 'init', 'state' : 'open'}
+Grid_Metadata = {'prct_of_intervall' : 0.01, 'nb_orders' : 1}
+#Set initial balance
+money_balance= 1000 #USD
+crypto_balance=money_balance/data[0][DataStructure['CloseCol']] #BTC
+time_4_epoch=50000
+
 ##
 #Shape data
 print('Data shape :', data.columns)
@@ -81,25 +88,9 @@ DataStructure = { 'TimeCol' : 0,
 DataStructure = [i for i in DataStructure.values()]
 data=data.to_numpy()
 
-#
-## Setup Grid Parameters
-GridOrders_params = {'qty':0.1,
-                'leverage': 1,
-                'take_profit': 0.01,
-                'stop_loss': 0.01/2,
-                'justif' : 'init',
-                'state' : 'open'}
 
-Grid_Metadata = {'prct_of_intervall' : 0.01,
-                           'nb_orders' : 1}
 
-##
-#Set initial balance
-money_balance= 1000 #USD
-#crypto_balance=money_balance/data[0][CloseCol] #BTC
-crypto_balance = 0.107
 
-time_4_epoch=50000
 
 ###
 ##INIT CLASS
@@ -111,11 +102,6 @@ backtest_id=1
 bktst=baktest(path, strategy, money_balance, crypto_balance, logger, backtest_id,time_4_epoch=500000,TimeCol=DataStructure[0],CloseCol=DataStructure[1],LowCol=DataStructure[2],HighCol=DataStructure[3])
 
 
-print('\n'*2, '#'*20,'\n'*2)
-after_init = datetime.fromtimestamp(time.time())
-print('After init :', after_init)
-print('Time to setup data :', after_init - after_data)
-print('General time to setup :', after_init - start_time)
 
 ###
 ##RUN BACKTEST
@@ -135,10 +121,3 @@ else:
         bktst(data)
         print(i)
     with open(bktst.strategy.grid_maker.write_path, 'a') as f: f.write(']')
-
-
-print('\n'*2, '#'*20,'\n'*2)
-after_end = datetime.fromtimestamp(time.time())
-print('After end :', after_end)
-print('Time to end run :', after_end - after_data)
-print('General time to run :', after_end - start_time)

@@ -12,7 +12,7 @@ class know_your_perf:
         self.is_working = is_working
         if truncate : 
             with open(self.perf_csv, 'w') as f:
-                f.write(f'sniffing_name, start_time, last_step_time, actual_time, duration_bt_start, duration_bt_step, nb_iters\n')
+                f.write(f'sniffing_name, start_time, last_step_time, actual_time, duration_bt_start, duration_bt_step, nb_iters')
     
     def __call__(self):
         if self.is_working == False: pass
