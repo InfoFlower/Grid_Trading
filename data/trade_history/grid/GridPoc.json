@@ -1,72 +1,12 @@
 [{
     "index": 1,
     "origin": 9345.0,
-    "sell_orders": "[{'index': 2, 'level': 9251.55, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': False}, 'justif': 'init', 'state': 'open'}]",
-    "buy_orders": "[{'index': 1, 'level': 9438.45, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': True}, 'justif': 'init', 'state': 'open'}]"
+    "sell_orders": "[{'index': 1, 'level': 9438.45, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': False}, 'justif': 'init', 'state': 'open'}]",
+    "buy_orders": "[{'index': 1, 'level': 9251.55, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': True}, 'justif': 'init', 'state': 'open'}]"
 }
 ,{
     "index": 2,
     "origin": 9250.01,
-    "sell_orders": "[{'index': 4, 'level': 9157.509900000001, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': False}, 'justif': 'init', 'state': 'open'}]",
-    "buy_orders": "[{'index': 3, 'level': 9342.5101, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': True}, 'justif': 'init', 'state': 'open'}]"
+    "sell_orders": "[{'index': 1, 'level': 9342.5101, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': False}, 'justif': 'init', 'state': 'open'}]",
+    "buy_orders": "[{'index': 1, 'level': 9157.509900000001, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': True}, 'justif': 'init', 'state': 'open'}]"
 }
-,{
-    "index": 3,
-    "origin": 9345.99,
-    "sell_orders": "[{'index': 6, 'level': 9252.5301, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': False}, 'justif': 'init', 'state': 'open'}]",
-    "buy_orders": "[{'index': 5, 'level': 9439.4499, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': True}, 'justif': 'init', 'state': 'open'}]"
-}
-,{
-    "index": 4,
-    "origin": 9438.0,
-    "sell_orders": "[{'index': 8, 'level': 9343.62, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': False}, 'justif': 'init', 'state': 'open'}]",
-    "buy_orders": "[{'index': 7, 'level': 9532.38, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': True}, 'justif': 'init', 'state': 'open'}]"
-}
-,{
-    "index": 5,
-    "origin": 9532.49,
-    "sell_orders": "[{'index': 10, 'level': 9437.1651, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': False}, 'justif': 'init', 'state': 'open'}]",
-    "buy_orders": "[{'index': 9, 'level': 9627.8149, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': True}, 'justif': 'init', 'state': 'open'}]"
-}
-,{
-    "index": 6,
-    "origin": 9639.99,
-    "sell_orders": "[{'index': 12, 'level': 9543.5901, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': False}, 'justif': 'init', 'state': 'open'}]",
-    "buy_orders": "[{'index': 11, 'level': 9736.3899, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': True}, 'justif': 'init', 'state': 'open'}]"
-}
-,{
-    "index": 7,
-    "origin": 9543.26,
-    "sell_orders": "[{'index': 14, 'level': 9447.8274, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': False}, 'justif': 'init', 'state': 'open'}]",
-    "buy_orders": "[{'index': 13, 'level': 9638.6926, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': True}, 'justif': 'init', 'state': 'open'}]"
-}
-,{
-    "index": 8,
-    "origin": 9444.07,
-    "sell_orders": "[{'index': 16, 'level': 9349.6293, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': False}, 'justif': 'init', 'state': 'open'}]",
-    "buy_orders": "[{'index': 15, 'level': 9538.510699999999, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': True}, 'justif': 'init', 'state': 'open'}]"
-}
-,{
-    "index": 9,
-    "origin": 9547.36,
-    "sell_orders": "[{'index': 18, 'level': 9451.886400000001, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': False}, 'justif': 'init', 'state': 'open'}]",
-    "buy_orders": "[{'index': 17, 'level': 9642.8336, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': True}, 'justif': 'init', 'state': 'open'}]"
-}
-,{
-    "index": 10,
-    "origin": 9450.01,
-    "sell_orders": "[{'index': 20, 'level': 9355.509900000001, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': False}, 'justif': 'init', 'state': 'open'}]",
-    "buy_orders": "[{'index': 19, 'level': 9544.5101, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': True}, 'justif': 'init', 'state': 'open'}]"
-}
-,{
-    "index": 11,
-    "origin": 9589.3,
-    "sell_orders": "[{'index': 22, 'level': 9493.407, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': False}, 'justif': 'init', 'state': 'open'}]",
-    "buy_orders": "[{'index': 21, 'level': 9685.193, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': True}, 'justif': 'init', 'state': 'open'}]"
-}
-,{
-    "index": 12,
-    "origin": 9458.03,
-    "sell_orders": "[{'index': 24, 'level': 9363.449700000001, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': False}, 'justif': 'init', 'state': 'open'}]",
-    "buy_orders": "[{'index': 23, 'level': 9552.6103, 'orders_params': {'qty': 0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.005, 'justif': 'init', 'state': 'open', 'is_buy': True}, 'justif': 'init', 'state': 'open'}]"
-}]
