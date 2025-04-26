@@ -140,7 +140,7 @@ class Strategy:
                 return (position['id'], 'TAKEPROFIT BUY')
         return False, False
     
-    def open_condition(self, orders, price_n, price_n_1):
+    def open_condition(self, orders, price_n, price_n_1,order_type):
         """
         Définit la condition d'ouverture des ordres les plus proches du prix.\n
         Teste donc 1 ordre d'achat et 1 ordre de vente.\n
@@ -157,6 +157,8 @@ class Strategy:
         """
         price_n = float(price_n)
         price_n_1 = float(price_n_1)
-        if orders['buy_orders'][0]['level']>=price_n and orders['buy_orders'][0]['level']<price_n_1 :return "BUY"
-        if orders['sell_orders'][0]['level']<=price_n and orders['sell_orders'][0]['level']>price_n_1 :return "SELL"
+        if  orders[order_type][0]['level']>=price_n and orders[order_type][0]['level']<price_n_1 :return "BUY"
+        if  orders[order_type][0]['level']<=price_n and orders[order_type][0]['level']>price_n_1 :return "SELL"
         return False
+    #order_type == 'buy_orders' and
+    #order_type == 'sell_orders' and

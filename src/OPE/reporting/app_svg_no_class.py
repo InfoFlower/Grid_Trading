@@ -321,8 +321,8 @@ def create_run_backtest():
 
 
 if __name__ == "__main__":
-    #app.run(debug=True)
-    create_run_backtest()
+    app.run(debug=True)
+    #create_run_backtest()
     #-1,1511776434000,null,null,null,null,null,null,null,INIT,IS,null,107,1000000
 
 

@@ -32,8 +32,15 @@ class KPIComputer:
         self.old_data = pl.read_csv(f'{REPORTING_LOG_PATH}/{backtest_id}/data.csv')
         self.old_position_event = pl.read_csv(f'{REPORTING_LOG_PATH}/{backtest_id}/position_event.csv')
         self.Categories = CATEGORIES
+        
+        
+        
+        ###### Transformation du dataframe, calcul equity, dradown etc... ######
+        self.old_equity()
+        self.old_drawdown()
 
-    def old_create_position_value_over_time(self):
+    ###### OLD TRANSFORMATION ######
+    def old_equity(self):
         """
         """
         # print(self.old_data.head())
@@ -48,17 +55,29 @@ class KPIComputer:
         )
         
         #old_left_merged_data_x_posevent.with_columns([pl.col("")])
-        equity = old_left_merged_data_x_posevent.with_columns(
+        self.position_value = old_left_merged_data_x_posevent.with_columns(
             [
                 (pl.col('Close')*pl.col('crypto_balance') + pl.col('money_balance')).alias('Equity')
             ]
+        ).select(
+            ["Open time", "Open", "High", "Low", "Close", "crypto_balance", "money_balance", "Equity"]
         )
-        print(equity.head(500))
-        fig = px.line(equity, x='Open time', y='Equity')
-        fig.show()
 
-    
-    ###### ANCIEN LOG ######
+    def old_drawdown(self):
+        """
+        """
+        position_value = self.position_value.clone()
+        position_value = position_value.with_columns([
+            pl.col('Equity').cum_max().alias("high_water_mark")
+        ]) 
+        position_value = position_value.with_columns([
+            (pl.col("Equity")-pl.col("high_water_mark"))/pl.col("high_water_mark").alias('Drawdown')
+        ])
+        self.position_value = position_value.select([
+            ["Open time", "Open", "High", "Low", "Close", "crypto_balance", "money_balance", "Equity", "Drawdown"]
+        ])
+
+    ###### OLD CATEGORIES  ######
     def old_Categories(self):
         """
         """
@@ -67,7 +86,14 @@ class KPIComputer:
                                         "Annualized Return": self.old_Annualized_Return(),
                                         "Win Rate": self.old_Win_Rate()
                                         }
+        self.Categories['RISQUE'] = {
+                                    "Max Drawdown": self.old_Max_Drawdown(),
+                                    "Volatilité": 0.0,
+                                    "Sharpe Ratio": 0.0
+                                    }
+        #old_Max_Drawdown
 
+    ###### OLD KPI  ###### 
     def old_Total_Return(self):
         """
         Pourcentage de gain total (sur tout le backtest)
@@ -109,6 +135,16 @@ class KPIComputer:
         nbLoss = self.old_position_event.filter(pl.col('justif').str.contains("STOPLOSS")).shape[0]
         return nbWin/(nbWin+nbLoss)*100
     
+    def old_Max_Drawdown(self):
+        """
+        
+        """
+        return self.position_value['Drawdown'].min()
+    
+    ###### OLD GRAPHE ######
+    def old_graphe_equity(self):
+        fig = px.line(self.position_value, x='Open time', y='Equity')
+        fig.show()
 
 
     
@@ -167,13 +203,15 @@ class KPIComputer:
 def main():
 
     kpiComputer = KPIComputer(REPORTING_LOG_PATH, 1)
-    kpiComputer.old_create_position_value_over_time()
-    # total_return = kpiComputer.old_Total_Return()
-    # annualized_return = kpiComputer.old_Annualized_Return()
-    # win_rate = kpiComputer.old_Win_Rate()
-    # print('annualized_return', annualized_return)
-    # print('total_return', total_return)
-    # print('win_rate', win_rate)
+    total_return = kpiComputer.old_Total_Return()
+    annualized_return = kpiComputer.old_Annualized_Return()
+    win_rate = kpiComputer.old_Win_Rate()
+    max_drawdown = kpiComputer.old_Max_Drawdown()
+    print('Position value', kpiComputer.position_value.head(10))
+    print('annualized_return', annualized_return)
+    print('total_return', total_return)
+    print('win_rate', win_rate)
+    print('max_drawdown', max_drawdown)
 
 if __name__ == "__main__":
     main()

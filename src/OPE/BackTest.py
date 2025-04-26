@@ -91,7 +91,7 @@ class baktest:
 
         with open(self.position_event, 'w') as f:
             f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,state,justif,close_price,crypto_balance,money_balance')
-            #f.write('\n'+f'-1,{self.data[['Open time']][0].item()},null,null,null,null,null,null,null,INIT,IS,null,{crypto_balance},{money_balance}')
+            f.write('\n'+f'-1,{self.data[['Open time']][0].item()},null,null,null,null,null,null,null,INIT,IS,null,{crypto_balance},{money_balance}')
         with open(self.sio_time,'w') as f:f.write('epoch,total_of_lines,prct_of_run,time_between_epoch,time_from_start,epoch_size')
         # with open(self.orders_hist, 'w', encoding='utf-8') as f:
         #     f.write('[')
@@ -282,7 +282,7 @@ class baktest:
                         'BackTest_ID' : self.id,
                         'EventCode' : justif,
                         'PositionQty' : position_args['qty'],
-                        'PositionClosePrice' : position_args['entryprice']*position_args['qty'],
+                        'PositionClosePrice' : position_args['entryprice'],
                         'CryptoBalance' : self.pool['crypto_balance'],
                         'MoneyBalance' : self.pool['money_balance']}
         
@@ -377,11 +377,22 @@ class baktest:
 
     def conditions_check(self,i ,orders_types = ['buy_orders','sell_orders']):
         for order_type in orders_types:
-            condition_open = self.orders[order_type][0]['open_condition'](self.orders, self.current_data[self.CloseCol], self.data_n_1[self.CloseCol])
-            if (condition_open == 'BUY' and self.pool['money_balance']>self.orders[order_type][0]['level']*self.orders[order_type][0]['orders_params']['qty']) or (condition_open == 'SELL' and self.pool['crypto_balance']>self.orders['sell_orders'][0]['orders_params']['qty']):
+            condition_open = self.orders[order_type][0]['open_condition'](self.orders, self.current_data[self.CloseCol], self.data_n_1[self.CloseCol],order_type)
+            if (condition_open == 'BUY'  and self.pool['money_balance']>self.orders[order_type][0]['level']*self.orders[order_type][0]['orders_params']['qty']) \
+                or (condition_open == 'SELL' and self.pool['crypto_balance']>self.orders[order_type][0]['orders_params']['qty']):
+                print(f"Order type : {order_type}",
+                    f'\n Condition open : {condition_open}', 
+                      f"\n Money balance : {self.pool['money_balance']}",
+                      f"\n Crypto Balance : {self.pool['crypto_balance']}",
+                      f"\n Buy amount : {self.orders[order_type][0]['level']*self.orders[order_type][0]['orders_params']['qty']}",
+                      f"\n Quantity : {self.orders[order_type][0]['orders_params']['qty']}",
+                      f"\n Buy Result : {condition_open == 'BUY' and self.pool['money_balance']>self.orders[order_type][0]['level']*self.orders[order_type][0]['orders_params']['qty']}",
+                      f"\n Sell Result : {(condition_open == 'SELL' and self.pool['crypto_balance']>self.orders[order_type][0]['orders_params']['qty'])}")
                 self.open_position(order_type, Order_pos = 0)
+                print(self.current_data)
                 self.conditions_check(i+1)
-        print(f'Condition check : {i}')
+            
+        
 
 
 

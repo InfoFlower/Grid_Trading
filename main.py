@@ -49,7 +49,7 @@ print('General time to setup :', after_vars - start_time)
 ##
 #SETUP DATA
 if type_of_file=='full':
-    path=f'{WD}data/OPE_DATA/DATA_RAW_S_ORIGIN_test_code/data_raw_BTCUSDT_2.csv' ### A modif
+    path=f'{WD}data/OPE_DATA/DATA_RAW_S_ORIGIN_test_code/data_raw_BTCUSDT_176.csv' ### A modif
     print(path)
 else :
     start_time = 153
@@ -77,7 +77,7 @@ data=data.to_numpy()
 
 #
 ## Setup Grid Parameters
-GridOrders_params = {'qty':100,
+GridOrders_params = {'qty':0.1,
                 'leverage': 1,
                 'take_profit': 0.01,
                 'stop_loss': 0.01/2,
@@ -89,9 +89,9 @@ Grid_Metadata = {'prct_of_intervall' : 0.01,
 
 ##
 #Set initial balance
-money_balance= 1000000 #USD
-crypto_balance=money_balance/data[0][CloseCol] #BTC
-
+money_balance= 1000 #USD
+#crypto_balance=money_balance/data[0][CloseCol] #BTC
+crypto_balance = 0.107
 
 time_4_epoch=50000
 
