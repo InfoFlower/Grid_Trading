@@ -3,7 +3,7 @@ import polars as pl
 import time
 import shutil
 from dotenv import load_dotenv
-# import src.OPE.technical_report.log_time_for_iter as know_your_perf
+import src.OPE.technical_report.log_time_for_iter as know_your_perf
 load_dotenv()
 WD = os.getenv('WD')
 
@@ -125,7 +125,7 @@ class baktest:
         Returns:
             self: L'instance elle-même pour l'itération.
         """
-        # self.checkeur = know_your_perf.know_your_perf(self.id)
+        self.checkeur = know_your_perf.know_your_perf(is_working=True)
         self.index = self.start_index
         self.orders_n_1 = self.orders
         self.orders=self.strategy(self.data[self.index][self.CloseCol])
@@ -147,7 +147,6 @@ class baktest:
         Raises:
             StopIteration: Si toutes les lignes ont été parcourues.
         """
-        # self.checkeur()
         self.data_n_1 = self.data[self.index]
         if self.index < len(self.data)-1 or self.index == self.end_index:
             self.index += 1
@@ -191,7 +190,7 @@ class baktest:
         """
         if self.orders != self.orders_n_1:
             self.log_orders()
-        
+        self.checkeur()
         self.open_conditions_check(0, orders_types=['buy_orders','sell_orders'])
 
         Ids_to_close = [position['close_condition'](position,self.current_data, self.struct, self.data_n_1[self.CloseCol]) for position in self.positions.to_dicts()]
