@@ -5,8 +5,9 @@
 # OUR PACKAGES
 import src.OPE.MakeGrid as MakeGrid
 from src.OPE.strategies.strategy_DumbStrat import Strategy
+from src.OPE.Logger import Logger
 from src.OPE.BackTest import baktest
-from src.OPE.reporting.app import Reporting
+#from src.OPE.reporting.app import Reporting
 ##
 # OTHER PACKAGES
 import os
@@ -44,10 +45,12 @@ after_vars = datetime.fromtimestamp(time.time())
 print('After vars :', after_vars)
 print('Time to setup vars :', after_vars - start_time)
 print('General time to setup :', after_vars - start_time)
+
 ##
 #SETUP DATA
 if type_of_file=='full':
-    path=f'{WD}data/OPE_DATA/data_raw_BTCUSDT_176.csv' ### A modif
+    path=f'{WD}data/OPE_DATA/DATA_RAW_S_ORIGIN_test_code/data_raw_BTCUSDT_2.csv' ### A modif
+    print(path)
 else :
     start_time = 153
     path=f'data\OPE_DATA\DATA_RAW_S_ORIGIN_test_code\data_raw_BTCUSDT_{start_time}.csv'
@@ -71,6 +74,19 @@ data=data[[TimeCol,CloseCol]]
 TimeCol=0
 CloseCol=1
 data=data.to_numpy()
+
+#
+## Setup Grid Parameters
+GridOrders_params = {'qty':100,
+                'leverage': 1,
+                'take_profit': 0.01,
+                'stop_loss': 0.01/2,
+                'justif' : 'init',
+                'state' : 'open'}
+
+Grid_Metadata = {'prct_of_intervall' : 0.01,
+                           'nb_orders' : 1}
+
 ##
 #Set initial balance
 money_balance= 1000000 #USD
@@ -82,9 +98,11 @@ time_4_epoch=50000
 ###
 ##INIT CLASS
 ###
+logger = Logger() 
 grid_maker = MakeGrid.Grid_Maker(GridType, GridName)
-strategy = Strategy(StratName, grid_maker)
-bktst=baktest(data, strategy, money_balance,crypto_balance,TimeCol,CloseCol,time_4_epoch=500000)
+strategy = Strategy(StratName, grid_maker, Grid_Metadata, GridOrders_params)
+backtest_id=1
+bktst=baktest(path, strategy, money_balance, crypto_balance, logger, backtest_id, TimeCol=TimeCol, CloseCol=CloseCol, time_4_epoch=500000)
 
 
 print('\n'*2, '#'*20,'\n'*2)

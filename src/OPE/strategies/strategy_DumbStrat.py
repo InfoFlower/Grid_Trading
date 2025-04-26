@@ -35,12 +35,21 @@ class Strategy:
         - open_condition(orders, price_n, price_n_1) : Définit la condition d'ouverture d'une position
     """
     #Built in function setup
-    def __init__(self,name, Grider):
+    def __init__(self,name, Grider, grid_params=None, order_params=None):
         """
         """
         self.grid_maker = Grider
-        self.grid_params= self.set_grid_params()
-        self.order_params = self.set_order_params()
+        self.grid_params= grid_params
+        self.order_params = order_params
+        self.metadata = {'StrategyName': name,
+                'GridPrctIntervall': self.grid_params['prct_of_intervall'], 
+                'GridNbOrder': self.grid_params['nb_orders'], 
+                'OrderQty': self.order_params['qty'],
+                'OrderLeverage': self.order_params['leverage'],
+                'OrderTakeProfit': self.order_params['take_profit'],
+                'OrderStopLoss': self.order_params['stop_loss'],
+                'OrderJustif': self.order_params['justif'],
+                'OrderState': self.order_params['state']}
 
     def __call__(self,current_price):
         """
@@ -57,7 +66,9 @@ class Strategy:
                     'nb_orders': self.grid_params['nb_orders'],
                     'orders_params': self.order_params,
          'open_condition': self.open_condition, 
-         'close_condition': self.close_condition}
+         'close_condition': self.close_condition,
+         'justif' : 'init'}
+
         return self.make_orders(params)
 
     # Change grid
@@ -73,35 +84,7 @@ class Strategy:
         """
         self.grid_parameters=grid_parameters
         grid = self.grid_maker(self.grid_parameters)
-        return {'buy_orders' :grid['buy_orders'],'sell_orders' :grid['sell_orders']}
-    
-    def set_grid_params(self):
-        """
-        Définit les paramètres de la grille.\n
-        
-        Returns:
-            - dict : Dictionnaire {'prct_of_intervall', 'nb_orders'} 
-        """
-        return {'prct_of_intervall' : 0.01,
-                           'nb_orders' : 1}
-    
-        # Le wrapper est à modifier par le dev qui créé un type de grille. Il devra alors convertir les différents arguements
-        # à sa disposition pour que le call soit adapté à l'appel de la grille ou de l'update grille
-        #Structure uniforme d'appel inter-module :
-        #    strat -> grille
-        #    strat -> BACKTEST
-        
-    def set_order_params(self):
-        """
-        Définit les paramètres des ordres.\n
-        
-        Returns:
-            - dict : Dictionnaire {'qty', 'leverage', 'take_profit', 'stop_loss'} 
-        """
-        return {'qty':0.1,
-                'leverage': 1,
-                'take_profit': 0.01,
-                'stop_loss': 0.01/2}
+        return {'buy_orders' :grid['buy_orders'],'sell_orders' :grid['sell_orders'],'metadatas':{'grid_index' : grid['index']}}
     
     # Change one element on grid
     def update_grid(self, current_price):
@@ -121,7 +104,7 @@ class Strategy:
         """
         self.grid_parameters['grid_origin'] = current_price
         grid = self.grid_maker(self.grid_parameters)
-        return {'buy_orders' :grid['buy_orders'],'sell_orders' :grid['sell_orders']}
+        return {'buy_orders' :grid['buy_orders'],'sell_orders' :grid['sell_orders'],'metadatas':{'grid_index' : grid['index']}}
 
     # Conditions for orders
     def close_condition(self, position, price_n, price_n_1):

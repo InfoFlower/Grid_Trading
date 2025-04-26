@@ -73,10 +73,12 @@ class Grid_Maker:
         """
         signe_buy=-1
         if params['is_buy']:signe_buy=1
-        return {'level' : args['grid_origin']-signe_buy*args['grid_origin']*(i*args['prct_of_intervall']),
+        return {'index':i,'level' : args['grid_origin']-signe_buy*args['grid_origin']*(i*args['prct_of_intervall']),
                         'orders_params' : params,
                         'open_condition' : args['open_condition'],
-                        'close_condition' : args['close_condition']}
+                        'close_condition' : args['close_condition'],
+                        'justif' : params['justif'],
+                        'state' : 'open'}
         
     def Make_Basic_Grid(self,args):
         """
