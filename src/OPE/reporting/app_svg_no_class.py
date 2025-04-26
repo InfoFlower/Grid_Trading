@@ -84,7 +84,7 @@ def render_tab(tab_id, kpi_data):
         return html.Div(display_kpi(kpi_computer.Categories))
     
     elif tab_id == 'tab-3':
-        return html.Div(display_graph(kpi_computer.old_graphe_equity()))
+        return html.Div(display_graph(kpi_computer.fig_equity))
     else:
         raise ValueError
     
@@ -94,8 +94,11 @@ def render_tab(tab_id, kpi_data):
 def choose_bt(backtest_id):
     """
     """
+    print(backtest_id)
     global kpi_computer
     kpi_computer = KPIComputer(REPORTING_LOG_PATH, backtest_id)
+    
+
 
 
 
@@ -114,7 +117,7 @@ def confirm_live_bt(n_clicks, dropdown_value, pause, bt_running, every):
  
     if pause is True and bt_running is False:
   
-        backtest_path = REPORTING_LOG_PATH+f'/{dropdown_value}'
+        backtest_path = REPORTING_LOG_PATH
         print(backtest_path)
         global di
         di = DataIterator(backtest_path, every)

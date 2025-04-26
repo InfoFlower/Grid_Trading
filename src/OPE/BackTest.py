@@ -83,9 +83,10 @@ class baktest:
         for file_name in os.listdir(self.log_path):
             shutil.rmtree(self.log_path+f'/{str(file_name)}')
     
-
+        os.mkdir(self.backtest_log_path)
 
         self.data = pl.read_csv(data_path, truncate_ragged_lines=True)
+        with open(self.position_event, 'w') as f:f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,state,justif,close_price,crypto_balance,money_balance')
 
 
         #TODO : Changer la structure de data -> ['Open time','Open','High','Low','Close']
@@ -281,6 +282,7 @@ class baktest:
 
         self.set_pool(current_position)
         self.log_position(position_args, order_type)
+        self.old_log_position(current_position)
         #SET ORDERS
         self.orders=self.strategy.update_grid(self.current_data[self.CloseCol])
         return self.id_position
@@ -316,6 +318,7 @@ class baktest:
         close_position = close_position.with_columns(pl.lit(int(self.current_data[self.TimeCol])).alias("timestamp"))
         self.positions = self.positions.filter(pl.col("id") != id)
         self.set_pool(close_position)
+        self.old_log_position(close_position)
 
 ###
 #Fonctions de log
@@ -369,7 +372,22 @@ class baktest:
             'OrderStatus' : all_orders['orders_params']['state'],
             'OrderJustif' : all_orders['orders_params']['justif']}
             self.logger({'Order':OrdersInfos})
-        self.orders_n_1 = self.orders.copy()  
+        self.orders_n_1 = self.orders.copy() 
+
+    def old_log_position(self, position):
+        """
+        Enregistre les changements d'état des positions dans un fichier CSV.
+        
+        Parameters:
+            position (polars.DataFrame): Informations sur la position à enregistrer.
+        """
+        info = list(position.rows()[0])
+        print(info)
+        for i in [self.pool['crypto_balance'],self.pool['money_balance']]:
+            info.append(i)
+
+        with open(self.position_event, 'a') as f:
+            f.write('\n'+','.join([str(i) for i in info if not callable(i)]))
         
 
 

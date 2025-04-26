@@ -1,12 +1,16 @@
+import os
 import polars as pl
 import numpy as np
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import plotly.express as px
+from dotenv import load_dotenv
 from config import REPORTING_LOG_PATH
 from KPI_CATEGORIES import CATEGORIES
 pl.Config.set_tbl_cols(20)
 pl.Config.set_tbl_rows(500)
+load_dotenv()
+WD = os.getenv('WD')
 
 
 class KPIComputer:
@@ -30,17 +34,26 @@ class KPIComputer:
         # self.backtest = self.backtest.filter(pl.col('BackTest_ID')==backtest_id)
 
         ###### A utiliser avec les anciens logs ######
-        self.old_data = pl.read_csv(f'{REPORTING_LOG_PATH}/{backtest_id}/data.csv')
+        self.old_data = pl.read_csv(f'{WD}data/DATA_RAW_S_ORIGIN/data_raw_BTCUSDT.csv', truncate_ragged_lines=True)
+        print(self.old_data.head(5))
         self.old_position_event = pl.read_csv(f'{REPORTING_LOG_PATH}/{backtest_id}/position_event.csv')
+        print(self.old_position_event.head(5))
         self.Categories = CATEGORIES
         
         
         
         ###### Transformation du dataframe, calcul equity, dradown etc... ######
+        
         self.old_equity()
+        print(self.old_position_value.head())
         self.old_drawdown()
+        print('drawdown fini')
         self.old_returns()
+        print('returns fini')
         self.old_Categories()
+        print('categories fini')
+        self.old_graphe_equity()
+        print('fig equity fini')
 
     ###### OLD TRANSFORMATION ######
     def old_equity(self):
@@ -116,8 +129,11 @@ class KPIComputer:
         Pourcentage de gain total (sur tout le backtest)
         -> Float
         """
+        print(self.old_position_value.head())
         ic = self.old_position_value['Equity'][0]
+        print(ic)
         fc = self.old_position_value['Equity'][-1]
+        print(fc)
         total_return = (fc - ic)/ic
         return total_return
 
@@ -179,7 +195,9 @@ class KPIComputer:
     ###### OLD GRAPHE ######
     def old_graphe_equity(self):
         fig = px.line(self.old_position_value, x='Open time', y='Equity')
-        return fig
+        print(fig)
+        self.fig_equity = fig
+        
 
 
     
@@ -235,26 +253,27 @@ class KPIComputer:
 
 
 
-def main():
+# def main():
 
-    kpiComputer = KPIComputer(REPORTING_LOG_PATH, 1)
-    position_value = kpiComputer.old_position_value.head(10)
-    total_return = kpiComputer.old_Total_Return()
-    annualized_return = kpiComputer.old_Annualized_Return()
-    win_rate = kpiComputer.old_Win_Rate()
-    max_drawdown = kpiComputer.old_Max_Drawdown()
-    sharpe_ratio = kpiComputer.old_Sharpe_Ratio()
-    volatility = kpiComputer.old_Volatility()
-    categories = kpiComputer.Categories
-    print('position_value', position_value)
-    print('annualized_return', annualized_return)
-    print('total_return', total_return)
-    print('win_rate', win_rate)
-    print('max_drawdown', max_drawdown)
-    print('categories', categories)
-    print('volatility', volatility)
-    print('sharpe_ratio', sharpe_ratio)
+#     kpiComputer = KPIComputer(REPORTING_LOG_PATH, 1)
+#     position_value = kpiComputer.old_position_value.head(10)
+#     total_return = kpiComputer.old_Total_Return()
+#     annualized_return = kpiComputer.old_Annualized_Return()
+#     win_rate = kpiComputer.old_Win_Rate()
+#     max_drawdown = kpiComputer.old_Max_Drawdown()
+#     sharpe_ratio = kpiComputer.old_Sharpe_Ratio()
+#     volatility = kpiComputer.old_Volatility()
+#     categories = kpiComputer.Categories
+#     print('position_value', position_value)
+#     print('annualized_return', annualized_return)
+#     print('total_return', total_return)
+#     print('win_rate', win_rate)
+#     print('max_drawdown', max_drawdown)
+#     print('categories', categories)
+#     print('volatility', volatility)
+#     print('sharpe_ratio', sharpe_ratio)
 
 if __name__ == "__main__":
-    main()
+    #main()
+    pass
 
