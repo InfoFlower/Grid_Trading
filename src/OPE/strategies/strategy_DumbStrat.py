@@ -35,12 +35,21 @@ class Strategy:
         - open_condition(orders, price_n, price_n_1) : Définit la condition d'ouverture d'une position
     """
     #Built in function setup
-    def __init__(self,name, Grider):
+    def __init__(self,name, Grider, grid_params=None, order_params=None):
         """
         """
         self.grid_maker = Grider
-        self.grid_params= self.set_grid_params()
-        self.order_params = self.set_order_params()
+        self.grid_params= grid_params
+        self.order_params = order_params
+        self.metadata = {'StrategyName': name,
+                'GridPrctIntervall': self.grid_params['prct_of_intervall'], 
+                'GridNbOrder': self.grid_params['nb_orders'], 
+                'OrderQty': self.order_params['qty'],
+                'OrderLeverage': self.order_params['leverage'],
+                'OrderTakeProfit': self.order_params['take_profit'],
+                'OrderStopLoss': self.order_params['stop_loss'],
+                'OrderJustif': self.order_params['justif'],
+                'OrderState': self.order_params['state']}
 
     def __call__(self,current_price):
         """
@@ -57,7 +66,9 @@ class Strategy:
                     'nb_orders': self.grid_params['nb_orders'],
                     'orders_params': self.order_params,
          'open_condition': self.open_condition, 
-         'close_condition': self.close_condition}
+         'close_condition': self.close_condition,
+         'justif' : 'init'}
+
         return self.make_orders(params)
 
     # Change grid
@@ -73,35 +84,7 @@ class Strategy:
         """
         self.grid_parameters=grid_parameters
         grid = self.grid_maker(self.grid_parameters)
-        return {'buy_orders' :grid['buy_orders'],'sell_orders' :grid['sell_orders']}
-    
-    def set_grid_params(self):
-        """
-        Définit les paramètres de la grille.\n
-        
-        Returns:
-            - dict : Dictionnaire {'prct_of_intervall', 'nb_orders'} 
-        """
-        return {'prct_of_intervall' : 0.01,
-                           'nb_orders' : 1}
-    
-        # Le wrapper est à modifier par le dev qui créé un type de grille. Il devra alors convertir les différents arguements
-        # à sa disposition pour que le call soit adapté à l'appel de la grille ou de l'update grille
-        #Structure uniforme d'appel inter-module :
-        #    strat -> grille
-        #    strat -> BACKTEST
-        
-    def set_order_params(self):
-        """
-        Définit les paramètres des ordres.\n
-        
-        Returns:
-            - dict : Dictionnaire {'qty', 'leverage', 'take_profit', 'stop_loss'} 
-        """
-        return {'qty':100,
-                'leverage': 1,
-                'take_profit': 0.01,
-                'stop_loss': 0.01/2}
+        return {'buy_orders' :grid['buy_orders'],'sell_orders' :grid['sell_orders'],'metadatas':{'grid_index' : grid['index']}}
     
     # Change one element on grid
     def update_grid(self, current_price):
@@ -121,10 +104,10 @@ class Strategy:
         """
         self.grid_parameters['grid_origin'] = current_price
         grid = self.grid_maker(self.grid_parameters)
-        return {'buy_orders' :grid['buy_orders'],'sell_orders' :grid['sell_orders']}
+        return {'buy_orders' :grid['buy_orders'],'sell_orders' :grid['sell_orders'],'metadatas':{'grid_index' : grid['index']}}
 
     # Conditions for orders
-    def close_condition(self, position, price_n, price_n_1):
+    def close_condition(self, position, current_n, current_n_struct,price_n_1):
         """
         Définit la condition de fermeture d'une position.\n
         Si la condition est rempli retourne l'id de cette position.\n
@@ -140,24 +123,28 @@ class Strategy:
             - (int, str) : Si la position doit être fermée
             - (False, False) : Si la position reste ouverte
         """
+        price_n_1 = float(price_n_1)
+        price_n=float(current_n[current_n_struct['CloseCol']])
+        High_n = current_n[current_n_struct['HighCol']]
+        Low_n = current_n[current_n_struct['LowCol']]
         if position['is_buy']:
             stop_loss_price = position['entryprice']*(1-position['stop_loss'])
             take_profit_price = position['entryprice']*(1+position['take_profit'])
-            if   price_n <= stop_loss_price and price_n_1 >stop_loss_price : 
+            if   (price_n <= stop_loss_price and price_n_1 >stop_loss_price) or  Low_n <= stop_loss_price <= High_n: 
                 return (position['id'], 'STOPLOSS BUY')
-            elif price_n >= take_profit_price and price_n_1 < take_profit_price : 
+            elif price_n >= take_profit_price and price_n_1 < take_profit_price or  Low_n <= take_profit_price <= High_n: 
                 return (position['id'], 'TAKEPROFIT BUY')
         
         if position['is_buy']==False:
             stop_loss_price = position['entryprice']*(1+position['stop_loss'])
             take_profit_price = position['entryprice']*(1-position['take_profit'])
-            if price_n >=  stop_loss_price and price_n_1 <stop_loss_price: 
+            if (price_n >=  stop_loss_price and price_n_1 <stop_loss_price) or  Low_n <= stop_loss_price <= High_n:
                 return (position['id'], 'STOPLOSS SELL')
-            elif price_n <= take_profit_price and price_n_1 > take_profit_price: 
+            elif (price_n <= take_profit_price and price_n_1 > take_profit_price) or  Low_n <= take_profit_price <= High_n:  
                 return (position['id'], 'TAKEPROFIT BUY')
         return False, False
-    
-    def open_condition(self, orders, price_n, price_n_1):
+
+    def open_condition(self, order, order_type, current_n, current_n_struct, price_n_1):
         """
         Définit la condition d'ouverture des ordres les plus proches du prix.\n
         Teste donc 1 ordre d'achat et 1 ordre de vente.\n
@@ -172,8 +159,14 @@ class Strategy:
             - str : Si ordre à ouvrir
             - False : Sinon
         """
-        price_n = float(price_n)
         price_n_1 = float(price_n_1)
-        if orders['buy_orders'][0]['level']>=price_n and orders['buy_orders'][0]['level']<price_n_1 :return "BUY"
-        if orders['sell_orders'][0]['level']<=price_n and orders['sell_orders'][0]['level']>price_n_1 :return "SELL"
-        return False
+        price_n=float(current_n[current_n_struct['CloseCol']])
+        High_n = current_n[current_n_struct['HighCol']]
+        Low_n = current_n[current_n_struct['LowCol']]
+        if  (order['level']>=price_n and order['level']<price_n_1)\
+            or Low_n<=order['level']<=High_n :return (order['index'], order_type)
+        if  (order['level']<=price_n and order['level']>price_n_1)\
+            or Low_n<=order['level']<=High_n :return (order['index'], order_type)
+        return (False,False)
+    #order_type == 'buy_orders' and
+    #order_type == 'sell_orders' and

@@ -35,7 +35,7 @@ class Grid_Maker:
         - log_grid(grid) : Enregistre la création d'une grille et append dans un .json
     """
     def __init__(self, grid_type, grid_name, write_path='data/trade_history/grid/'):
-        
+        self.order_index=0
         self.grid_type = grid_type
         self.index=0
         #Changer le nom du self.write_path pour self.grid_path ou qqchose de ce genre
@@ -57,6 +57,8 @@ class Grid_Maker:
         self.index+=1
         if self.grid_type == 'BasicGrid':
             return self.Make_Basic_Grid(args)
+        elif self.grid_type == 'HedgingGrid':
+            return self.Make_Hedging_Grid(args)
         else:
             raise ValueError(f"Unknown grid type: {self.grid_type}")
 
@@ -67,16 +69,21 @@ class Grid_Maker:
         pass
 
 
-    def make_order(self,i,args,params):
+    def make_order(self,intervall,args,params, need_signed=True):
         """
         Retourne un ordre au niveau i pour un type d'ordre (params : buy or sell) et les args 
         """
-        signe_buy=-1
-        if params['is_buy']:signe_buy=1
-        return {'level' : args['grid_origin']-signe_buy*args['grid_origin']*(i*args['prct_of_intervall']),
+        self.order_index+=1
+        if need_signed:
+            signe_buy=-1
+            if params['is_buy']:signe_buy=1
+        else: signe_buy=1
+        return {'index':self.order_index,'level' : args['grid_origin']+signe_buy*args['grid_origin']*(intervall*args['prct_of_intervall']),
                         'orders_params' : params,
                         'open_condition' : args['open_condition'],
-                        'close_condition' : args['close_condition']}
+                        'close_condition' : args['close_condition'],
+                        'justif' : params['justif'],
+                        'state' : 'open'}
         
     def Make_Basic_Grid(self,args):
         """
@@ -120,8 +127,26 @@ class Grid_Maker:
         self.log_grid(grid)
 
         return grid
+
+    def Make_Hedging_Grid(self, args):
+        """
+        """
+        buy_params = args['orders_params'].copy()
+        buy_params['is_buy'] = True
+        buy_orders = [self.make_order(i, args, buy_params) for i in (-1, 1)]
+
+        sell_params = args['orders_params'].copy()
+        sell_params['is_buy'] = False
+        sell_orders = [self.make_order(i, args, buy_params) for i in (-1, 1)]
+
+        grid={'index':self.index,
+              'origin':args['grid_origin'].item(),
+                'sell_orders': sell_orders,
+                'buy_orders' : buy_orders}
+        self.log_grid(grid)
+        return grid
                         
-        
+    #TODO : Ajouter une classe Logger qui s'occupe de toutes les logs
     def log_grid(self, grid):
         """
         Enregistre l'objet grille précédemment créer dans un fichier .json

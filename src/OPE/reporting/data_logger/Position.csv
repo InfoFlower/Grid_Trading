@@ -1,0 +1,6 @@
+Position_ID,OrderId,Grid_ID,EventData_Time,BackTest_ID,EventCode,PositionQty,PositionClosePrice,CryptoBalance,MoneyBalance
+1,1,1,1511776922000,1,OPEN BUY,0.1,9250.01,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.207009
+],74.99899999999991

@@ -1,0 +1,5 @@
+Order_ID,Grid_ID,OrderTime,OrderType,OrderPrice,OrderQuantity,OrderLeverage,OrderTakeProfit,OrderStopLoss,OrderStatus,OrderJustif
+1,1,1511776435000.0,BUY,9251.55,0.1,1,0.01,0.005,open,init
+1,1,1511776435000.0,SELL,9438.45,0.1,1,0.01,0.005,open,init
+1,2,1511776923000.0,BUY,9157.509900000001,0.1,1,0.01,0.005,open,init
+1,2,1511776923000.0,SELL,9342.5101,0.1,1,0.01,0.005,open,init

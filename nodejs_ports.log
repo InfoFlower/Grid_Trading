@@ -1,0 +1,240 @@
+﻿**********************
+Début de la transcription Windows PowerShell
+Heure de début : 20250426224217
+Nom d'utilisateur : LENOVO-MNPC\lenovo
+Utilisateur runAs :  LENOVO-MNPC\lenovo
+Nom de la configuration : 
+Ordinateur : LENOVO-MNPC (Microsoft Windows NT 10.0.26100.0)
+Application hôte : C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy Bypass -Command Import-Module 'c:\Users\lenovo\.vscode\extensions\ms-vscode.powershell-2025.0.0\modules\PowerShellEditorServices\PowerShellEditorServices.psd1'; Start-EditorServices -HostName 'Visual Studio Code Host' -HostProfileId 'Microsoft.VSCode' -HostVersion '2025.0.0' -BundledModulesPath 'c:\Users\lenovo\.vscode\extensions\ms-vscode.powershell-2025.0.0\modules' -EnableConsoleRepl -StartupBanner "PowerShell Extension v2025.0.0
+Copyright (c) Microsoft Corporation.
+
+https://aka.ms/vscode-powershell
+Type 'help' to get help.
+" -LogLevel 'Warning' -LogPath 'c:\Users\lenovo\AppData\Roaming\Code\logs\20250426T221355\window1\exthost\ms-vscode.powershell' -SessionDetailsPath 'c:\Users\lenovo\AppData\Roaming\Code\User\globalStorage\ms-vscode.powershell\sessions\PSES-VSCode-14368-512217.json' -FeatureFlags @() 
+ID de processus : 8740
+PSVersion: 5.1.26100.3624
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.3624
+BuildVersion: 10.0.26100.3624
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcription démarrée, le fichier de sortie est nodejs_ports.log
+Ouverture du port 3000...
+PS>Erreur de terminaison (New-NetFirewallRule) : « L’exécution de la commande s’est arrêtée, car la variable de préférence « ErrorActionPreference » ou le paramètre courant a la valeur Stop : Accès refusé.  »
+>> Erreur de terminaison (New-NetFirewallRule) : « L’exécution de la commande s’est arrêtée, car la variable de préférence « ErrorActionPreference » ou le paramètre courant a la valeur Stop : Accès refusé.  »
+Erreur: Accès refusé.
+ArrÃªt du serveur Node.js...
+PS>Erreur de terminaison (Stop-Process) : « L’exécution de la commande s’est arrêtée, car la variable de préférence « ErrorActionPreference » ou le paramètre courant a la valeur Stop : Impossible de lier l'argument au paramètre « InputObject », car il a la valeur Null. »
+>> Erreur de terminaison (Stop-Process) : « L’exécution de la commande s’est arrêtée, car la variable de préférence « ErrorActionPreference » ou le paramètre courant a la valeur Stop : Impossible de lier l'argument au paramètre « InputObject », car il a la valeur Null. »
+Erreur lors du nettoyage: Impossible de lier l'argument au paramètre « InputObject », car il a la valeur Null.
+**********************
+Fin de la transcription Windows PowerShell
+Heure de fin : 20250426224219
+**********************
+**********************
+Début de la transcription Windows PowerShell
+Heure de début : 20250426224340
+Nom d'utilisateur : LENOVO-MNPC\lenovo
+Utilisateur runAs :  LENOVO-MNPC\lenovo
+Nom de la configuration : 
+Ordinateur : LENOVO-MNPC (Microsoft Windows NT 10.0.26100.0)
+Application hôte : C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy Bypass -Command Import-Module 'c:\Users\lenovo\.vscode\extensions\ms-vscode.powershell-2025.0.0\modules\PowerShellEditorServices\PowerShellEditorServices.psd1'; Start-EditorServices -HostName 'Visual Studio Code Host' -HostProfileId 'Microsoft.VSCode' -HostVersion '2025.0.0' -BundledModulesPath 'c:\Users\lenovo\.vscode\extensions\ms-vscode.powershell-2025.0.0\modules' -EnableConsoleRepl -StartupBanner "PowerShell Extension v2025.0.0
+Copyright (c) Microsoft Corporation.
+
+https://aka.ms/vscode-powershell
+Type 'help' to get help.
+" -LogLevel 'Warning' -LogPath 'c:\Users\lenovo\AppData\Roaming\Code\logs\20250426T221355\window1\exthost\ms-vscode.powershell' -SessionDetailsPath 'c:\Users\lenovo\AppData\Roaming\Code\User\globalStorage\ms-vscode.powershell\sessions\PSES-VSCode-14368-512217.json' -FeatureFlags @() 
+ID de processus : 8740
+PSVersion: 5.1.26100.3624
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.3624
+BuildVersion: 10.0.26100.3624
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcription démarrée, le fichier de sortie est nodejs_ports.log
+Ouverture du port 3000...
+PS>Erreur de terminaison (New-NetFirewallRule) : « L’exécution de la commande s’est arrêtée, car la variable de préférence « ErrorActionPreference » ou le paramètre courant a la valeur Stop : Accès refusé.  »
+>> Erreur de terminaison (New-NetFirewallRule) : « L’exécution de la commande s’est arrêtée, car la variable de préférence « ErrorActionPreference » ou le paramètre courant a la valeur Stop : Accès refusé.  »
+Erreur: Accès refusé.
+ArrÃªt du serveur Node.js...
+PS>Erreur de terminaison (Stop-Process) : « L’exécution de la commande s’est arrêtée, car la variable de préférence « ErrorActionPreference » ou le paramètre courant a la valeur Stop : Impossible de lier l'argument au paramètre « InputObject », car il a la valeur Null. »
+>> Erreur de terminaison (Stop-Process) : « L’exécution de la commande s’est arrêtée, car la variable de préférence « ErrorActionPreference » ou le paramètre courant a la valeur Stop : Impossible de lier l'argument au paramètre « InputObject », car il a la valeur Null. »
+Erreur lors du nettoyage: Impossible de lier l'argument au paramètre « InputObject », car il a la valeur Null.
+**********************
+Fin de la transcription Windows PowerShell
+Heure de fin : 20250426224342
+**********************
+**********************
+Début de la transcription Windows PowerShell
+Heure de début : 20250426225625
+Nom d'utilisateur : LENOVO-MNPC\lenovo
+Utilisateur runAs :  LENOVO-MNPC\lenovo
+Nom de la configuration : 
+Ordinateur : LENOVO-MNPC (Microsoft Windows NT 10.0.26100.0)
+Application hôte : C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+ID de processus : 11956
+PSVersion: 5.1.26100.3624
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.3624
+BuildVersion: 10.0.26100.3624
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcription démarrée, le fichier de sortie est nodejs_ports.log
+Ouverture du port 3000...
+
+
+Name                          : {3a6c409e-96eb-4922-800c-c114fc78022d}
+DisplayName                   : NodeJS_Port_3000
+Description                   :
+DisplayGroup                  :
+Group                         :
+Enabled                       : True
+Profile                       : Any
+Platform                      : {}
+Direction                     : Inbound
+Action                        : Allow
+EdgeTraversalPolicy           : Block
+LooseSourceMapping            : False
+LocalOnlyMapping              : False
+Owner                         :
+PrimaryStatus                 : OK
+Status                        : La règle a été analysée à partir de la banque. (65536)
+EnforcementStatus             : NotApplicable
+PolicyStoreSource             : PersistentStore
+PolicyStoreSourceType         : Local
+RemoteDynamicKeywordAddresses : {}
+PolicyAppId                   :
+PackageFamilyName             :
+
+DÃ©marrage du serveur Node.js...
+Serveur en cours d'exÃ©cution. Appuyez sur Ctrl+C pour arrÃªter...
+PS>Erreur de terminaison (Wait-Process) : « L’exécution de la commande s’est arrêtée, car la variable de préférence « ErrorActionPreference » ou le paramètre courant a la valeur Stop : Impossible de trouver un processus assorti de l'identificateur 9116. »
+Erreur: Impossible de trouver un processus assorti de l'identificateur 9116.
+ArrÃªt du serveur Node.js...
+Fermeture du port 3000...
+Nettoyage terminÃ© avec succÃ¨s
+**********************
+Fin de la transcription Windows PowerShell
+Heure de fin : 20250426225634
+**********************
+**********************
+Début de la transcription Windows PowerShell
+Heure de début : 20250426225838
+Nom d'utilisateur : LENOVO-MNPC\lenovo
+Utilisateur runAs :  LENOVO-MNPC\lenovo
+Nom de la configuration : 
+Ordinateur : LENOVO-MNPC (Microsoft Windows NT 10.0.26100.0)
+Application hôte : C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+ID de processus : 11956
+PSVersion: 5.1.26100.3624
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.3624
+BuildVersion: 10.0.26100.3624
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcription démarrée, le fichier de sortie est C:\Users\lenovo\Desktop\HomeLab\coin_datamart\nodejs_ports.log
+
+
+Name                          : {84aec26c-31d0-439d-b70d-44cacf4dc724}
+DisplayName                   : NodeJS_Port_3000
+Description                   :
+DisplayGroup                  :
+Group                         :
+Enabled                       : True
+Profile                       : Any
+Platform                      : {}
+Direction                     : Inbound
+Action                        : Allow
+EdgeTraversalPolicy           : Block
+LooseSourceMapping            : False
+LocalOnlyMapping              : False
+Owner                         :
+PrimaryStatus                 : OK
+Status                        : La règle a été analysée à partir de la banque. (65536)
+EnforcementStatus             : NotApplicable
+PolicyStoreSource             : PersistentStore
+PolicyStoreSourceType         : Local
+RemoteDynamicKeywordAddresses : {}
+PolicyAppId                   :
+PackageFamilyName             :
+
+Port 3000 ouvert
+DÃ©marrage de Node.js...
+
+Serveur Node.js en cours d'exÃ©cution
+PID: 9568
+Ports: 3000
+Logs: C:\Users\lenovo\Desktop\HomeLab\coin_datamart\nodejs_ports.log
+Port 3000 fermÃ©
+**********************
+Fin de la transcription Windows PowerShell
+Heure de fin : 20250426225844
+**********************
+**********************
+Début de la transcription Windows PowerShell
+Heure de début : 20250426230106
+Nom d'utilisateur : LENOVO-MNPC\lenovo
+Utilisateur runAs :  LENOVO-MNPC\lenovo
+Nom de la configuration : 
+Ordinateur : LENOVO-MNPC (Microsoft Windows NT 10.0.26100.0)
+Application hôte : C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+ID de processus : 11956
+PSVersion: 5.1.26100.3624
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.3624
+BuildVersion: 10.0.26100.3624
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcription démarrée, le fichier de sortie est C:\Users\lenovo\Desktop\HomeLab\coin_datamart\nodejs_ports.log
+
+
+Name                          : {7a4b668b-135c-4477-92ce-cbfc1a957db8}
+DisplayName                   : NodeJS_Port_3000
+Description                   :
+DisplayGroup                  :
+Group                         :
+Enabled                       : True
+Profile                       : Any
+Platform                      : {}
+Direction                     : Inbound
+Action                        : Allow
+EdgeTraversalPolicy           : Block
+LooseSourceMapping            : False
+LocalOnlyMapping              : False
+Owner                         :
+PrimaryStatus                 : OK
+Status                        : La règle a été analysée à partir de la banque. (65536)
+EnforcementStatus             : NotApplicable
+PolicyStoreSource             : PersistentStore
+PolicyStoreSourceType         : Local
+RemoteDynamicKeywordAddresses : {}
+PolicyAppId                   :
+PackageFamilyName             :
+
+Port 3000 ouvert
+DÃ©marrage de Node.js...
+
+Serveur Node.js en cours d'exÃ©cution
+PID: 2152
+Ports: 3000
+Logs: C:\Users\lenovo\Desktop\HomeLab\coin_datamart\nodejs_ports.log
+Port 3000 fermÃ©
+**********************
+Fin de la transcription Windows PowerShell
+Heure de fin : 20250426230113
+**********************

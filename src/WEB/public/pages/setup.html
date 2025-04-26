@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration Trading Grid</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Configuration Trading</h1>
+        <img src="assets/logo.png" alt="Logo" class="logo">
+    </header>
+    
+    <main class="container">
+        <div class="panels-container">
+            <div class="panel">
+                <div class="panel-header">Structure des Données</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label class="form-label">TimeCol</label>
+                        <input type="text" class="form-control" value="Open time" id="timeCol">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">CloseCol</label>
+                        <input type="text" class="form-control" value="Close" id="closeCol">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">LowCol</label>
+                        <input type="text" class="form-control" value="Low" id="lowCol">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">HighCol</label>
+                        <input type="text" class="form-control" value="High" id="highCol">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-header">Paramètres Grid</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label class="form-label">Quantité</label>
+                        <input type="number" class="form-control" value="0.1" step="0.01" id="qty">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Effet de levier</label>
+                        <input type="number" class="form-control" value="1" min="1" id="leverage">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Take Profit</label>
+                        <input type="number" class="form-control" value="0.01" step="0.001" id="takeProfit">
+                        <span class="unit">%</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Stop Loss</label>
+                        <input type="number" class="form-control" value="0.005" step="0.001" id="stopLoss">
+                        <span class="unit">%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-header">Métadonnées</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label class="form-label">% Intervalle</label>
+                        <input type="number" class="form-control" value="0.01" step="0.001" id="prctInterval">
+                        <span class="unit">%</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nb Ordres</label>
+                        <input type="number" class="form-control" value="1" min="1" id="nbOrders">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Balance</label>
+                        <input type="number" class="form-control" value="1000" min="0" id="moneyBalance">
+                        <span class="unit">USD</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Time Epoch</label>
+                        <input type="number" class="form-control" value="50000" min="0" id="timeEpoch">
+                        <span class="unit">ms</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="btn btn-primary" id="runBtn">Exécuter la configuration</button>
+        
+        <div class="output" id="output">
+Configuration prête. Cliquez sur "Exécuter" pour générer la sortie.
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
