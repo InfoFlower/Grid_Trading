@@ -225,7 +225,7 @@ def update_position_event(new_data, patched_figure, fig_data_names):
     def closing_position(data_index, position_event, no_open=False):
         if not no_open:
             #position_event ne contient qu'une seule ligne
-            patched_figure['data'][data_index]['name'] = f'closed_position_{position_event['id']}'
+            patched_figure['data'][data_index]['name'] = f'closed_position_{position_event["id"]}'
             patched_figure['data'][data_index]['x'][1] = position_event['timestamp']
             patched_figure['data'][data_index]['y'][1] = position_event['close_price']
         elif no_open:
@@ -233,12 +233,12 @@ def update_position_event(new_data, patched_figure, fig_data_names):
             opening_position = position_event.filter(pl.col("state") == 'Opening')
             closing_position = position_event.filter(pl.col("state") == 'Closing')
             print({'type':'scatter',
-                                       'name':f'closed_position_{closing_position['id']}',
+                                       'name':f'closed_position_{closing_position["id"]}',
                                        'x':[opening_position['timestamp'], closing_position['timestamp']],
                                        'y':[opening_position['entryprice'], closing_position['close_price']],
                                        'mode':'lines'})
             patched_figure['data'].append({'type':'scatter',
-                                       'name':f'closed_position_{closing_position['id']}',
+                                       'name':f'closed_position_{closing_position["id"]}',
                                        'x':[opening_position['timestamp'].item(), closing_position['timestamp'].item()],
                                        'y':[opening_position['entryprice'].item(), closing_position['close_price'].item()],
                                        'mode':'lines'})
@@ -275,7 +275,7 @@ def update_position_event(new_data, patched_figure, fig_data_names):
             #print(position_event)
             if position_event['state'] == 'Closing':
                 print('BBBC', positions_event)
-                fig_data_index = fig_data_names.index(f'position_{position_event['id']}')
+                fig_data_index = fig_data_names.index(f'position_{position_event["id"]}')
                 closing_position(fig_data_index, position_event)
             if position_event['state'] == 'Opening':
                 print('BBBO', positions_event)

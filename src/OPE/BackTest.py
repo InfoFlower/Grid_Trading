@@ -214,7 +214,7 @@ class baktest:
         elif position['state'].item() == 'Closing' :
             signe_open = -1
             self.pool['crypto_balance']+=position['qty'].item() * position['signe_buy'].item() * signe_open
-            self.pool['money_balance']-=position['qty'].item()* self.current_data[self.CloseCol] * position['signe_buy'].item() * signe_open
+            self.pool['money_balance']-=position['qty'].item()* self.current_data[self.CloseCol].item() * position['signe_buy'].item() * signe_open
 
 ###
 #Open positions
@@ -326,7 +326,7 @@ class baktest:
                         'EventCode' : justif,
                         'PositionQty' : Quantity,
                         'PositionClosePrice' : EntryPrice,
-                        'CryptoBalance' : 1,
+                        'CryptoBalance' : self.pool['crypto_balance'].item(),
                         'MoneyBalance' : self.pool['money_balance']}
         
 
@@ -361,7 +361,7 @@ class baktest:
             position (polars.DataFrame): Informations sur la position à enregistrer.
         """
         info = list(position.rows()[0])
-        for i in [self.pool['crypto_balance'],self.pool['money_balance']]:
+        for i in [self.pool['crypto_balance'].item(),self.pool['money_balance']]:
             info.append(i)
 
         with open(self.position_event, 'a') as f:
