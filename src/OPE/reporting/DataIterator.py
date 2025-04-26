@@ -1,7 +1,12 @@
+import os
 import threading
 import time
 import queue
 import polars as pl
+from dotenv import load_dotenv
+
+load_dotenv()
+WD = os.getenv('WD')
 
 class DataIterator:
     def __init__(self, backtest_path, every, initial_speed=1):
@@ -12,8 +17,8 @@ class DataIterator:
         """
         # LOAD et TRANSFORM
         self.every = every
-        self.data = pl.read_csv(f'{backtest_path}/data.csv')
-        self.position_event = pl.read_csv(f'{backtest_path}/position_event.csv')
+        self.data = pl.read_csv(f'{WD}data/DATA_RAW_S_ORIGIN/data_raw_BTCUSDT.csv', truncate_ragged_lines=True)
+        self.position_event = pl.read_csv(f'{backtest_path}/Position.csv')
         self.to_datetime()
         self.resample()
 
