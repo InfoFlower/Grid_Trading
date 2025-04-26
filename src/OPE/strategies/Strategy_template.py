@@ -39,7 +39,7 @@ class Strategy:
         """
         """
         self.grid_maker = Grider
-        self.grid_params= grid_params
+        self.grid_params = grid_params
         self.order_params = order_params
         self.metadata = {'StrategyName': name,
                 'GridPrctIntervall': self.grid_params['prct_of_intervall'], 
