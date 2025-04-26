@@ -73,7 +73,7 @@ CloseCol=1
 data=data.to_numpy()
 ##
 #Set initial balance
-money_balance=1000000 #USD
+money_balance= 1000000 #USD
 crypto_balance=money_balance/data[0][CloseCol] #BTC
 
 

@@ -2,10 +2,9 @@ import threading
 import time
 import queue
 import polars as pl
-from config import REPORTING_LOG_PATH
 
 class DataIterator:
-    def __init__(self, data_path, every, position_event_path, initial_speed=1):
+    def __init__(self, backtest_path, every, initial_speed=1):
         """
 
         STRUCTURE = ['Open time', 'Open', 'High', 'Low', 'Close']
@@ -13,8 +12,8 @@ class DataIterator:
         """
         # LOAD et TRANSFORM
         self.every = every
-        self.data = pl.read_csv(data_path)
-        self.position_event = pl.read_csv(position_event_path)
+        self.data = pl.read_csv(f'{backtest_path}/data.csv')
+        self.position_event = pl.read_csv(f'{backtest_path}/position_event.csv')
         self.to_datetime()
         self.resample()
 

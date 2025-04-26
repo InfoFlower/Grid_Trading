@@ -1,18 +1,13 @@
 import os 
-import dash
-from dash import Dash, dcc, html, Input, State, Output, callback
+from dash import dcc, html
 import plotly.graph_objects as go
 from config import REPORTING_LOG_PATH
+import dash_bootstrap_components as dbc
 
 backtest_dirs = os.listdir(REPORTING_LOG_PATH)
-def display_page1():
+def display_live():
     """
-    ,
-                                                'layout':{
-                                                    'xaxis':{
-                                                        'autorange':False
-                                                    }
-                                                }
+
     """
     fig = go.Figure(
         go.Candlestick(
@@ -24,17 +19,12 @@ def display_page1():
             name='candle_chart'
         )
     )
-    # fig.update_layout(
-    # xaxis=dict(
-    #     autorange=False,
-    #     range=['2017-10-01', '2017-10-02']  # Exemple de plage de dates
-    #     )
-    # )
+
     
 
     return [
             html.H1("LIVE"),
-            dcc.Dropdown(id = 'dropdown_backtest', options=backtest_dirs, value = backtest_dirs[0]),
+            #dcc.Dropdown(id = 'dropdown_backtest', options=backtest_dirs, value = backtest_dirs[0]),
             dcc.RadioItems(id='data_every_items',options=[
                                             {'label': '1m', 'value': '1m'},
                                             {'label': '5m', 'value': '5m'},
@@ -48,3 +38,40 @@ def display_page1():
             html.Button("Pause/Reprendre", id="pause_button", n_clicks=0),
             dcc.Graph(id='candlestick_chart', figure=fig)
             ]
+
+def display_kpi(kpi_data):
+    """
+    """
+    
+    
+
+    def create_card(title, indicators):
+        return dbc.Card(
+            [
+                dbc.CardHeader(title, className="text-white bg-primary"),
+                dbc.CardBody(
+                    [html.P(f"{k}: {v}", className="card-text") for k, v in indicators.items()]
+                ),
+            ],
+            className="mb-4 shadow",
+            style={"borderRadius": "12px", "minHeight": "200px"},
+            
+        )
+    
+    return dbc.Container(
+    [
+        html.H1("Reporting de stratégie de trading", className="my-4 text-center"),
+
+        dbc.Row([
+            dbc.Col(create_card("📈 Rentabilité", kpi_data['RENTABILITE']), md=4),
+            dbc.Col(create_card("⚠️ Risque", kpi_data['RISQUE']), md=4),
+            dbc.Col(create_card("⚖️ Efficacité", kpi_data['EFFICACITE']), md=4),
+        ]),
+        dbc.Row([
+            dbc.Col(create_card("🧪 Robustesse", kpi_data['ROBUSTESSE']), md=6),
+            dbc.Col(create_card("🔁 Stabilité", kpi_data['STABILITE']), md=6),
+        ])
+    ],
+    fluid=True,
+    id = 'container_KPI'
+)

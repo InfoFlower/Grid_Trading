@@ -85,7 +85,9 @@ class baktest:
         self.data = pl.read_csv(data_path, truncate_ragged_lines=True)
         self.data[['Open time','Open','High','Low','Close']].write_csv(self.data_hist)
 
-        with open(self.position_event, 'w') as f:f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,state,justif,close_price,crypto_balance,money_balance')
+        with open(self.position_event, 'w') as f:
+            f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,state,justif,close_price,crypto_balance,money_balance')
+            #f.write('\n'+f'-1,{self.data[['Open time']][0].item()},null,null,null,null,null,null,null,INIT,IS,null,{crypto_balance},{money_balance}')
         with open(self.sio_time,'w') as f:f.write('epoch,total_of_lines,prct_of_run,time_between_epoch,time_from_start,epoch_size')
         # with open(self.orders_hist, 'w', encoding='utf-8') as f:
         #     f.write('[')
@@ -178,7 +180,7 @@ class baktest:
         condition_open_buy = self.orders['buy_orders'][0]['open_condition'](self.orders, self.current_data[self.CloseCol], self.data_n_1[self.CloseCol])
         if condition_open_buy == 'BUY' and self.pool['money_balance']>self.orders['buy_orders'][0]['level']*self.orders['buy_orders'][0]['orders_params']['qty']:
             params = self.orders['buy_orders'][0]['orders_params']
-            params['timestamp'] = self.current_data[self.TimeCol]
+            params['timestamp'] = int(self.current_data[self.TimeCol])
             params['entryprice'] = self.current_data[self.CloseCol]
             params['close_condition'] = self.orders['buy_orders'][0]['close_condition']
             self.open_position(params)
@@ -187,7 +189,7 @@ class baktest:
         condition_open_sell = self.orders['sell_orders'][0]['open_condition'](self.orders, self.current_data[self.CloseCol], self.data_n_1[self.CloseCol])
         if condition_open_sell == 'SELL' and self.pool['crypto_balance']>self.orders['sell_orders'][0]['orders_params']['qty']:
             params = self.orders['sell_orders'][0]['orders_params']
-            params['timestamp'] = self.current_data[self.TimeCol]
+            params['timestamp'] = int(self.current_data[self.TimeCol])
             params['entryprice'] = self.current_data[self.CloseCol]
             params['close_condition'] = self.orders['sell_orders'][0]['close_condition']
             self.open_position(params)

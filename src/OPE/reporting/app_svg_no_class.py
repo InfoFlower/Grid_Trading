@@ -16,47 +16,89 @@ WD = os.getenv('WD')
 sys.path.append(WD)
 
 from config import REPORTING_LOG_PATH
-from pages import display_page1
+from pages import display_live, display_kpi
 from src.OPE.MakeGrid import Grid_Maker
 from src.OPE.strategies.strategy_DumbStrat import Strategy
 from src.OPE.BackTest import baktest
 from DataIterator import DataIterator
+from KPIComputer import KPIComputer
 
 
-app = Dash(__name__)
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
-app.layout = html.Div([
-    dcc.Tabs(id='tabs', value='tab-1', children=[
-        dcc.Tab(label='LIVE', value='tab-1'),
-        dcc.Tab(label='AFTER', value='tab-2')
-    ]),
-    dcc.Store(id='store_speed', data=1.0),
-    dcc.Store(id='store_backtest_running', data=False),
-    dcc.Store(id='store_pause', data=True),
-    dcc.Store(id='store_current_data', data={}),
-    dcc.Store(id='store_open_positions', data={}),
-    dcc.Interval(id='refresh_live', interval = 250, n_intervals=0, disabled=True),
-    html.Div(id="tab_content", children=display_page1())
-])
+# app.layout = html.Div([
+#     dbc.Tabs(
+#         [
+#         dbc.Tab(label='LIVE', tab_id='tab-1'),
+#         dbc.Tab(label='AFTER', tab_id='tab-2')
+#         ]
+#     )
+#     ]),
+#     dcc.Store(id='store_speed', data=1.0),
+#     dcc.Store(id='store_backtest_running', data=False),
+#     dcc.Store(id='store_pause', data=True),
+#     dcc.Store(id='store_current_data', data={}),
+#     dcc.Store(id='store_open_positions', data={}),
+#     dcc.Interval(id='refresh_live', interval = 1000, n_intervals=0, disabled=True),
+#     html.Div(id="tab_content", children=display_live())
+# ])
+backtest_dirs = os.listdir(REPORTING_LOG_PATH)
+app.layout = dbc.Container(
+    [
+        html.H1("REPORTING"),
+        dcc.Dropdown(id = 'dropdown_backtest', options=backtest_dirs, value = backtest_dirs[0]),
+        dbc.Tabs(
+            children = [
+                dbc.Tab(label='LIVE', tab_id='tab-1'),
+                dbc.Tab(label='AFTER', tab_id='tab-2')
+            ],
+            id="tabs",
+            active_tab="tab-1"
+        ),
+        html.Div(id='page_content'),
+        dcc.Store(id='store_speed', data=1.0),
+        dcc.Store(id='store_backtest_running', data=False),
+        dcc.Store(id='store_pause', data=True),
+        dcc.Store(id='store_current_data', data={}),
+        dcc.Store(id='store_open_positions', data={}),
+        dcc.Store(id='store_kpi',data={}),
+        dcc.Interval(id='refresh_live', interval = 1000, n_intervals=0, disabled=True),
+        html.Div(id="tab_content", children=display_live())
+    ]
+)
 
-@app.callback(Output("tab_content", "children"), 
-        Input("tabs", "value"),
+
+@app.callback(Output("page_content", "children"), 
+        Input("tabs", "active_tab"),
+        State('store_kpi','data'),
         prevent_initial_call=True)
-def render_tab(value_tab):
+def render_tab(tab_id, kpi_data):
     """
     Défini le contenu des différents tabs
     """
+    print(tab_id)
+    if tab_id == "tab-1":
+        return html.Div(display_live())
 
-    if value_tab == "tab-1":
-        return html.Div(display_page1())
-
-    elif value_tab == "tab-2":
-        return html.Div([
-            html.H1("AFTER"),
-        ])
+    elif tab_id == "tab-2":
+        return html.Div(display_kpi(kpi_data))
     else:
         raise ValueError
     
+# TODO : callback input dropdown pour tab-1 et tab-2
+@app.callback(Output('store_kpi', 'data'),
+              Input('dropdown_backtest', 'value'))
+def update_categories(backtest_id):
+    """
+    """
+    print('lol')
+    global kpi_computer
+    kpi_computer = KPIComputer(REPORTING_LOG_PATH, backtest_id)
+    kpi_computer.old_Categories()
+    return kpi_computer.Categories
+
+
+
 @app.callback(Output('store_backtest_running', 'data'),
             Input('ok_backtest', 'n_clicks'),
             [State('dropdown_backtest', 'value'),
@@ -64,18 +106,17 @@ def render_tab(value_tab):
             State('store_backtest_running', 'data'),
             State('data_every_items', 'value')],
             prevent_initial_call=True)
-def choose_bt_dropdown(n_clicks, dropdown_value, pause, bt_running, items_value):
+def confirm_live_bt(n_clicks, dropdown_value, pause, bt_running, every):
     """
     
     """
  
     if pause is True and bt_running is False:
   
-        data_path = REPORTING_LOG_PATH+f'{dropdown_value}/data.csv'
-        position_event_path = REPORTING_LOG_PATH+f'{dropdown_value}/position_event.csv'
-
+        backtest_path = REPORTING_LOG_PATH+f'/{dropdown_value}'
+        print(backtest_path)
         global di
-        di = DataIterator(data_path, items_value, position_event_path)
+        di = DataIterator(backtest_path, every)
 
         thread = threading.Thread(target=di.iterate)
         thread.start()
@@ -124,13 +165,11 @@ def pause(n_clicks, bt_running, pause):
     else:
         raise dash.exceptions.PreventUpdate
 
-    return pause, pause
+    return pause, pause 
 
-# @app.callback(Input('store_current_data', 'data'),
-#               State('candlestick_chart', 'figure.data'))
-# def test_figure(data, fig_data):
-#     print(fig_data)
-#     pass
+@app.callback(Input('candlestick_chart', 'figure'))
+def test_figure(fig_data):
+    print(fig_data['data'])
     
 
 @app.callback(Output('candlestick_chart', 'figure', allow_duplicate=True),
@@ -144,10 +183,9 @@ def update_graph(new_data, fig_data):
     fig_data = fig_data['data']
     #print(fig_data)
     fig_data_names = [trace['name'] for trace in fig_data]
-    
+    print(fig_data_names)
 
     patched_figure = Patch()
-    print(new_data['Open time'][0])
     patched_figure['data'][0]['x'].append(new_data['Open time'][0])
     patched_figure['data'][0]['open'].append(new_data['Open'][0])
     patched_figure['data'][0]['high'].append(new_data['High'][0])
@@ -168,7 +206,6 @@ def update_position_event(new_data, patched_figure, fig_data_names):
         
         """
         id = position_event.pop('id')
-
         patched_figure['data'].append({'type':'scatter',
                                        'name':f'position_{id}',
                                        'x':[position_event['timestamp'], position_event['timestamp'] + pd.to_timedelta(di.every)],
@@ -211,7 +248,7 @@ def update_position_event(new_data, patched_figure, fig_data_names):
     if di.position_event.select(pl.col("timestamp").dt.strftime('%Y-%m-%dT%H:%M:%S').is_in([new_data['Open time'][0]])).to_series().any():
         
         positions_event = di.position_event.filter(pl.col('timestamp').dt.strftime('%Y-%m-%dT%H:%M:%S')==new_data['Open time'][0])
-        
+        print(positions_event)
 
         ids_with_two_occurrences = (
                     positions_event.clone().group_by("id")
@@ -229,13 +266,15 @@ def update_position_event(new_data, patched_figure, fig_data_names):
             double_positions_event = None
 
         #Si il n'y qu'un évènement par position et par timeframe
-        print('BBB', positions_event)
+        print(positions_event)
         for position_event in positions_event.iter_rows(named=True):
             #print(position_event)
             if position_event['state'] == 'Closing':
+                print('BBBC', positions_event)
                 fig_data_index = fig_data_names.index(f'position_{position_event['id']}')
                 closing_position(fig_data_index, position_event)
             if position_event['state'] == 'Opening':
+                print('BBBO', positions_event)
                 open_position(position_event)
 
         # Si il y a 2 évènements par position et par timeframe, 
@@ -265,8 +304,8 @@ def create_run_backtest():
     strategy = Strategy(StratName, grid_maker)
 
     data_path = f'{WD}/data/OPE_DATA/data_raw_BTCUSDT_176.csv'
-    money_balance = 1000000
-    crypto_balance = 107
+    money_balance = 1000
+    crypto_balance = 0.107
     TimeCol = 0
     CloseCol = 1
     log_path = REPORTING_LOG_PATH
@@ -282,8 +321,9 @@ def create_run_backtest():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
-    #create_run_backtest()
+    #app.run(debug=True)
+    create_run_backtest()
+    #-1,1511776434000,null,null,null,null,null,null,null,INIT,IS,null,107,1000000
 
 
 """

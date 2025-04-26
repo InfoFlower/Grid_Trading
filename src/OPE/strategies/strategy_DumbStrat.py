@@ -98,7 +98,7 @@ class Strategy:
         Returns:
             - dict : Dictionnaire {'qty', 'leverage', 'take_profit', 'stop_loss'} 
         """
-        return {'qty':100,
+        return {'qty':0.1,
                 'leverage': 1,
                 'take_profit': 0.01,
                 'stop_loss': 0.01/2}
