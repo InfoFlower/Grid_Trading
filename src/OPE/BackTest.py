@@ -224,7 +224,7 @@ class baktest:
             for order in self.orders[order_type]:
                 condition_open = order['open_condition'](order,order_type, self.current_data, self.struct,self.data_n_1[self.CloseCol])
                 if (condition_open[1] == 'buy_orders'  and self.pool['money_balance']>order['level']*order['orders_params']['qty'])\
-                    or (condition_open[1] == 'sell_orders' and self.pool['crypto_balance'].item()>order['orders_params']['qty'])\
+                    or (condition_open[1] == 'sell_orders' and self.pool['crypto_balance']>order['orders_params']['qty'])\
                     and i<10:
                     self.open_position(order,order_type)
 

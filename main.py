@@ -65,17 +65,10 @@ else :
     path=f'data/OPE_DATA/DATA_RAW_S_ORIGIN_test_code/data_raw_BTCUSDT_{start_time}.csv'
 
 data=pl.read_csv(path, truncate_ragged_lines=True)
+
 ##
 #SETUP DATA COLUMNS
 DataStructure = {'TimeCol' : 'Open time', 'CloseCol' : 'Close', 'LowCol' : 'Low',  'HighCol' : 'High'}
-#Setup Grid Parameters
-GridOrders_params = {'qty':0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.01/2, 'justif' : 'init', 'state' : 'open'}
-Grid_Metadata = {'prct_of_intervall' : 0.01, 'nb_orders' : 1}
-#Set initial balance
-money_balance= 1000 #USD
-crypto_balance=money_balance/data[0][DataStructure['CloseCol']] #BTC
-time_4_epoch=50000
-
 ##
 #Shape data
 print('Data shape :', data.columns)
@@ -85,11 +78,20 @@ DataStructure = { 'TimeCol' : 0,
                   'CloseCol' :1,
                   'LowCol' :  2, 
                   'HighCol' : 3}
-DataStructure = [i for i in DataStructure.values()]
+
 data=data.to_numpy()
+#Setup Grid Parameters
+GridOrders_params = {'qty':100, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.01/2, 'justif' : 'init', 'state' : 'open'}
+Grid_Metadata = {'prct_of_intervall' : 0.01, 'nb_orders' : 1}
+#Set initial balance
+money_balance= 100000000000 #USD
+crypto_balance= money_balance/data[0][DataStructure['CloseCol']] #BTC
+time_4_epoch=50000
 
 
 
+
+DataStructure = [i for i in DataStructure.values()]
 
 
 ###
