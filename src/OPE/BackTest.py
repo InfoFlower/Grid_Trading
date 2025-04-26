@@ -126,7 +126,7 @@ class baktest:
         Returns:
             self: L'instance elle-même pour l'itération.
         """
-        self.checkeur = know_your_perf.know_your_perf(is_working=True)
+        self.checkeur = know_your_perf.know_your_perf(sniffing_name='HiHi',is_working=True)
         self.index = self.start_index
         self.orders_n_1 = self.orders
         self.orders=self.strategy(self.data[self.index][self.CloseCol])

@@ -58,7 +58,7 @@ GridFullName = f'{StratName}_{GridType}_{GridName}'
 ##
 #SETUP DATA
 if type_of_file=='full':
-    path=f'{WD}data/DATA_RAW_S_ORIGIN/data_raw_BTCUSDT.csv'
+    path=f'{WD}data/OPE_DATA/DATA_RAW_S_ORIGIN_test_code/data_raw_BTCUSDT_176.csv'
     print(path)
 else :
     start_time = 153
