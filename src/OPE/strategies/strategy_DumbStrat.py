@@ -107,7 +107,7 @@ class Strategy:
         return {'buy_orders' :grid['buy_orders'],'sell_orders' :grid['sell_orders'],'metadatas':{'grid_index' : grid['index']}}
 
     # Conditions for orders
-    def close_condition(self, position, price_n, price_n_1):
+    def close_condition(self, position, current_n, current_n_struct,price_n_1):
         """
         Définit la condition de fermeture d'une position.\n
         Si la condition est rempli retourne l'id de cette position.\n
@@ -123,24 +123,28 @@ class Strategy:
             - (int, str) : Si la position doit être fermée
             - (False, False) : Si la position reste ouverte
         """
+        price_n_1 = float(price_n_1)
+        price_n=float(current_n[current_n_struct['CloseCol']])
+        High_n = current_n[current_n_struct['HighCol']]
+        Low_n = current_n[current_n_struct['LowCol']]
         if position['is_buy']:
             stop_loss_price = position['entryprice']*(1-position['stop_loss'])
             take_profit_price = position['entryprice']*(1+position['take_profit'])
-            if   price_n <= stop_loss_price and price_n_1 >stop_loss_price : 
+            if   (price_n <= stop_loss_price and price_n_1 >stop_loss_price) or  Low_n <= stop_loss_price <= High_n: 
                 return (position['id'], 'STOPLOSS BUY')
-            elif price_n >= take_profit_price and price_n_1 < take_profit_price : 
+            elif price_n >= take_profit_price and price_n_1 < take_profit_price or  Low_n <= take_profit_price <= High_n: 
                 return (position['id'], 'TAKEPROFIT BUY')
         
         if position['is_buy']==False:
             stop_loss_price = position['entryprice']*(1+position['stop_loss'])
             take_profit_price = position['entryprice']*(1-position['take_profit'])
-            if price_n >=  stop_loss_price and price_n_1 <stop_loss_price: 
+            if (price_n >=  stop_loss_price and price_n_1 <stop_loss_price) or  Low_n <= stop_loss_price <= High_n:
                 return (position['id'], 'STOPLOSS SELL')
-            elif price_n <= take_profit_price and price_n_1 > take_profit_price: 
+            elif (price_n <= take_profit_price and price_n_1 > take_profit_price) or  Low_n <= take_profit_price <= High_n:  
                 return (position['id'], 'TAKEPROFIT BUY')
         return False, False
-    
-    def open_condition(self, orders, price_n, price_n_1,order_type):
+
+    def open_condition(self, orders, order_type, current_n, current_n_struct, price_n_1):
         """
         Définit la condition d'ouverture des ordres les plus proches du prix.\n
         Teste donc 1 ordre d'achat et 1 ordre de vente.\n
@@ -155,10 +159,14 @@ class Strategy:
             - str : Si ordre à ouvrir
             - False : Sinon
         """
-        price_n = float(price_n)
         price_n_1 = float(price_n_1)
-        if  orders[order_type][0]['level']>=price_n and orders[order_type][0]['level']<price_n_1 :return "BUY"
-        if  orders[order_type][0]['level']<=price_n and orders[order_type][0]['level']>price_n_1 :return "SELL"
+        price_n=float(current_n[current_n_struct['CloseCol']])
+        High_n = current_n[current_n_struct['HighCol']]
+        Low_n = current_n[current_n_struct['LowCol']]
+        if  (orders[order_type][0]['level']>=price_n and orders[order_type][0]['level']<price_n_1)\
+            or Low_n<=orders[order_type][0]['level']<=High_n :return "BUY"
+        if  (orders[order_type][0]['level']<=price_n and orders[order_type][0]['level']>price_n_1)\
+            or Low_n<=orders[order_type][0]['level']<=High_n :return "SELL"
         return False
     #order_type == 'buy_orders' and
     #order_type == 'sell_orders' and

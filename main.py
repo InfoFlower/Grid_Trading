@@ -49,7 +49,7 @@ print('General time to setup :', after_vars - start_time)
 ##
 #SETUP DATA
 if type_of_file=='full':
-    path=f'{WD}data/OPE_DATA/DATA_RAW_S_ORIGIN_test_code/data_raw_BTCUSDT_176.csv' ### A modif
+    path=f'{WD}data/DATA_RAW_S_ORIGIN\data_raw_BTCUSDT.csv'
     print(path)
 else :
     start_time = 153
@@ -65,14 +65,20 @@ print('General time to setup :', after_data - start_time)
 
 ##
 #SETUP DATA COLUMNS
-TimeCol='Open time'
-CloseCol='Close'
-
+DataStructure = {'TimeCol' : 'Open time',
+                 'CloseCol' :'Close',
+                 'LowCol' : 'Low', 
+                 'HighCol' : 'High'}
 ##
 #Shape data
-data=data[[TimeCol,CloseCol]]
-TimeCol=0
-CloseCol=1
+print('Data shape :', data.columns)
+data=data[[i for i in DataStructure.values()]]
+
+DataStructure = { 'TimeCol' : 0,
+                  'CloseCol' :1,
+                  'LowCol' :  2, 
+                  'HighCol' : 3}
+DataStructure = [i for i in DataStructure.values()]
 data=data.to_numpy()
 
 #
@@ -102,7 +108,7 @@ logger = Logger()
 grid_maker = MakeGrid.Grid_Maker(GridType, GridName)
 strategy = Strategy(StratName, grid_maker, Grid_Metadata, GridOrders_params)
 backtest_id=1
-bktst=baktest(path, strategy, money_balance, crypto_balance, logger, backtest_id, TimeCol=TimeCol, CloseCol=CloseCol, time_4_epoch=500000)
+bktst=baktest(path, strategy, money_balance, crypto_balance, logger, backtest_id,time_4_epoch=500000,TimeCol=DataStructure[0],CloseCol=DataStructure[1],LowCol=DataStructure[2],HighCol=DataStructure[3])
 
 
 print('\n'*2, '#'*20,'\n'*2)

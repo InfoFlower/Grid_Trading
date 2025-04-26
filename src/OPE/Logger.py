@@ -42,6 +42,7 @@ class Logger:
         """
         Log data to the appropriate file based on the provided keyword arguments.
         """
+        
         for key, value in data.items():
             if key in self.files_path.keys():
                 if key == 'Order' : 

@@ -3,6 +3,7 @@ import polars as pl
 import time
 import shutil
 from dotenv import load_dotenv
+# import src.OPE.technical_report.log_time_for_iter as know_your_perf
 load_dotenv()
 WD = os.getenv('WD')
 
@@ -61,7 +62,7 @@ class baktest:
             - log_time(): Log des stats temporelles par epoch
             - __call__(data): Met à jour la data lors d'un changement de fichier
         """
-    def __init__(self, data_path, strategy, money_balance, crypto_balance, logger, backtest_id, self_log_path='src/OPE/reporting/BACKTESTS', TimeCol='Open Time',CloseCol='Close', time_4_epoch=50000, start_index=0, end_index=-1):
+    def __init__(self, data_path, strategy, money_balance, crypto_balance, logger, backtest_id, self_log_path='src/OPE/reporting/BACKTESTS', TimeCol='Open Time',CloseCol='Close',LowCol = 'Low', HighCol='High', time_4_epoch=50000, start_index=0, end_index=-1):
         self.id = backtest_id
         self.start_index = start_index
         self.end_index = end_index
@@ -77,28 +78,18 @@ class baktest:
         self.position_event=self.backtest_log_path+'position_event.csv'
         self.orders_hist=self.backtest_log_path+'orders.json'
         self.sio_time=self.backtest_log_path+'sio_time.csv'
-
         #Vide le repertoire de log des backtest
         #A mieux gérer dans le future, juste pour dev
         for file_name in os.listdir(self.log_path):
             shutil.rmtree(self.log_path+f'/{str(file_name)}')
     
-        os.mkdir(self.backtest_log_path)
 
 
         self.data = pl.read_csv(data_path, truncate_ragged_lines=True)
-        self.data[['Open time','Open','High','Low','Close']].write_csv(self.data_hist)
-
-        with open(self.position_event, 'w') as f:
-            f.write('id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,state,justif,close_price,crypto_balance,money_balance')
-            f.write('\n'+f'-1,{self.data[['Open time']][0].item()},null,null,null,null,null,null,null,INIT,IS,null,{crypto_balance},{money_balance}')
-        with open(self.sio_time,'w') as f:f.write('epoch,total_of_lines,prct_of_run,time_between_epoch,time_from_start,epoch_size')
-        # with open(self.orders_hist, 'w', encoding='utf-8') as f:
-        #     f.write('[')
 
 
         #TODO : Changer la structure de data -> ['Open time','Open','High','Low','Close']
-        self.data = self.data[['Open time','Close']]
+        self.data = self.data[['Open time','Open','High','Low','Close']]
         self.data = self.data.to_numpy()
 
         
@@ -110,6 +101,12 @@ class baktest:
 
         self.TimeCol = TimeCol
         self.CloseCol = CloseCol
+        self.LowCol = LowCol
+        self.HighCol = HighCol
+        self.struct={'TimeCol' : self.TimeCol,
+                     'CloseCol' : self.CloseCol,
+                     'LowCol' : self.LowCol, 
+                     'HighCol' : self.HighCol}
         self.strategy = strategy
         
         self.id_position = 0
@@ -128,6 +125,7 @@ class baktest:
         Returns:
             self: L'instance elle-même pour l'itération.
         """
+        # self.checkeur = know_your_perf.know_your_perf(self.id)
         self.index = self.start_index
         self.orders_n_1 = self.orders
         self.orders=self.strategy(self.data[self.index][self.CloseCol])
@@ -149,6 +147,7 @@ class baktest:
         Raises:
             StopIteration: Si toutes les lignes ont été parcourues.
         """
+        # self.checkeur()
         self.data_n_1 = self.data[self.index]
         if self.index < len(self.data)-1 or self.index == self.end_index:
             self.index += 1
@@ -180,7 +179,6 @@ class baktest:
         Raises:
             ValueError: Si l'écart temporel entre deux lignes est trop important.
         """
-        self.log_time()
         a=self.data_n_1[self.TimeCol]
         b=self.current_data[self.TimeCol]
         dif=a-b
@@ -194,11 +192,12 @@ class baktest:
         if self.orders != self.orders_n_1:
             self.log_orders()
         
-        self.conditions_check(0, orders_types=['buy_orders','sell_orders'])
+        self.open_conditions_check(0, orders_types=['buy_orders','sell_orders'])
 
-        Ids_to_close = [position['close_condition'](position,self.current_data[self.CloseCol], self.data_n_1[self.CloseCol]) for position in self.positions.to_dicts()]
+        Ids_to_close = [position['close_condition'](position,self.current_data, self.struct, self.data_n_1[self.CloseCol]) for position in self.positions.to_dicts()]
         if len(Ids_to_close)>0 and all(Ids_to_close) is not None: 
             [self.close_position(*i) for i in Ids_to_close if i[0] is not False] 
+        
 
     def set_pool(self, position):
         """
@@ -216,6 +215,18 @@ class baktest:
             signe_open = -1
             self.pool['crypto_balance']+=position['qty'].item() * position['signe_buy'].item() * signe_open
             self.pool['money_balance']-=position['qty'].item()* self.current_data[self.CloseCol] * position['signe_buy'].item() * signe_open
+
+###
+#Open positions
+#
+    def open_conditions_check(self,i=0 ,orders_types = ['buy_orders','sell_orders']):
+        for order_type in orders_types:
+            condition_open = self.orders[order_type][0]['open_condition'](self.orders,order_type, self.current_data, self.struct,self.data_n_1[self.CloseCol])
+            if (condition_open == 'BUY'  and self.pool['money_balance']>self.orders[order_type][0]['level']*self.orders[order_type][0]['orders_params']['qty']) \
+                or (condition_open == 'SELL' and self.pool['crypto_balance']>self.orders[order_type][0]['orders_params']['qty'])\
+                and i<10:
+                self.open_position(order_type, Order_pos = 0)
+                # self.open_conditions_check(i+1)
 
     def open_position(self,order_type, Order_pos = 0):
         
@@ -270,31 +281,14 @@ class baktest:
         self.positions = pl.concat([self.positions, current_position])
 
         self.set_pool(current_position)
-
-
-        #SET LOG
-        if order_type == 'buy_orders':justif = 'OPEN BUY'
-        else: justif = 'OPEN SELL'
-        self.pos_log = {'Position_ID' :  self.id_position, 
-                        'OrderId' : self.orders[order_type][0]['index'],
-                        'Grid_ID': self.orders['metadatas']['grid_index'],
-                        'EventData_Time' : position_args['timestamp'],
-                        'BackTest_ID' : self.id,
-                        'EventCode' : justif,
-                        'PositionQty' : position_args['qty'],
-                        'PositionClosePrice' : position_args['entryprice'],
-                        'CryptoBalance' : self.pool['crypto_balance'],
-                        'MoneyBalance' : self.pool['money_balance']}
-        
-
-        self.logger({'Position':self.pos_log})
-        self.log_position(current_position)
-
+        self.log_position(position_args, order_type)
         #SET ORDERS
         self.orders=self.strategy.update_grid(self.current_data[self.CloseCol])
         return self.id_position
 
-#Classe log
+###
+#Close positions
+#
 
     def close_position(self, id, justif):
         """
@@ -323,37 +317,40 @@ class baktest:
         close_position = close_position.with_columns(pl.lit(int(self.current_data[self.TimeCol])).alias("timestamp"))
         self.positions = self.positions.filter(pl.col("id") != id)
         self.set_pool(close_position)
-        self.log_position(close_position)
 
-    def log_time(self):
-        """
-        Log les statistiques temporelles pour chaque epoch.
-        """
-        if self.index%self.time_4_epoch==0:
-            current_time=time.time()
-            prct_of_run=self.index/self.length_of_data
-            epoch=self.index/self.time_4_epoch
-            time_between_epoch=current_time-self.step_time_n_1
-            time_from_start=current_time-self.start_time
-            print(f'\n',f'EPOCH : {epoch}  \n NUMBER OF LINES : {self.index}\n PRCT OF RUN : {prct_of_run} \n TIME BETWEEN EPOCH : {time_between_epoch} \n TIME FROM START : {time_from_start} \n EPOCH SIZE : {self.time_4_epoch}',f'\n'*2,'#'*20)
-            with open(self.sio_time,'a') as f : f.write(f'\n{epoch},{self.index},{prct_of_run},{time_between_epoch},{time_from_start},{self.time_4_epoch}')
-            self.step_time_n_1=time.time()
+###
+#Fonctions de log
+#
+    def log_position(self, position_args, order_type=None):
+        OrderId = 'null'
+        if order_type is not None : 
+            if order_type == 'buy_orders': justif = 'OPEN BUY'
+            elif order_type == 'sell_orders': justif = 'OPEN SELL'
+            OrderId = self.orders[order_type][0]['index']
+            Time = position_args['timestamp']
+            Quantity = position_args['qty']
+            EntryPrice = position_args['entryprice']
+        else : 
+            justif = position_args['justif'].item()
+            Time = position_args['timestamp'].item()
+            Quantity = position_args['qty'].item()
+            EntryPrice = position_args['entryprice'].item()
 
-    
-    def log_position(self, position):
-        """
-        Enregistre les changements d'état des positions dans un fichier CSV.
+
+        self.pos_log = {'Position_ID' :  self.id_position, 
+                        'OrderId' : OrderId,
+                        'Grid_ID': self.orders['metadatas']['grid_index'],
+                        'EventData_Time' : Time,
+                        'BackTest_ID' : self.id,
+                        'EventCode' : justif,
+                        'PositionQty' : Quantity,
+                        'PositionClosePrice' : EntryPrice,
+                        'CryptoBalance' : self.pool['crypto_balance'],
+                        'MoneyBalance' : self.pool['money_balance']}
         
-        Parameters:
-            position (polars.DataFrame): Informations sur la position à enregistrer.
-        """
-        info = list(position.rows()[0])
-        print(info)
-        for i in [self.pool['crypto_balance'],self.pool['money_balance']]:
-            info.append(i)
 
-        with open(self.position_event, 'a') as f:
-            f.write('\n'+','.join([str(i) for i in info if not callable(i)]))
+        self.logger({'Position':self.pos_log})
+
 
     def log_orders(self):
         Grid_Id = self.orders['metadatas']['grid_index']
@@ -373,25 +370,7 @@ class baktest:
             'OrderStatus' : all_orders['orders_params']['state'],
             'OrderJustif' : all_orders['orders_params']['justif']}
             self.logger({'Order':OrdersInfos})
-        self.orders_n_1 = self.orders.copy()
-
-    def conditions_check(self,i ,orders_types = ['buy_orders','sell_orders']):
-        for order_type in orders_types:
-            condition_open = self.orders[order_type][0]['open_condition'](self.orders, self.current_data[self.CloseCol], self.data_n_1[self.CloseCol],order_type)
-            if (condition_open == 'BUY'  and self.pool['money_balance']>self.orders[order_type][0]['level']*self.orders[order_type][0]['orders_params']['qty']) \
-                or (condition_open == 'SELL' and self.pool['crypto_balance']>self.orders[order_type][0]['orders_params']['qty']):
-                print(f"Order type : {order_type}",
-                    f'\n Condition open : {condition_open}', 
-                      f"\n Money balance : {self.pool['money_balance']}",
-                      f"\n Crypto Balance : {self.pool['crypto_balance']}",
-                      f"\n Buy amount : {self.orders[order_type][0]['level']*self.orders[order_type][0]['orders_params']['qty']}",
-                      f"\n Quantity : {self.orders[order_type][0]['orders_params']['qty']}",
-                      f"\n Buy Result : {condition_open == 'BUY' and self.pool['money_balance']>self.orders[order_type][0]['level']*self.orders[order_type][0]['orders_params']['qty']}",
-                      f"\n Sell Result : {(condition_open == 'SELL' and self.pool['crypto_balance']>self.orders[order_type][0]['orders_params']['qty'])}")
-                self.open_position(order_type, Order_pos = 0)
-                print(self.current_data)
-                self.conditions_check(i+1)
-            
+        self.orders_n_1 = self.orders.copy()  
         
 
 
@@ -409,3 +388,17 @@ def get_symbol_from_path(path):
     file_name = os.path.basename(path)
     symbol = file_name.split('_')[2].split('.')[0]
     return symbol
+
+
+
+######
+##
+######
+#     print(f"Order type : {order_type}",
+#           f'\n Condition open : {condition_open}', 
+#           f"\n Money balance : {self.pool['money_balance']}",
+#           f"\n Crypto Balance : {self.pool['crypto_balance']}",
+#           f"\n Buy amount : {self.orders[order_type][0]['level']*self.orders[order_type][0]['orders_params']['qty']}",
+#           f"\n Quantity : {self.orders[order_type][0]['orders_params']['qty']}",
+#           f"\n Buy Result : {condition_open == 'BUY' and self.pool['money_balance']>self.orders[order_type][0]['level']*self.orders[order_type][0]['orders_params']['qty']}",
+#           f"\n Sell Result : {(condition_open == 'SELL' and self.pool['crypto_balance']>self.orders[order_type][0]['orders_params']['qty'])}")
