@@ -75,3 +75,11 @@ def display_kpi(kpi_data):
     fluid=True,
     id = 'container_KPI'
 )
+
+def display_graph(fig):
+    """
+    """
+    print(fig)
+    return dbc.Container(
+        dcc.Graph(id='equity_chart', figure=fig)
+    )

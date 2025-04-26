@@ -6,7 +6,7 @@ CATEGORIES = {
 
     'RISQUE' : {
         "Max Drawdown": 0.0,
-        "Volatilité": 0.0,
+        "Returns Volatility": 0.0,
         "Sharpe Ratio": 0.0},
 
     'EFFICACITE' : {
