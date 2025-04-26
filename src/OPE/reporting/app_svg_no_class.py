@@ -16,7 +16,7 @@ WD = os.getenv('WD')
 sys.path.append(WD)
 
 from config import REPORTING_LOG_PATH
-from pages import display_live, display_kpi
+from pages import display_live, display_kpi, display_graph
 from src.OPE.MakeGrid import Grid_Maker
 from src.OPE.strategies.strategy_DumbStrat import Strategy
 from src.OPE.BackTest import baktest
@@ -46,16 +46,16 @@ backtest_dirs = os.listdir(REPORTING_LOG_PATH)
 app.layout = dbc.Container(
     [
         html.H1("REPORTING"),
-        dcc.Dropdown(id = 'dropdown_backtest', options=backtest_dirs, value = backtest_dirs[0]),
+        dcc.Dropdown(id = 'dropdown_backtest', options=backtest_dirs, value = ""),
         dbc.Tabs(
             children = [
                 dbc.Tab(label='LIVE', tab_id='tab-1'),
-                dbc.Tab(label='AFTER', tab_id='tab-2')
+                dbc.Tab(label='KPI', tab_id='tab-2'),
+                dbc.Tab(label='GRAPH', tab_id='tab-3')
             ],
             id="tabs",
             active_tab="tab-1"
         ),
-        html.Div(id='page_content'),
         dcc.Store(id='store_speed', data=1.0),
         dcc.Store(id='store_backtest_running', data=False),
         dcc.Store(id='store_pause', data=True),
@@ -63,12 +63,12 @@ app.layout = dbc.Container(
         dcc.Store(id='store_open_positions', data={}),
         dcc.Store(id='store_kpi',data={}),
         dcc.Interval(id='refresh_live', interval = 1000, n_intervals=0, disabled=True),
-        html.Div(id="tab_content", children=display_live())
+        html.Div(id="tab_content", children = display_live())
     ]
 )
 
 
-@app.callback(Output("page_content", "children"), 
+@app.callback(Output("tab_content", "children"), 
         Input("tabs", "active_tab"),
         State('store_kpi','data'),
         prevent_initial_call=True)
@@ -81,21 +81,22 @@ def render_tab(tab_id, kpi_data):
         return html.Div(display_live())
 
     elif tab_id == "tab-2":
-        return html.Div(display_kpi(kpi_data))
+        return html.Div(display_kpi(kpi_computer.Categories))
+    
+    elif tab_id == 'tab-3':
+        return html.Div(display_graph(kpi_computer.old_graphe_equity()))
     else:
         raise ValueError
     
-# TODO : callback input dropdown pour tab-1 et tab-2
-@app.callback(Output('store_kpi', 'data'),
-              Input('dropdown_backtest', 'value'))
-def update_categories(backtest_id):
+
+@app.callback(Input('dropdown_backtest', 'value'),
+              prevent_initial_call=True)
+def choose_bt(backtest_id):
     """
     """
-    print('lol')
     global kpi_computer
     kpi_computer = KPIComputer(REPORTING_LOG_PATH, backtest_id)
-    kpi_computer.old_Categories()
-    return kpi_computer.Categories
+
 
 
 
@@ -167,9 +168,9 @@ def pause(n_clicks, bt_running, pause):
 
     return pause, pause 
 
-@app.callback(Input('candlestick_chart', 'figure'))
-def test_figure(fig_data):
-    print(fig_data['data'])
+# @app.callback(Input('candlestick_chart', 'figure'))
+# def test_figure(fig_data):
+#     print(fig_data['data'])
     
 
 @app.callback(Output('candlestick_chart', 'figure', allow_duplicate=True),

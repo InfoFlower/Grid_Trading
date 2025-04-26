@@ -1,4 +1,5 @@
 import polars as pl
+import numpy as np
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import plotly.express as px
@@ -38,6 +39,8 @@ class KPIComputer:
         ###### Transformation du dataframe, calcul equity, dradown etc... ######
         self.old_equity()
         self.old_drawdown()
+        self.old_returns()
+        self.old_Categories()
 
     ###### OLD TRANSFORMATION ######
     def old_equity(self):
@@ -55,27 +58,41 @@ class KPIComputer:
         )
         
         #old_left_merged_data_x_posevent.with_columns([pl.col("")])
-        self.position_value = old_left_merged_data_x_posevent.with_columns(
+        self.old_position_value = old_left_merged_data_x_posevent.with_columns(
             [
                 (pl.col('Close')*pl.col('crypto_balance') + pl.col('money_balance')).alias('Equity')
             ]
         ).select(
             ["Open time", "Open", "High", "Low", "Close", "crypto_balance", "money_balance", "Equity"]
         )
+        
 
     def old_drawdown(self):
         """
         """
-        position_value = self.position_value.clone()
+        
+        position_value = self.old_position_value.clone()
+        
         position_value = position_value.with_columns([
             pl.col('Equity').cum_max().alias("high_water_mark")
         ]) 
+        
         position_value = position_value.with_columns([
-            (pl.col("Equity")-pl.col("high_water_mark"))/pl.col("high_water_mark").alias('Drawdown')
+            ((pl.col("Equity")-pl.col("high_water_mark"))/pl.col("high_water_mark")).alias('Drawdown')
         ])
-        self.position_value = position_value.select([
+        self.old_position_value = position_value.select(
             ["Open time", "Open", "High", "Low", "Close", "crypto_balance", "money_balance", "Equity", "Drawdown"]
+            )
+    def old_returns(self):
+        """
+        """
+        position_value = self.old_position_value.clone()
+        position_value = position_value.with_columns([
+            ((pl.col("Equity") / pl.col("Equity").shift(1)) - 1).alias("Returns")
         ])
+        self.old_position_value = position_value
+
+        
 
     ###### OLD CATEGORIES  ######
     def old_Categories(self):
@@ -88,8 +105,8 @@ class KPIComputer:
                                         }
         self.Categories['RISQUE'] = {
                                     "Max Drawdown": self.old_Max_Drawdown(),
-                                    "Volatilité": 0.0,
-                                    "Sharpe Ratio": 0.0
+                                    "Returns Volatility": self.old_Volatility(),
+                                    "Sharpe Ratio": self.old_Sharpe_Ratio()
                                     }
         #old_Max_Drawdown
 
@@ -99,8 +116,8 @@ class KPIComputer:
         Pourcentage de gain total (sur tout le backtest)
         -> Float
         """
-        ic = self.old_position_event['money_balance'][0]*2
-        fc = self.old_position_event['money_balance'][-1]*2
+        ic = self.old_position_value['Equity'][0]
+        fc = self.old_position_value['Equity'][-1]
         total_return = (fc - ic)/ic
         return total_return
 
@@ -117,9 +134,9 @@ class KPIComputer:
 
         t = delta.years + delta.months/12 + delta.days/365.25 + delta.hours/8766 + delta.minutes/525960 + delta.seconds/31557600
         
-        ic = self.old_position_event['money_balance'][0]*2
+        ic = self.old_position_value['Equity'][0]*2
 
-        fc = self.old_position_event['money_balance'][-1]*2
+        fc = self.old_position_value['Equity'][-1]*2
 
         try:
             return (fc/ic)**(1/t)-1
@@ -137,14 +154,32 @@ class KPIComputer:
     
     def old_Max_Drawdown(self):
         """
+        Min(Drawdown)
         
         """
-        return self.position_value['Drawdown'].min()
+        return self.old_position_value['Drawdown'].min()
+    
+    def old_Volatility(self):
+        """
+        Ecart type des rendements
+        #Donnée par secondes
+        """
+        return self.old_position_value['Returns'].std()
+    
+    def old_Expected_Return(self):
+        """
+        """
+        return self.old_position_value['Returns'].mean()
+    
+    def old_Sharpe_Ratio(self):
+        """
+        """
+        return self.old_Expected_Return()/self.old_Volatility()
     
     ###### OLD GRAPHE ######
     def old_graphe_equity(self):
-        fig = px.line(self.position_value, x='Open time', y='Equity')
-        fig.show()
+        fig = px.line(self.old_position_value, x='Open time', y='Equity')
+        return fig
 
 
     
@@ -203,15 +238,22 @@ class KPIComputer:
 def main():
 
     kpiComputer = KPIComputer(REPORTING_LOG_PATH, 1)
+    position_value = kpiComputer.old_position_value.head(10)
     total_return = kpiComputer.old_Total_Return()
     annualized_return = kpiComputer.old_Annualized_Return()
     win_rate = kpiComputer.old_Win_Rate()
     max_drawdown = kpiComputer.old_Max_Drawdown()
-    print('Position value', kpiComputer.position_value.head(10))
+    sharpe_ratio = kpiComputer.old_Sharpe_Ratio()
+    volatility = kpiComputer.old_Volatility()
+    categories = kpiComputer.Categories
+    print('position_value', position_value)
     print('annualized_return', annualized_return)
     print('total_return', total_return)
     print('win_rate', win_rate)
     print('max_drawdown', max_drawdown)
+    print('categories', categories)
+    print('volatility', volatility)
+    print('sharpe_ratio', sharpe_ratio)
 
 if __name__ == "__main__":
     main()
