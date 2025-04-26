@@ -144,7 +144,7 @@ class Strategy:
                 return (position['id'], 'TAKEPROFIT BUY')
         return False, False
 
-    def open_condition(self, orders, order_type, current_n, current_n_struct, price_n_1):
+    def open_condition(self, order, order_type, current_n, current_n_struct, price_n_1):
         """
         Définit la condition d'ouverture des ordres les plus proches du prix.\n
         Teste donc 1 ordre d'achat et 1 ordre de vente.\n
@@ -163,10 +163,10 @@ class Strategy:
         price_n=float(current_n[current_n_struct['CloseCol']])
         High_n = current_n[current_n_struct['HighCol']]
         Low_n = current_n[current_n_struct['LowCol']]
-        if  (orders[order_type][0]['level']>=price_n and orders[order_type][0]['level']<price_n_1)\
-            or Low_n<=orders[order_type][0]['level']<=High_n :return "BUY"
-        if  (orders[order_type][0]['level']<=price_n and orders[order_type][0]['level']>price_n_1)\
-            or Low_n<=orders[order_type][0]['level']<=High_n :return "SELL"
-        return False
+        if  (order['level']>=price_n and order['level']<price_n_1)\
+            or Low_n<=order['level']<=High_n :return (order['index'], order_type)
+        if  (order['level']<=price_n and order['level']>price_n_1)\
+            or Low_n<=order['level']<=High_n :return (order['index'], order_type)
+        return (False,False)
     #order_type == 'buy_orders' and
     #order_type == 'sell_orders' and

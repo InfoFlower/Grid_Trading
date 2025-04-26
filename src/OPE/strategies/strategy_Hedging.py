@@ -70,7 +70,7 @@ class StrategyHedging(Strategy):
             
         return False, False
 
-    def open_condition(self, orders, price_n, price_n_1):
+    def open_condition(self, orders, order_type, current_n, current_n_struct, price_n_1):
         """
         Définit la condition d'ouverture des ordres les plus proches du prix.\n
         Teste donc 1 ordre d'achat et 1 ordre de vente.\n
@@ -85,8 +85,12 @@ class StrategyHedging(Strategy):
             - str : Si ordre à ouvrir
             - False : Sinon
         """
-        price_n = float(price_n)
         price_n_1 = float(price_n_1)
-        if orders['buy_orders'][0]['level']>=price_n and orders['buy_orders'][0]['level']<price_n_1 :return "BUY"
-        if orders['sell_orders'][0]['level']<=price_n and orders['sell_orders'][0]['level']>price_n_1 :return "SELL"
+        price_n=float(current_n[current_n_struct['CloseCol']])
+        High_n = current_n[current_n_struct['HighCol']]
+        Low_n = current_n[current_n_struct['LowCol']]
+        if  (orders[order_type][0]['level']>=price_n and orders[order_type][0]['level']<price_n_1)\
+            or Low_n<=orders[order_type][0]['level']<=High_n :return ("BUY")
+        if  (orders[order_type][0]['level']<=price_n and orders[order_type][0]['level']>price_n_1)\
+            or Low_n<=orders[order_type][0]['level']<=High_n :return "SELL"
         return False

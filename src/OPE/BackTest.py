@@ -221,14 +221,14 @@ class baktest:
 #
     def open_conditions_check(self,i=0 ,orders_types = ['buy_orders','sell_orders']):
         for order_type in orders_types:
-            condition_open = self.orders[order_type][0]['open_condition'](self.orders,order_type, self.current_data, self.struct,self.data_n_1[self.CloseCol])
-            if (condition_open == 'BUY'  and self.pool['money_balance']>self.orders[order_type][0]['level']*self.orders[order_type][0]['orders_params']['qty']) \
-                or (condition_open == 'SELL' and self.pool['crypto_balance']>self.orders[order_type][0]['orders_params']['qty'])\
-                and i<10:
-                self.open_position(order_type, Order_pos = 0)
-                # self.open_conditions_check(i+1)
+            for order in self.orders[order_type]:
+                condition_open = order['open_condition'](order,order_type, self.current_data, self.struct,self.data_n_1[self.CloseCol])
+                if (condition_open[1] == 'buy_orders'  and self.pool['money_balance']>order['level']*order['orders_params']['qty'])\
+                    or (condition_open[1] == 'sell_orders' and self.pool['crypto_balance'].item()>order['orders_params']['qty'])\
+                    and i<10:
+                    self.open_position(order,order_type)
 
-    def open_position(self,order_type, Order_pos = 0):
+    def open_position(self,order, order_type):
         
         """
         Ouvre une nouvelle position de trading et l'ajoute à la liste des positions ouvertes.
@@ -249,37 +249,25 @@ class baktest:
             int: Identifiant de la position ouverte.
 
         """
-        position_args = self.orders[order_type][Order_pos]['orders_params']
+        position_args = order['orders_params']
         position_args['timestamp'] = int(self.current_data[self.TimeCol])
         position_args['entryprice'] = self.current_data[self.CloseCol]
-        position_args['close_condition'] = self.orders[order_type][Order_pos]['close_condition']
+        position_args['close_condition'] = order['close_condition']
         if position_args['is_buy'] is False : 
             position_args['signe_buy']=-1
         else:
             position_args['signe_buy']=1
 
         #SET POSITION
-
         position_args['id'] = self.id_position
         position_args['state'] = 'Opening'
         position_args['justif'] = 'Opening'
         position_args['close_price'] = -1
         self.id_position += 1
-        current_position = pl.DataFrame(position_args).select(['id',
-                                                       'timestamp', 
-                                                        'entryprice',
-                                                        'qty',
-                                                        'is_buy',
-                                                        'signe_buy',
-                                                        'leverage',
-                                                        'take_profit',
-                                                        'stop_loss',
-                                                        'state',
-                                                        'justif',
-                                                        'close_price',
-                                                        'close_condition'])
+        current_position = pl.DataFrame(position_args).select(['id','timestamp','entryprice','qty','is_buy','signe_buy','leverage','take_profit','stop_loss','state','justif','close_price','close_condition'])
         self.positions = pl.concat([self.positions, current_position])
-
+        
+        #Impact objects
         self.set_pool(current_position)
         self.log_position(position_args, order_type)
         self.old_log_position(current_position)
@@ -300,18 +288,7 @@ class baktest:
             justif (str): Justification de la fermeture.
         """
         close_position = self.positions.filter(pl.col("id") == id)
-        log_infos={'Position_ID' : id+1,
-                   'BackTest_ID' : self.id,
-                   'OrderId' : 'null',
-                   'Grid_ID' : 'null',
-                   'EventData_Time' : self.data[self.index][self.TimeCol],
-                   'EventCode' : justif,
-                   'PositionClosePrice' : self.current_data[self.CloseCol],
-                   'CryptoBalance' : self.pool['crypto_balance'],
-                   'MoneyBalance' : self.pool['money_balance'],
-                   'PositionQty' : close_position['qty'].item(),}
-        
-        self.logger({'Position':log_infos})
+        self.log_position(close_position, order_type=None)
         close_position = close_position.with_columns(state=pl.lit('Closing')) #Ajouter étape de log du prix de closing
         close_position = close_position.with_columns(justif=pl.lit(justif))
         close_position = close_position.with_columns(close_price=pl.lit(self.current_data[self.CloseCol]))
@@ -332,13 +309,15 @@ class baktest:
             Time = position_args['timestamp']
             Quantity = position_args['qty']
             EntryPrice = position_args['entryprice']
+
         else : 
             justif = position_args['justif'].item()
             Time = position_args['timestamp'].item()
             Quantity = position_args['qty'].item()
             EntryPrice = position_args['entryprice'].item()
+            EntryPrice = position_args['entryprice'].item()
 
-
+        print(self.pool['crypto_balance'].item())
         self.pos_log = {'Position_ID' :  self.id_position, 
                         'OrderId' : OrderId,
                         'Grid_ID': self.orders['metadatas']['grid_index'],
@@ -347,7 +326,7 @@ class baktest:
                         'EventCode' : justif,
                         'PositionQty' : Quantity,
                         'PositionClosePrice' : EntryPrice,
-                        'CryptoBalance' : self.pool['crypto_balance'],
+                        'CryptoBalance' : 1,
                         'MoneyBalance' : self.pool['money_balance']}
         
 
@@ -382,7 +361,6 @@ class baktest:
             position (polars.DataFrame): Informations sur la position à enregistrer.
         """
         info = list(position.rows()[0])
-        print(info)
         for i in [self.pool['crypto_balance'],self.pool['money_balance']]:
             info.append(i)
 

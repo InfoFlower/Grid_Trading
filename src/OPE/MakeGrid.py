@@ -35,7 +35,7 @@ class Grid_Maker:
         - log_grid(grid) : Enregistre la création d'une grille et append dans un .json
     """
     def __init__(self, grid_type, grid_name, write_path='data/trade_history/grid/'):
-        
+        self.order_index=0
         self.grid_type = grid_type
         self.index=0
         #Changer le nom du self.write_path pour self.grid_path ou qqchose de ce genre
@@ -69,13 +69,16 @@ class Grid_Maker:
         pass
 
 
-    def make_order(self,i,args,params):
+    def make_order(self,intervall,args,params, need_signed=True):
         """
         Retourne un ordre au niveau i pour un type d'ordre (params : buy or sell) et les args 
         """
-        signe_buy=-1
-        if params['is_buy']:signe_buy=1
-        return {'index':i,'level' : args['grid_origin']-signe_buy*args['grid_origin']*(i*args['prct_of_intervall']),
+        self.order_index+=1
+        if need_signed:
+            signe_buy=-1
+            if params['is_buy']:signe_buy=1
+        else: signe_buy=1
+        return {'index':self.order_index,'level' : args['grid_origin']+signe_buy*args['grid_origin']*(intervall*args['prct_of_intervall']),
                         'orders_params' : params,
                         'open_condition' : args['open_condition'],
                         'close_condition' : args['close_condition'],

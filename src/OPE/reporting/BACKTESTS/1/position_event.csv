@@ -1,1 +1,111 @@
 id,timestamp,entryprice,qty,is_buy,signe_buy,leverage,take_profit,stop_loss,state,justif,close_price,crypto_balance,money_balance
+0,1511776922000,9250.01,0.1,False,-1,1,0.01,0.005,Opening,Opening,-1,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.007009
+],1925.0010000000002
+0,1511777306000,9250.01,0.1,False,-1,1,0.01,0.005,Closing,STOPLOSS SELL,9296.97,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.107009
+],995.3040000000002
+1,1511777745000,9345.99,0.1,True,1,1,0.01,0.005,Opening,Opening,-1,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.207009
+],60.705000000000155
+1,1511780160000,9345.99,0.1,True,1,1,0.01,0.005,Closing,TAKEPROFIT BUY,9440.94,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.107009
+],1004.7990000000002
+2,1511780221000,9438.0,0.1,True,1,1,0.01,0.005,Opening,Opening,-1,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.207009
+],60.99900000000014
+2,1511781304000,9438.0,0.1,True,1,1,0.01,0.005,Closing,STOPLOSS BUY,9387.91,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.107009
+],999.7900000000002
+3,1511784720000,9532.49,0.1,True,1,1,0.01,0.005,Opening,Opening,-1,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.207009
+],46.54100000000017
+3,1511786217000,9532.49,0.1,True,1,1,0.01,0.005,Closing,STOPLOSS BUY,9460.01,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.107009
+],992.5420000000003
+4,1511795355000,9639.99,0.1,True,1,1,0.01,0.005,Opening,Opening,-1,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.207009
+],28.543000000000234
+4,1511796304000,9639.99,0.1,True,1,1,0.01,0.005,Closing,STOPLOSS BUY,9590.05,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.107009
+],987.5480000000002
+5,1511798182000,9543.26,0.1,False,-1,1,0.01,0.005,Opening,Opening,-1,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.007009
+],1941.8740000000003
+5,1511798761000,9543.26,0.1,False,-1,1,0.01,0.005,Closing,STOPLOSS SELL,9612.3,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.107009
+],980.6440000000002
+6,1511802407000,9444.07,0.1,False,-1,1,0.01,0.005,Opening,Opening,-1,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.007009
+],1925.0510000000004
+6,1511805708000,9444.07,0.1,False,-1,1,0.01,0.005,Closing,STOPLOSS SELL,9494.42,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.107009
+],975.6090000000004
+7,1511806736000,9547.36,0.1,True,1,1,0.01,0.005,Opening,Opening,-1,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.207009
+],20.873000000000275
+7,1511806994000,9547.36,0.1,True,1,1,0.01,0.005,Closing,STOPLOSS BUY,9494.57,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.107009
+],970.3300000000003
+8,1511808296000,9450.01,0.1,False,-1,1,0.01,0.005,Opening,Opening,-1,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.007009
+],1915.3310000000004
+8,1511812339000,9450.01,0.1,False,-1,1,0.01,0.005,Closing,STOPLOSS SELL,9499.0,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.107009
+],965.4310000000003
+9,1511812846000,9589.3,0.1,True,1,1,0.01,0.005,Opening,Opening,-1,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.207009
+],6.501000000000317
+9,1511812865000,9589.3,0.1,True,1,1,0.01,0.005,Closing,STOPLOSS BUY,9504.06,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.107009
+],956.9070000000003
+10,1511812953000,9458.03,0.1,False,-1,1,0.01,0.005,Opening,Opening,-1,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.007009
+],1902.7100000000005
+10,1511812971000,9458.03,0.1,False,-1,1,0.01,0.005,Closing,STOPLOSS SELL,9519.88,shape: (1,)
+Series: 'Close' [f64]
+[
+	0.107009
+],950.7220000000005
