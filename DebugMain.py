@@ -14,16 +14,10 @@ import os
 import time
 from dotenv import load_dotenv
 import polars as pl
-import argparse
 from datetime import datetime
-import sys
 
-# sys.argv est une liste contenant tous les arguments
-print("Nom du script:", sys.argv[0])  # Le premier élément est le nom du script
-print("Arguments passés:", sys.argv[1])  # Les arguments suivants
-
-all_args = sys.argv[1]  # Récupérer tous les arguments passés au script
-
+# import argparse
+# import json
 load_dotenv()
 start_time = datetime.fromtimestamp(time.time())
 WD = os.getenv('WD')
@@ -31,11 +25,6 @@ print('Start time :', start_time)
 ###
 ##SETUP VARIABLES
 ###
-argparser = argparse.ArgumentParser()
-argparser.add_argument('--type_of_file', type=str, default='full')
-args=argparser.parse_args()
-type_of_file=args.type_of_file
-
 # print('\n'*2, '#'*20,'\n'*2)
 # print('STARTING PROCESS AYAAAAAA')
 # print('\n'*2, '#'*20,'\n'*2)
@@ -53,12 +42,14 @@ type_of_file=args.type_of_file
 # print('Time to setup data :', after_data - after_vars)
 # print('General time to setup :', after_data - start_time)
 
+
+
 ##
 #Set Grid and Strategy names
 GridType = 'BasicGrid'
 StratName = 'DumbStrat'
 GridName='GridPoc'
-
+type_of_file = 'full'
 GridFullName = f'{StratName}_{GridType}_{GridName}'
 ##
 #SETUP DATA
@@ -70,10 +61,10 @@ else :
     path=f'data/OPE_DATA/DATA_RAW_S_ORIGIN_test_code/data_raw_BTCUSDT_{start_time}.csv'
 
 data=pl.read_csv(path, truncate_ragged_lines=True)
-
+self_log_path = f'{WD}src/OPE/reporting/BACKTESTS/'
 ##
 #SETUP DATA COLUMNS
-DataStructure = all_args['DataStructure']
+DataStructure = {'TimeCol' : 'Open time', 'CloseCol' : 'Close', 'LowCol' : 'Low',  'HighCol' : 'High'}
 ##
 #Shape data
 print('Data shape :', data.columns)
@@ -86,14 +77,11 @@ DataStructure = { 'TimeCol' : 0,
 
 data=data.to_numpy()
 #Setup Grid Parameters
-GridOrders_params = all_args['GridOrders_params']
-Grid_Metadata = all_args['Grid_Metadata']
+GridOrders_params = {'qty':0.001, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.01/2, 'justif' : 'init', 'state' : 'open'}
+Grid_Metadata = {'prct_of_intervall' : 0.01, 'nb_orders' : 1}
 #Set initial balance
-money_balance= all_args['money_balance']
-if all_args['crypto_balance'] == 'Calculated':
-    crypto_balance= money_balance/data[0][DataStructure['CloseCol']] #BTC
-else:
-    crypto_balance= all_args['crypto_balance']
+money_balance= 1000
+crypto_balance= money_balance/data[0][DataStructure['CloseCol']] #BTC
 time_4_epoch=10000
 
 
@@ -101,15 +89,15 @@ time_4_epoch=10000
 
 DataStructure = [i for i in DataStructure.values()]
 
-
+grid_write_path = f'{WD}data/trade_history/grid/'
 ###
 ##INIT CLASS
 ###
 logger = Logger(append=False) 
-grid_maker = MakeGrid.Grid_Maker(GridType, GridName)
+grid_maker = MakeGrid.Grid_Maker(GridType, GridName,grid_write_path)
 strategy = Strategy(StratName, grid_maker, Grid_Metadata, GridOrders_params)
 backtest_id=1
-bktst=baktest(path, strategy, money_balance, crypto_balance, logger, backtest_id,time_4_epoch=time_4_epoch,TimeCol=DataStructure[0],CloseCol=DataStructure[1],LowCol=DataStructure[2],HighCol=DataStructure[3])
+bktst=baktest(path, strategy, money_balance, crypto_balance, logger, backtest_id,self_log_path = self_log_path,time_4_epoch=time_4_epoch,TimeCol=DataStructure[0],CloseCol=DataStructure[1],LowCol=DataStructure[2],HighCol=DataStructure[3])
 
 
 
@@ -131,5 +119,3 @@ else:
         bktst(data)
         print(i)
     with open(bktst.strategy.grid_maker.write_path, 'a') as f: f.write(']')
-
-print('End time :', datetime.fromtimestamp(time.time()))

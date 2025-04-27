@@ -40,6 +40,7 @@ class Grid_Maker:
         self.index=0
         #Changer le nom du self.write_path pour self.grid_path ou qqchose de ce genre
         self.write_path = write_path+grid_name+'.json'
+        print(self.write_path)
         with open(self.write_path, 'w', encoding='utf-8') as f:
             f.write('[')
 

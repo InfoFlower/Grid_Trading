@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import src.OPE.technical_report.log_time_for_iter as know_your_perf
 load_dotenv()
 WD = os.getenv('WD')
-
+perf_csv=f'{WD}src/OPE/technical_report/perfs.csv'
 class baktest:
     """
         Classe de backtest qui constitue la couche opérationnelle permettant d'appliquer des stratégies.\n
@@ -127,7 +127,7 @@ class baktest:
         Returns:
             self: L'instance elle-même pour l'itération.
         """
-        self.checkeur = know_your_perf.know_your_perf(sniffing_name='Sniffeur', epoch= self.time_4_epoch, is_working=True)
+        self.checkeur = know_your_perf.know_your_perf(sniffing_name='Sniffeur', perf_csv =perf_csv, epoch= self.time_4_epoch, is_working=True)
         self.index = self.start_index
         self.orders_n_1 = self.orders
         self.orders=pl.DataFrame(self.strategy(self.data[self.index][self.CloseCol]))

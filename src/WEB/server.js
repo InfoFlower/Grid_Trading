@@ -1,86 +1,103 @@
 const express = require('express');
-const { PythonShell } = require('python-shell');
+const { spawn } = require('child_process');
 const path = require('path');
+const fs = require('fs'); // Ajout pour vérifier l'existence des fichiers
+
 const app = express();
 const port = 3000;
+const publicDir = path.join(__dirname, 'public');
+const pythonScript = path.resolve(__dirname, '../../DebugMain.py');
 
-// Configuration des chemins
-const PYTHON_SCRIPT_PATH = path.join(__dirname, '..', '..', 'main.py');
-const PUBLIC_DIR = path.join(__dirname, 'public');
-const INDEX_PAGE = path.join(PUBLIC_DIR, 'index.html');
+// Vérification des chemins au démarrage
+if (!fs.existsSync(publicDir)) {
+  console.error(`ERREUR: Le dossier public n'existe pas: ${publicDir}`);
+  process.exit(1);
+}
+
+if (!fs.existsSync(pythonScript)) {
+  console.error(`ERREUR: Le script Python n'existe pas: ${pythonScript}`);
+  process.exit(1);
+}
 
 // Middleware
 app.use(express.json());
-app.use(express.static(PUBLIC_DIR));
+app.use(express.static(publicDir));
 
-// Route par défaut - Redirige vers setup.html
+// Routes
 app.get('/', (req, res) => {
-    res.sendFile(INDEX_PAGE);
+  const indexPath = path.join(publicDir, 'index.html');
+  
+  if (!fs.existsSync(indexPath)) {
+    return res.status(500).json({ 
+      error: 'Fichier index.html introuvable',
+      path: indexPath
+    });
+  }
+  
+  res.sendFile(indexPath);
 });
 
-
-// Route pour exécuter le script Python
 app.post('/run-script', (req, res) => {
-    const options = {
-        mode: 'text',
-        pythonPath: 'python3', // ou 'python' selon votre système
-        pythonOptions: ['-u'], // Sortie non bufferisée
-        args: [JSON.stringify(req.body)]
-    };
+  try {
+    const pythonProcess = spawn('python', [pythonScript]);
+    
+    console.log(`Exécution du script: ${pythonScript}`);
+    console.log(`PID du processus: ${pythonProcess.pid}`);
 
-    // Vérification que le fichier Python existe
-    const fs = require('fs');
-    if (!fs.existsSync(PYTHON_SCRIPT_PATH)) {
-        return res.status(404).json({ 
-            error: 'Script Python introuvable',
-            path: PYTHON_SCRIPT_PATH
+    let output = '';
+    let errorOutput = '';
+
+    pythonProcess.stdout.on('data', (data) => {
+      output += data.toString();
+      console.log(`[Python stdout] ${data.toString().trim()}`);
+    });
+
+    pythonProcess.stderr.on('data', (data) => {
+      errorOutput += data.toString();
+      console.error(`[Python stderr] ${data.toString().trim()}`);
+    });
+
+    pythonProcess.on('error', (err) => {
+      console.error('Erreur du processus Python:', err);
+      res.status(500).json({
+        error: 'Échec du lancement du script Python',
+        details: err.message
+      });
+    });
+
+    pythonProcess.on('close', (code) => {
+      console.log(`Script terminé avec code ${code}`);
+      if (code !== 0) {
+        return res.status(500).json({
+          error: 'Erreur dans le script Python',
+          exitCode: code,
+          errorOutput: errorOutput.trim()
         });
+      }
+      res.json({ 
+        success: true,
+        output: output.trim() 
+      });
+    });
+
+    // Envoyer les données d'entrée au processus Python si nécessaire
+    if (req.body) {
+      pythonProcess.stdin.write(JSON.stringify(req.body));
+      pythonProcess.stdin.end();
     }
 
-    PythonShell.run(PYTHON_SCRIPT_PATH, options, (err, results) => {
-        if (err) {
-            console.error('Erreur Python:', err);
-            return res.status(500).json({ 
-                error: err.message,
-                stack: err.stack
-            });
-        }
-        
-        // Envoi des résultats avec le chemin exécuté pour debug
-        res.json({
-            results,
-            executedScript: PYTHON_SCRIPT_PATH,
-            indexPage: INDEX_PAGE
-        });
+  } catch (err) {
+    console.error('Erreur serveur:', err);
+    res.status(500).json({
+      error: 'Erreur interne du serveur',
+      details: err.message
     });
-});
-
-// Route de test
-app.get('/test', (req, res) => {
-    res.json({
-        status: 'OK',
-        indexPage: INDEX_PAGE,
-        pythonScriptPath: PYTHON_SCRIPT_PATH,
-        publicDir: PUBLIC_DIR,
-        currentDir: __dirname
-    });
-});
-
-// Gestion des erreurs 404
-app.use((req, res) => {
-    res.status(404).send('Endpoint non trouvé');
-});
-
-// Gestion des erreurs serveur
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Erreur interne du serveur');
+  }
 });
 
 // Démarrer le serveur
 app.listen(port, () => {
-    console.log(`Serveur démarré sur http://localhost:${port}`);
-    console.log(`Script Python: ${PYTHON_SCRIPT_PATH}`);
-    console.log(`Dossier public: ${PUBLIC_DIR}`);
-    console.log(`Script Python: ${INDEX_PAGE}`);
+  console.log(`Serveur démarré sur http://localhost:${port}`);
+  console.log(`Dossier public: ${publicDir}`);
+  console.log(`Script Python: ${pythonScript}`);
 });
