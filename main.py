@@ -86,7 +86,7 @@ Grid_Metadata = {'prct_of_intervall' : 0.01, 'nb_orders' : 1}
 #Set initial balance
 money_balance= 1000
 crypto_balance= money_balance/data[0][DataStructure['CloseCol']] #BTC
-time_4_epoch=50000
+time_4_epoch=10000
 
 
 
@@ -97,11 +97,11 @@ DataStructure = [i for i in DataStructure.values()]
 ###
 ##INIT CLASS
 ###
-logger = Logger(append=False,) 
+logger = Logger(append=False) 
 grid_maker = MakeGrid.Grid_Maker(GridType, GridName)
 strategy = Strategy(StratName, grid_maker, Grid_Metadata, GridOrders_params)
 backtest_id=1
-bktst=baktest(path, strategy, money_balance, crypto_balance, logger, backtest_id,time_4_epoch=500000,TimeCol=DataStructure[0],CloseCol=DataStructure[1],LowCol=DataStructure[2],HighCol=DataStructure[3])
+bktst=baktest(path, strategy, money_balance, crypto_balance, logger, backtest_id,time_4_epoch=time_4_epoch,TimeCol=DataStructure[0],CloseCol=DataStructure[1],LowCol=DataStructure[2],HighCol=DataStructure[3])
 
 
 

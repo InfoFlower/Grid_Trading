@@ -127,7 +127,7 @@ class baktest:
         Returns:
             self: L'instance elle-même pour l'itération.
         """
-        self.checkeur = know_your_perf.know_your_perf(sniffing_name='Sniffeur', is_working=True)
+        self.checkeur = know_your_perf.know_your_perf(sniffing_name='Sniffeur', epoch= self.time_4_epoch, is_working=True)
         self.index = self.start_index
         self.orders_n_1 = self.orders
         self.orders=pl.DataFrame(self.strategy(self.data[self.index][self.CloseCol]))
@@ -219,16 +219,6 @@ class baktest:
             self.pool['crypto_balance']+=position['qty'].item() * position['signe_buy'].item() * signe_open
             self.pool['money_balance']-=position['qty'].item()* self.current_data[self.CloseCol].item() * position['signe_buy'].item() * signe_open
 
-###
-#Open positions
-#
-    def open_conditions_check(self,i=0 ,orders_types = ['buy_orders','sell_orders']):
-        for order_type in orders_types:
-            for order in self.orders[order_type]:
-                condition_open = order['open_condition'](order,order_type, self.current_data, self.struct,self.data_n_1[self.CloseCol])
-                if (condition_open[1] == 'buy_orders'  and self.pool['money_balance']>order['level']*order['orders_params']['qty'])\
-                    or (condition_open[1] == 'sell_orders' and self.pool['crypto_balance']>order['orders_params']['qty']):
-                    self.open_position(order,order_type)
 
     def open_position(self,order):
         
@@ -319,7 +309,6 @@ class baktest:
         if order_type is not None :
             if position_args['is_buy'] : justif = 'OPEN BUY'
             else : justif = 'OPEN SELL'
-            print(position_args)
             OrderId = position_args['OrderId']
             Time = position_args['timestamp']
             Quantity = position_args['qty']

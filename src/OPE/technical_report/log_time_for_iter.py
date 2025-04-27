@@ -19,12 +19,12 @@ class know_your_perf:
         self.actual_time = datetime.now()
         self.iteration_count += 1
         if self.iteration_count % self.epoch == 0:
-            if self.verbose == True:
-                Time_since_start = self.actual_time - self.start_time
-                Time_since_last_step = self.actual_time - self.last_step_time
-                print(f'\n', f'\n','*'*20)
-                print(f'Iteration {self.iteration_count} \n Epoch: {self.iteration_count//self.epoch} \n Time since start: {Time_since_start} \n Time since last step: {Time_since_last_step}')
-                print(f'\n', f'\n','*'*20)
-                self.last_step_time = self.actual_time
+        #     if self.verbose == True:
+            Time_since_start = self.actual_time - self.start_time
+            Time_since_last_step = self.actual_time - self.last_step_time
+            print(f'\n', f'\n','*'*20)
+            print(f'Iteration {self.iteration_count} \n Epoch: {self.iteration_count//self.epoch} \n Time since start: {Time_since_start} \n Time since last step: {Time_since_last_step}')
+            print(f'\n', f'\n','*'*20)
+            self.last_step_time = self.actual_time
             with open(self.perf_csv, 'a') as f:
                 f.write(f'\n{self.sniffing_name},{self.start_time},{self.last_step_time},{self.actual_time},{Time_since_start},{Time_since_last_step}, {self.iteration_count}')

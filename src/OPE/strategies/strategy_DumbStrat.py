@@ -131,11 +131,7 @@ class Strategy:
         price_n=float(current_n[current_n_struct['CloseCol']])
         High_n = current_n[current_n_struct['HighCol']]
         Low_n = current_n[current_n_struct['LowCol']]
-        # print('\n')
-        # print('price_n_1',price_n_1)
-        # print('price_n',price_n)
-        # print('High_n',High_n)
-        # print('Low_n',Low_n)
+
         if position['is_buy']:
             stop_loss_price = position['entryprice']*(1-position['stop_loss'])
             take_profit_price = position['entryprice']*(1+position['take_profit'])
@@ -176,10 +172,7 @@ class Strategy:
         price_n=float(current_n[current_n_struct['CloseCol']])
         High_n = current_n[current_n_struct['HighCol']]
         Low_n = current_n[current_n_struct['LowCol']]
-        # print(order)
         if  (order['level']>=Low_n and order['orders_params']['is_buy']) or \
             ((order['level']<=High_n and not order['orders_params']['is_buy'])):
             return order
         return False
-    #order_type == 'buy_orders' and
-    #order_type == 'sell_orders' and
