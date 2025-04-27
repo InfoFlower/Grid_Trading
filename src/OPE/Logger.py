@@ -10,14 +10,14 @@ WD = os.getenv('WD')
 
 Data_Structure = {
     'BackTest': ['BackTest_ID', 'StartData_Time', 'EndData_Time', 'Symbol', 'InitialCapital', 'FinalCapital'],
-    'Position': ['Position_ID','OrderId','Grid_ID','EventData_Time','BackTest_ID','EventCode','PositionQty','PositionClosePrice','CryptoBalance','MoneyBalance'],
+    'Position': ['Position_ID','OrderId','Grid_ID','EventData_Time','BackTest_ID','EventCode','PositionQty','PositionEntryPrice','PositionClosePrice','ActualPrice','CryptoBalance','MoneyBalance'],
     'Order': ['Order_ID','Grid_ID','OrderTime','OrderType','OrderPrice','OrderQuantity','OrderLeverage','OrderTakeProfit','OrderStopLoss','OrderStatus','OrderJustif'],
     'Strategy' : ['BackTest_ID', 'StrategyName','GridPrctIntervall','GridNbOrder','OrderQty','OrderLeverage','OrderTakeProfit','OrderStopLoss','OrderJustif','OrderState']
 }
-
-
-
 Folder=WD+'src/OPE/reporting/data_logger'
+
+
+
 
 
 class Logger:
@@ -58,17 +58,6 @@ class Logger:
             else:
                 print(f'Key {key} not found in files_path.')
 
-    def __wrapper__(self, BackTest_Post_Dict):
-        """
-        Wrapper function to log data.
-        """
-        self.pos_log = {'Position_ID' :  self.id_position,
-            'OrderId' : self.orders[order_type][0]['index'],
-            'Grid_ID': self.orders['metadatas']['grid_index'],
-            'EventData_Time' : position_args['timestamp'],
-            'BackTest_ID' : self.id,
-            'EventCode' : 'OPEN SELL',
-            'PositionValue' : position_args['entryprice']*position_args['qty']}
         
 if __name__ == "__main__":
     logger = Logger()

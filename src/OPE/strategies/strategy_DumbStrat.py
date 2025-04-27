@@ -104,9 +104,7 @@ class Strategy:
             - dict : Dictionnaire {'buy_orders', 'sell_orders'} contenant les listes d'ordres d'achat et de vente
         
         """
-        print(self.grid_parameters)
         self.grid_parameters['grid_origin']=current_price
-        print(self.grid_parameters)
         grid = self.grid_maker(self.grid_parameters)
         self.grid_index = grid['index']
         return grid['orders']
@@ -140,36 +138,18 @@ class Strategy:
         # print('Low_n',Low_n)
         if position['is_buy']:
             stop_loss_price = position['entryprice']*(1-position['stop_loss'])
-            # print('stop_loss_price',stop_loss_price)
             take_profit_price = position['entryprice']*(1+position['take_profit'])
-            # print('take_profit_price',take_profit_price)
             if   stop_loss_price >= Low_n :
-                # print(f'\n Low_n',Low_n)
-                # print('is_buy',position['is_buy'])
-                # print('stop_loss_price',stop_loss_price)
-                # print('stop_loss_price >= Low_n')
                 return (position['id'], 'STOPLOSS BUY')
             elif   take_profit_price <= High_n:
-                # print(f'\nHigh_n',High_n)
-                # print('is_buy',position['is_buy'])
-                # print('take_profit_price',take_profit_price)
-                # print('take_profit_price <= High_n')
                 return (position['id'], 'TAKEPROFIT BUY')
         
         if position['is_buy']==False:
             stop_loss_price = position['entryprice']*(1+position['stop_loss'])
             take_profit_price = position['entryprice']*(1-position['take_profit'])
-            if (Low_n >=  stop_loss_price ) : #or  Low_n <= stop_loss_price <= High_n:
-                # print(f'\nLow_n',Low_n)
-                # print('is_buy',position['is_buy'])
-                # print('stop_loss_price',stop_loss_price)
-                # print('Low_n >=  stop_loss_price')
+            if (Low_n >=  stop_loss_price ) : 
                 return (position['id'], 'STOPLOSS SELL')
-            elif (High_n <= take_profit_price ) : # or  Low_n <= take_profit_price <= High_n:  
-                # print(f'\nHigh_n',High_n)
-                # print('is_buy',position['is_buy'])
-                # print('take_profit_price',take_profit_price)
-                # print('High_n <= take_profit_price')
+            elif (High_n <= take_profit_price ) :
                 return (position['id'], 'TAKEPROFIT SELL')
             
         return (False,False)

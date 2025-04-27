@@ -118,6 +118,7 @@ class baktest:
         self.strategy.metadata['BackTest_ID'] = self.id
         self.logger({'Strategy' : self.strategy.metadata})
         
+        
     
     def __iter__(self):
         """
@@ -149,7 +150,7 @@ class baktest:
             StopIteration: Si toutes les lignes ont été parcourues.
         """
         self.data_n_1 = self.data[self.index]
-        
+        self.orders_n_1 = self.orders
         if self.index < len(self.data)-1 or self.index == self.end_index:
             self.index += 1
             self.current_data = self.data[self.index]
@@ -160,6 +161,7 @@ class baktest:
             self.Log_data['FinalCapital'] = f'{self.pool["money_balance"]},{self.pool["crypto_balance"]}'
             send_log={'BackTest':self.Log_data}
             self.logger(send_log)
+            self.log_orders()
             raise StopIteration
             
     def __call__(self,data):
@@ -190,14 +192,10 @@ class baktest:
         """
         Trigger des actions à réaliser à chaque itération sur les données de marché.
         """
-        if self.orders_n_1 is not None:
-            if self.orders != self.orders_n_1:
-                self.log_orders()
         self.checkeur()
-        if len(self.positions)<10:
-            Orders_To_Open = [order['open_condition'](order,self.current_data, self.struct, self.data_n_1[self.CloseCol]) for order in self.orders.to_dicts()]
-            if len(Orders_To_Open)>0 and all(Orders_To_Open) is not None: 
-                [self.open_position(i) for i in Orders_To_Open if i is not False]
+        Orders_To_Open = [order['open_condition'](order,self.current_data, self.struct, self.data_n_1[self.CloseCol]) for order in self.orders.to_dicts()]
+        if len(Orders_To_Open)>0 and all(Orders_To_Open) is not None: 
+            [self.open_position(i) for i in Orders_To_Open if i is not False]
 
         Ids_to_close = [position['close_condition'](position,self.current_data, self.struct, self.data_n_1[self.CloseCol]) for position in self.positions.to_dicts()]
         if len(Ids_to_close)>0 and all(Ids_to_close) is not None: 
@@ -256,7 +254,7 @@ class baktest:
         order_type = order
         position_args = order['orders_params']
         position_args['timestamp'] = int(self.current_data[self.TimeCol])
-        position_args['entryprice'] = self.current_data[self.CloseCol]
+        position_args['entryprice'] = order['level']
         position_args['close_condition'] = order['close_condition']
         if position_args['is_buy'] is False : 
             position_args['signe_buy']=-1
@@ -277,6 +275,7 @@ class baktest:
         self.log_position(position_args, order_type)
         self.old_log_position(current_position)
         #SET ORDERS
+        self.log_orders()
         self.orders=pl.DataFrame(self.strategy.update_grid(self.current_data[self.CloseCol],self.orders))
         return self.id_position
 
@@ -292,13 +291,22 @@ class baktest:
             id (int): Identifiant de la position à fermer.
             justif (str): Justification de la fermeture.
         """
+        
         close_position = self.positions.filter(pl.col("id") == id)
         close_position = close_position.with_columns(state=pl.lit('Closing')) #Ajouter étape de log du prix de closing
-        close_position = close_position.with_columns(justif=pl.lit(justif))
-        close_position = close_position.with_columns(close_price=pl.lit(self.current_data[self.CloseCol]))
+        # close_position = close_position.with_columns(close_price=pl.lit(self.current_data[self.CloseCol]))
         close_position = close_position.with_columns(pl.lit(int(self.current_data[self.TimeCol])).alias("timestamp"))
+        close_position = close_position.with_columns(justif=pl.lit(justif))
+        if justif == 'TAKEPROFIT BUY':
+            close_position = close_position.with_columns(close_price = pl.col('entryprice')*(1+close_position['take_profit']))
+        if justif == 'STOPLOSS BUY':
+            close_position = close_position.with_columns(close_price = pl.col('entryprice')*(1-close_position['stop_loss']))
+        if justif == 'TAKEPROFIT SELL':
+            close_position = close_position.with_columns(close_price = pl.col('entryprice')*(1-close_position['take_profit']))
+        if justif == 'STOPLOSS SELL':
+            close_position = close_position.with_columns(close_price = pl.col('entryprice')*(1+close_position['stop_loss']))
+
         self.positions = self.positions.filter(pl.col("id") != id)
-        self.set_pool(close_position)
         self.old_log_position(close_position)
         self.log_position(close_position, order_type=None)
 
@@ -313,22 +321,26 @@ class baktest:
             Time = position_args['timestamp']
             Quantity = position_args['qty']
             EntryPrice = position_args['entryprice']
-
+            ClosePrice = position_args['close_price']
+            PositionId = position_args['id']
         else : 
+            PositionId = position_args['id'].item()
             justif = position_args['justif'].item()
             Time = position_args['timestamp'].item()
             Quantity = position_args['qty'].item()
             EntryPrice = position_args['entryprice'].item()
-            EntryPrice = position_args['entryprice'].item()
+            ClosePrice = position_args['close_price'].item()
 
-        self.pos_log = {'Position_ID' :  self.id_position, 
+        self.pos_log = {'Position_ID' :  PositionId, 
                         'OrderId' : OrderId,
                         'Grid_ID': self.strategy.grid_index,
                         'EventData_Time' : Time,
                         'BackTest_ID' : self.id,
                         'EventCode' : justif,
                         'PositionQty' : Quantity,
-                        'PositionClosePrice' : EntryPrice,
+                        'PositionEntryPrice' : EntryPrice,
+                        'PositionClosePrice' : ClosePrice,
+                        'ActualPrice' : self.current_data[self.CloseCol],
                         'CryptoBalance' : self.pool['crypto_balance'],
                         'MoneyBalance' : self.pool['money_balance']}
         
@@ -337,24 +349,24 @@ class baktest:
 
 
     def log_orders(self):
+        
         Grid_Id =  self.strategy.grid_index
-        for all_orders in self.orders['buy_orders']+self.orders['sell_orders']:
-            if all_orders['orders_params']['is_buy'] is True:  OrderType = 'BUY'
+        for order in self.orders.to_dicts():
+            if order['orders_params']['is_buy'] is True:  OrderType = 'BUY'
             else: OrderType = 'SELL'
             # A wrapper
-            OrdersInfos = {'Order_ID' : all_orders['index'],
+            OrdersInfos = {'Order_ID' : order['index'],
             'Grid_ID'   : Grid_Id,
             'OrderTime' : self.current_data[self.TimeCol],
             'OrderType' : OrderType,
-            'OrderPrice' : all_orders['level'],
-            'OrderQuantity' : all_orders['orders_params']['qty'],
-            'OrderLeverage' : all_orders['orders_params']['leverage'],
-            'OrderTakeProfit' : all_orders['orders_params']['take_profit'],
-            'OrderStopLoss' : all_orders['orders_params']['stop_loss'],
-            'OrderStatus' : all_orders['orders_params']['state'],
-            'OrderJustif' : all_orders['orders_params']['justif']}
+            'OrderPrice' : order['level'],
+            'OrderQuantity' : order['orders_params']['qty'],
+            'OrderLeverage' :   order['orders_params']['leverage'],
+            'OrderTakeProfit' : order['orders_params']['take_profit'],
+            'OrderStopLoss' :   order['orders_params']['stop_loss'],
+            'OrderStatus' :     order['orders_params']['state'],
+            'OrderJustif' :     order['orders_params']['justif']}
             self.logger({'Order':OrdersInfos})
-        self.orders_n_1 = self.orders.copy() 
 
     def old_log_position(self, position):
         """

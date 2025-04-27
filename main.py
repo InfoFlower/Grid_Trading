@@ -97,7 +97,7 @@ DataStructure = [i for i in DataStructure.values()]
 ###
 ##INIT CLASS
 ###
-logger = Logger() 
+logger = Logger(append=False,) 
 grid_maker = MakeGrid.Grid_Maker(GridType, GridName)
 strategy = Strategy(StratName, grid_maker, Grid_Metadata, GridOrders_params)
 backtest_id=1
