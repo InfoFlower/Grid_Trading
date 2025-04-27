@@ -254,6 +254,7 @@ class baktest:
         order_type = order
         position_args = order['orders_params']
         position_args['timestamp'] = int(self.current_data[self.TimeCol])
+        position_args['OrderId'] = order['index']
         position_args['entryprice'] = order['level']
         position_args['close_condition'] = order['close_condition']
         if position_args['is_buy'] is False : 
@@ -318,6 +319,8 @@ class baktest:
         if order_type is not None :
             if position_args['is_buy'] : justif = 'OPEN BUY'
             else : justif = 'OPEN SELL'
+            print(position_args)
+            OrderId = position_args['OrderId']
             Time = position_args['timestamp']
             Quantity = position_args['qty']
             EntryPrice = position_args['entryprice']

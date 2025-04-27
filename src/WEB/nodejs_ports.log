@@ -1,0 +1,247 @@
+﻿**********************
+Début de la transcription Windows PowerShell
+Heure de début : 20250427013835
+Nom d'utilisateur : LENOVO-MNPC\lenovo
+Utilisateur runAs :  LENOVO-MNPC\lenovo
+Nom de la configuration : 
+Ordinateur : LENOVO-MNPC (Microsoft Windows NT 10.0.26100.0)
+Application hôte : C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+ID de processus : 11956
+PSVersion: 5.1.26100.3624
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.3624
+BuildVersion: 10.0.26100.3624
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcription démarrée, le fichier de sortie est C:\Users\lenovo\Desktop\HomeLab\coin_datamart\src\WEB\nodejs_ports.log
+
+
+Name                          : {c7a9fb49-9a37-4363-b635-4358f23a5c0b}
+DisplayName                   : NodeJS_Port_3000
+Description                   :
+DisplayGroup                  :
+Group                         :
+Enabled                       : True
+Profile                       : Any
+Platform                      : {}
+Direction                     : Inbound
+Action                        : Allow
+EdgeTraversalPolicy           : Block
+LooseSourceMapping            : False
+LocalOnlyMapping              : False
+Owner                         :
+PrimaryStatus                 : OK
+Status                        : La règle a été analysée à partir de la banque. (65536)
+EnforcementStatus             : NotApplicable
+PolicyStoreSource             : PersistentStore
+PolicyStoreSourceType         : Local
+RemoteDynamicKeywordAddresses : {}
+PolicyAppId                   :
+PackageFamilyName             :
+
+Port 3000 ouvert
+DÃ©marrage de Node.js...
+
+Serveur Node.js en cours d'exÃ©cution
+PID: 18072
+Ports: 3000
+Logs: C:\Users\lenovo\Desktop\HomeLab\coin_datamart\src\WEB\nodejs_ports.log
+Port 3000 fermÃ©
+**********************
+Fin de la transcription Windows PowerShell
+Heure de fin : 20250427013840
+**********************
+**********************
+Début de la transcription Windows PowerShell
+Heure de début : 20250427014817
+Nom d'utilisateur : LENOVO-MNPC\lenovo
+Utilisateur runAs :  LENOVO-MNPC\lenovo
+Nom de la configuration : 
+Ordinateur : LENOVO-MNPC (Microsoft Windows NT 10.0.26100.0)
+Application hôte : C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\lenovo\Desktop\HomeLab\coin_datamart\src\WEB\start_frontend.ps1 -Ports 3000 -NodeScript server.js
+ID de processus : 15120
+PSVersion: 5.1.26100.3624
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.3624
+BuildVersion: 10.0.26100.3624
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcription démarrée, le fichier de sortie est C:\Users\lenovo\Desktop\HomeLab\coin_datamart\src\WEB\nodejs_ports.log
+
+
+Name                          : {51d011bd-2c19-484b-bd4d-d60469096c20}
+DisplayName                   : NodeJS_Port_3000
+Description                   :
+DisplayGroup                  :
+Group                         :
+Enabled                       : True
+Profile                       : Any
+Platform                      : {}
+Direction                     : Inbound
+Action                        : Allow
+EdgeTraversalPolicy           : Block
+LooseSourceMapping            : False
+LocalOnlyMapping              : False
+Owner                         :
+PrimaryStatus                 : OK
+Status                        : La règle a été analysée à partir de la banque. (65536)
+EnforcementStatus             : NotApplicable
+PolicyStoreSource             : PersistentStore
+PolicyStoreSourceType         : Local
+RemoteDynamicKeywordAddresses : {}
+PolicyAppId                   :
+PackageFamilyName             :
+
+[+] Port 3000 ouvert
+[â–¶] DÃ©marrage de server.js...
+PS>Erreur de terminaison (Start-Process) : « Impossible d’exécuter cette commande en raison de l’erreur : Le fichier spécifié est introuvable. »
+[X] Erreur dÃ©marrage Node: Impossible d’exécuter cette commande en raison de l’erreur : Le fichier spécifié est introuvable.
+**********************
+Fin de la transcription Windows PowerShell
+Heure de fin : 20250427014819
+**********************
+**********************
+Début de la transcription Windows PowerShell
+Heure de début : 20250427014827
+Nom d'utilisateur : LENOVO-MNPC\lenovo
+Utilisateur runAs :  LENOVO-MNPC\lenovo
+Nom de la configuration : 
+Ordinateur : LENOVO-MNPC (Microsoft Windows NT 10.0.26100.0)
+Application hôte : C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+ID de processus : 11956
+PSVersion: 5.1.26100.3624
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.3624
+BuildVersion: 10.0.26100.3624
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcription démarrée, le fichier de sortie est C:\Users\lenovo\Desktop\HomeLab\coin_datamart\src\WEB\nodejs_ports.log
+[â–¶] DÃ©marrage de server.js...
+
+Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
+-------  ------    -----      -----     ------     --  -- -----------
+              0        0          0       0,05   5292
+
+
+PS C:\Users\lenovo\Desktop\HomeLab\coin_datamart> .\src\WEB\start_frontend.ps1 -Ports 3000
+.\src\WEB\start_frontend.ps1 : Le terme «.\src\WEB\start_frontend.ps1» n'est pas reconnu comme nom d'applet de 
+commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès 
+existe, vérifiez que le chemin d'accès est correct et réessayez.
+Au caractère Ligne:1 : 1
++ .\src\WEB\start_frontend.ps1 -Ports 3000
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (.\src\WEB\start_frontend.ps1:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+.\src\WEB\start_frontend.ps1 : Le terme «.\src\WEB\start_frontend.ps1» n'est pas reconnu comme nom d'applet de
+commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin
+d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.
+Au caractère Ligne:1 : 1
++ .\src\WEB\start_frontend.ps1 -Ports 3000
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (.\src\WEB\start_frontend.ps1:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\lenovo\Desktop\HomeLab\coin_datamart> .\src\WEB\start_frontend.ps1 
+.\src\WEB\start_frontend.ps1 : Le terme «.\src\WEB\start_frontend.ps1» n'est pas reconnu comme nom d'applet de 
+commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès 
+existe, vérifiez que le chemin d'accès est correct et réessayez.
+Au caractère Ligne:1 : 1
++ .\src\WEB\start_frontend.ps1
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (.\src\WEB\start_frontend.ps1:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+.\src\WEB\start_frontend.ps1 : Le terme «.\src\WEB\start_frontend.ps1» n'est pas reconnu comme nom d'applet de
+commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin
+d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.
+Au caractère Ligne:1 : 1
++ .\src\WEB\start_frontend.ps1
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (.\src\WEB\start_frontend.ps1:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\lenovo\Desktop\HomeLab\coin_datamart> src\WEB\START_SERV.ps1
+$env:PATH = "C:\Users\lenovo\AppData\Local\fnm_multishells\8564_1745711489663;C:\Users\lenovo\AppData\Local\fnm_multi
+shells\18364_1745700985092;C:\Users\lenovo\AppData\Local\fnm_multishells\7136_1745700613802;C:\Users\lenovo\AppData\L
+ocal\fnm_multishells\6528_1745700577569;C:\Users\lenovo\AppData\Local\fnm_multishells\13688_1745700402544;C:\Users\le
+novo\AppData\Local\fnm_multishells\16184_1745700393674;C:\Program Files\Common Files\Oracle\Java\javapath;C:\WINDOWS\
+system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\
+;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\MariaDB\MariaDB Connector C 64-bit\lib\;C:\Program Fil
+es\MariaDB\MariaDB Connector C 64-bit\lib\plugin\;C:\Program Files\Java\jdk-11\bin;C:\Users\lenovo\Desktop\Cours\scri
+pts;C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;C:\Program Files\Git\cmd;C:\Users\lenovo\A
+ppData\Local\Microsoft\WindowsApps;C:\Users\lenovo\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files (x86
+)\Nmap;C:\Users\lenovo\AppData\Local\Pandoc\;C:\Users\lenovo\AppData\Local\Microsoft\WinGet\Packages\Schniz.fnm_Micro
+soft.Winget.Source_8wekyb3d8bbwe"
+$env:FNM_MULTISHELL_PATH = "C:\Users\lenovo\AppData\Local\fnm_multishells\8564_1745711489663"
+$env:FNM_VERSION_FILE_STRATEGY = "local"
+$env:FNM_DIR = "C:\Users\lenovo\AppData\Roaming\fnm"
+$env:FNM_LOGLEVEL = "info"
+$env:FNM_NODE_DIST_MIRROR = "https://nodejs.org/dist"
+$env:FNM_COREPACK_ENABLED = "false"
+$env:FNM_RESOLVE_ENGINES = "true"
+$env:FNM_ARCH = "x64"
+function global:Set-FnmOnLoad { If ((Test-Path .nvmrc) -Or (Test-Path .node-version) -Or (Test-Path package.json)) {
+& fnm use --silent-if-unchanged }
+ }
+function global:Set-LocationWithFnm { param($path); if ($path -eq $null) {Set-Location} else {Set-Location $path}; Se
+t-FnmOnLoad }
+Set-Alias -Scope global cd_with_fnm Set-LocationWithFnm
+Set-Alias -Option AllScope -Scope global cd Set-LocationWithFnm
+Set-FnmOnLoad
+node:internal/modules/cjs/loader:1404
+  throw err;
+  ^
+
+Error: Cannot find module 'C:\Users\lenovo\Desktop\HomeLab\coin_datamart\server.js'
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    at Function._load (node:internal/modules/cjs/loader:1211:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+    at node:internal/main/run_main_module:36:49 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v22.15.0
+PS C:\Users\lenovo\Desktop\HomeLab\coin_datamart> cd .\src\WEB\
+PS C:\Users\lenovo\Desktop\HomeLab\coin_datamart\src\WEB> Erreur de terminaison (TabExpansion2) : « Impossible de lier l'argument au paramètre « inputScript », car il s'agit d'une chaîne vide. »
+PS C:\Users\lenovo\Desktop\HomeLab\coin_datamart\src\WEB> Erreur de terminaison (TabExpansion2) : « Impossible de lier l'argument au paramètre « inputScript », car il s'agit d'une chaîne vide. »
+PS C:\Users\lenovo\Desktop\HomeLab\coin_datamart\src\WEB> .\START_SERV.ps1
+$env:PATH = "C:\Users\lenovo\AppData\Local\fnm_multishells\17256_1745711527313;C:\Users\lenovo\AppData\Local\fnm_mult
+ishells\18364_1745700985092;C:\Users\lenovo\AppData\Local\fnm_multishells\7136_1745700613802;C:\Users\lenovo\AppData\
+Local\fnm_multishells\6528_1745700577569;C:\Users\lenovo\AppData\Local\fnm_multishells\13688_1745700402544;C:\Users\l
+enovo\AppData\Local\fnm_multishells\16184_1745700393674;C:\Program Files\Common Files\Oracle\Java\javapath;C:\WINDOWS
+\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH
+\;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\MariaDB\MariaDB Connector C 64-bit\lib\;C:\Program Fi
+les\MariaDB\MariaDB Connector C 64-bit\lib\plugin\;C:\Program Files\Java\jdk-11\bin;C:\Users\lenovo\Desktop\Cours\scr
+ipts;C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;C:\Program Files\Git\cmd;C:\Users\lenovo\
+AppData\Local\Microsoft\WindowsApps;C:\Users\lenovo\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files (x8
+6)\Nmap;C:\Users\lenovo\AppData\Local\Pandoc\;C:\Users\lenovo\AppData\Local\Microsoft\WinGet\Packages\Schniz.fnm_Micr
+osoft.Winget.Source_8wekyb3d8bbwe"
+$env:FNM_MULTISHELL_PATH = "C:\Users\lenovo\AppData\Local\fnm_multishells\17256_1745711527313"
+$env:FNM_VERSION_FILE_STRATEGY = "local"
+$env:FNM_DIR = "C:\Users\lenovo\AppData\Roaming\fnm"
+$env:FNM_LOGLEVEL = "info"
+$env:FNM_NODE_DIST_MIRROR = "https://nodejs.org/dist"
+$env:FNM_COREPACK_ENABLED = "false"
+$env:FNM_RESOLVE_ENGINES = "true"
+$env:FNM_ARCH = "x64"
+function global:Set-FnmOnLoad { If ((Test-Path .nvmrc) -Or (Test-Path .node-version) -Or (Test-Path package.json)) {
+& fnm use --silent-if-unchanged }
+ }
+function global:Set-LocationWithFnm { param($path); if ($path -eq $null) {Set-Location} else {Set-Location $path}; Se
+t-FnmOnLoad }
+Set-Alias -Scope global cd_with_fnm Set-LocationWithFnm
+Set-Alias -Option AllScope -Scope global cd Set-LocationWithFnm
+Set-FnmOnLoad
