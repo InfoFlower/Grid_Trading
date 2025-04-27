@@ -238,3 +238,112 @@ Port 3000 fermÃ©
 Fin de la transcription Windows PowerShell
 Heure de fin : 20250426230113
 **********************
+**********************
+Début de la transcription Windows PowerShell
+Heure de début : 20250427012630
+Nom d'utilisateur : LENOVO-MNPC\lenovo
+Utilisateur runAs :  LENOVO-MNPC\lenovo
+Nom de la configuration : 
+Ordinateur : LENOVO-MNPC (Microsoft Windows NT 10.0.26100.0)
+Application hôte : C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\lenovo\Desktop\HomeLab\coin_datamart\start_frontend.ps1 -Ports 3000 -NodeScript server.js
+ID de processus : 16880
+PSVersion: 5.1.26100.3624
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.3624
+BuildVersion: 10.0.26100.3624
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcription démarrée, le fichier de sortie est C:\Users\lenovo\Desktop\HomeLab\coin_datamart\nodejs_ports.log
+
+
+Name                          : {5f6c2a28-8855-49f9-98ac-a418753d61f2}
+DisplayName                   : NodeJS_Port_3000
+Description                   :
+DisplayGroup                  :
+Group                         :
+Enabled                       : True
+Profile                       : Any
+Platform                      : {}
+Direction                     : Inbound
+Action                        : Allow
+EdgeTraversalPolicy           : Block
+LooseSourceMapping            : False
+LocalOnlyMapping              : False
+Owner                         :
+PrimaryStatus                 : OK
+Status                        : La règle a été analysée à partir de la banque. (65536)
+EnforcementStatus             : NotApplicable
+PolicyStoreSource             : PersistentStore
+PolicyStoreSourceType         : Local
+RemoteDynamicKeywordAddresses : {}
+PolicyAppId                   :
+PackageFamilyName             :
+
+Port 3000 ouvert
+DÃ©marrage de Node.js...
+PS>Erreur de terminaison (Start-Process) : « Impossible d’exécuter cette commande en raison de l’erreur : Le fichier spécifié est introuvable. »
+Erreur dÃ©marrage Node: Impossible d’exécuter cette commande en raison de l’erreur : Le fichier spécifié est introuvable.
+Port 3000 fermÃ©
+**********************
+Fin de la transcription Windows PowerShell
+Heure de fin : 20250427012635
+**********************
+**********************
+Début de la transcription Windows PowerShell
+Heure de début : 20250427012640
+Nom d'utilisateur : LENOVO-MNPC\lenovo
+Utilisateur runAs :  LENOVO-MNPC\lenovo
+Nom de la configuration : 
+Ordinateur : LENOVO-MNPC (Microsoft Windows NT 10.0.26100.0)
+Application hôte : C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+ID de processus : 11956
+PSVersion: 5.1.26100.3624
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.3624
+BuildVersion: 10.0.26100.3624
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcription démarrée, le fichier de sortie est C:\Users\lenovo\Desktop\HomeLab\coin_datamart\nodejs_ports.log
+
+
+Name                          : {5e88fc73-7a5b-471a-a8c9-dfc842af9c87}
+DisplayName                   : NodeJS_Port_3000
+Description                   :
+DisplayGroup                  :
+Group                         :
+Enabled                       : True
+Profile                       : Any
+Platform                      : {}
+Direction                     : Inbound
+Action                        : Allow
+EdgeTraversalPolicy           : Block
+LooseSourceMapping            : False
+LocalOnlyMapping              : False
+Owner                         :
+PrimaryStatus                 : OK
+Status                        : La règle a été analysée à partir de la banque. (65536)
+EnforcementStatus             : NotApplicable
+PolicyStoreSource             : PersistentStore
+PolicyStoreSourceType         : Local
+RemoteDynamicKeywordAddresses : {}
+PolicyAppId                   :
+PackageFamilyName             :
+
+Port 3000 ouvert
+DÃ©marrage de Node.js...
+
+Serveur Node.js en cours d'exÃ©cution
+PID: 3308
+Ports: 3000
+Logs: C:\Users\lenovo\Desktop\HomeLab\coin_datamart\nodejs_ports.log
+Port 3000 fermÃ©
+**********************
+Fin de la transcription Windows PowerShell
+Heure de fin : 20250427012646
+**********************

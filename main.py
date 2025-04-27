@@ -81,7 +81,7 @@ DataStructure = { 'TimeCol' : 0,
 
 data=data.to_numpy()
 #Setup Grid Parameters
-GridOrders_params = {'qty':0.1, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.01/2, 'justif' : 'init', 'state' : 'open'}
+GridOrders_params = {'qty':0.001, 'leverage': 1, 'take_profit': 0.01, 'stop_loss': 0.01/2, 'justif' : 'init', 'state' : 'open'}
 Grid_Metadata = {'prct_of_intervall' : 0.01, 'nb_orders' : 1}
 #Set initial balance
 money_balance= 1000

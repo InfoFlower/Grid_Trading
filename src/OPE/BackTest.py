@@ -73,7 +73,7 @@ class baktest:
         self.id = backtest_id
         self.log_path = self_log_path
         self.backtest_log_path = f'{self.log_path}/{self.id}/'
-        print(f'Creating folder: {self.backtest_log_path}')
+        
         self.data_hist=self.backtest_log_path+'data.csv'
         self.position_event=self.backtest_log_path+'position_event.csv'
         self.orders_hist=self.backtest_log_path+'orders.json'
@@ -129,7 +129,7 @@ class baktest:
         self.checkeur = know_your_perf.know_your_perf(sniffing_name='Sniffeur', is_working=True)
         self.index = self.start_index
         self.orders_n_1 = self.orders
-        self.orders=self.strategy(self.data[self.index][self.CloseCol])
+        self.orders=pl.DataFrame(self.strategy(self.data[self.index][self.CloseCol]))
         self.Log_data = {'BackTest_ID' : self.id,
                          'index' : self.start_index,
                          'StartData_Time' : self.data[self.start_index][self.TimeCol],
@@ -190,10 +190,14 @@ class baktest:
         """
         Trigger des actions à réaliser à chaque itération sur les données de marché.
         """
-        if self.orders != self.orders_n_1:
-            self.log_orders()
+        if self.orders_n_1 is not None:
+            if self.orders != self.orders_n_1:
+                self.log_orders()
         self.checkeur()
-        self.open_conditions_check(0, orders_types=['buy_orders','sell_orders'])
+        if len(self.positions)<10:
+            Orders_To_Open = [order['open_condition'](order,self.current_data, self.struct, self.data_n_1[self.CloseCol]) for order in self.orders.to_dicts()]
+            if len(Orders_To_Open)>0 and all(Orders_To_Open) is not None: 
+                [self.open_position(i) for i in Orders_To_Open if i is not False]
 
         Ids_to_close = [position['close_condition'](position,self.current_data, self.struct, self.data_n_1[self.CloseCol]) for position in self.positions.to_dicts()]
         if len(Ids_to_close)>0 and all(Ids_to_close) is not None: 
@@ -228,7 +232,7 @@ class baktest:
                     or (condition_open[1] == 'sell_orders' and self.pool['crypto_balance']>order['orders_params']['qty']):
                     self.open_position(order,order_type)
 
-    def open_position(self,order, order_type):
+    def open_position(self,order):
         
         """
         Ouvre une nouvelle position de trading et l'ajoute à la liste des positions ouvertes.
@@ -249,7 +253,7 @@ class baktest:
             int: Identifiant de la position ouverte.
 
         """
-        print(1)
+        order_type = order
         position_args = order['orders_params']
         position_args['timestamp'] = int(self.current_data[self.TimeCol])
         position_args['entryprice'] = self.current_data[self.CloseCol]
@@ -273,7 +277,7 @@ class baktest:
         self.log_position(position_args, order_type)
         self.old_log_position(current_position)
         #SET ORDERS
-        self.orders=self.strategy.update_grid(self.current_data[self.CloseCol])
+        self.orders=pl.DataFrame(self.strategy.update_grid(self.current_data[self.CloseCol],self.orders))
         return self.id_position
 
 ###
@@ -288,7 +292,6 @@ class baktest:
             id (int): Identifiant de la position à fermer.
             justif (str): Justification de la fermeture.
         """
-        print(2)
         close_position = self.positions.filter(pl.col("id") == id)
         close_position = close_position.with_columns(state=pl.lit('Closing')) #Ajouter étape de log du prix de closing
         close_position = close_position.with_columns(justif=pl.lit(justif))
@@ -304,10 +307,9 @@ class baktest:
 #
     def log_position(self, position_args, order_type=None):
         OrderId = 'null'
-        if order_type is not None : 
-            if order_type == 'buy_orders': justif = 'OPEN BUY'
-            elif order_type == 'sell_orders': justif = 'OPEN SELL'
-            OrderId = self.orders[order_type][0]['index']
+        if order_type is not None :
+            if position_args['is_buy'] : justif = 'OPEN BUY'
+            else : justif = 'OPEN SELL'
             Time = position_args['timestamp']
             Quantity = position_args['qty']
             EntryPrice = position_args['entryprice']
@@ -321,7 +323,7 @@ class baktest:
 
         self.pos_log = {'Position_ID' :  self.id_position, 
                         'OrderId' : OrderId,
-                        'Grid_ID': self.orders['metadatas']['grid_index'],
+                        'Grid_ID': self.strategy.grid_index,
                         'EventData_Time' : Time,
                         'BackTest_ID' : self.id,
                         'EventCode' : justif,
@@ -335,7 +337,7 @@ class baktest:
 
 
     def log_orders(self):
-        Grid_Id = self.orders['metadatas']['grid_index']
+        Grid_Id =  self.strategy.grid_index
         for all_orders in self.orders['buy_orders']+self.orders['sell_orders']:
             if all_orders['orders_params']['is_buy'] is True:  OrderType = 'BUY'
             else: OrderType = 'SELL'
@@ -390,7 +392,7 @@ def get_symbol_from_path(path):
 ######
 ##
 ######
-#     print(f"Order type : {order_type}",
+#           (f"Order type : {order_type}",
 #           f'\n Condition open : {condition_open}', 
 #           f"\n Money balance : {self.pool['money_balance']}",
 #           f"\n Crypto Balance : {self.pool['crypto_balance']}",
