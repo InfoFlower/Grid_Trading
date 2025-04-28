@@ -1,0 +1,1 @@
+{"DataStructure":{"TimeCol":"Open time","CloseCol":"Close","LowCol":"Low","HighCol":"High"},"GridOrders_params":{"qty":0.1,"leverage":1,"take_profit":0.01,"stop_loss":0.005,"justif":"init","state":"open"},"Grid_Metadata":{"prct_of_intervall":0.01,"nb_orders":1},"money_balance":1000,"time_4_epoch":50000}

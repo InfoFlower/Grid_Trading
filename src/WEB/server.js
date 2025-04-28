@@ -7,6 +7,7 @@ const app = express();
 const port = 3000;
 const publicDir = path.join(__dirname, 'public');
 const pythonScript = path.resolve(__dirname, '../../DebugMain.py');
+const filePath = './temp/config.json';
 
 // Vérification des chemins au démarrage
 if (!fs.existsSync(publicDir)) {
@@ -39,6 +40,10 @@ app.get('/', (req, res) => {
 
 app.post('/run-script', (req, res) => {
   try {
+    const data = JSON.stringify(req.body);
+    console.log('Données reçues:', data); // Debugging
+    fs.writeFileSync(filePath, data, 'utf8');
+    console.log(`Fichier de configuration écrit: ${filePath}`);
     const pythonProcess = spawn('python', [pythonScript]);
     
     console.log(`Exécution du script: ${pythonScript}`);
@@ -46,9 +51,9 @@ app.post('/run-script', (req, res) => {
 
     let output = '';
     let errorOutput = '';
-
     pythonProcess.stdout.on('data', (data) => {
       output += data.toString();
+      output += ['Python stdout'];
       console.log(`[Python stdout] ${data.toString().trim()}`);
     });
 
