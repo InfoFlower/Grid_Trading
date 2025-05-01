@@ -253,27 +253,26 @@ class KPIComputer:
 
 
 
-# def main():
+def main():
 
-#     kpiComputer = KPIComputer(REPORTING_LOG_PATH, 1)
-#     position_value = kpiComputer.old_position_value.head(10)
-#     total_return = kpiComputer.old_Total_Return()
-#     annualized_return = kpiComputer.old_Annualized_Return()
-#     win_rate = kpiComputer.old_Win_Rate()
-#     max_drawdown = kpiComputer.old_Max_Drawdown()
-#     sharpe_ratio = kpiComputer.old_Sharpe_Ratio()
-#     volatility = kpiComputer.old_Volatility()
-#     categories = kpiComputer.Categories
-#     print('position_value', position_value)
-#     print('annualized_return', annualized_return)
-#     print('total_return', total_return)
-#     print('win_rate', win_rate)
-#     print('max_drawdown', max_drawdown)
-#     print('categories', categories)
-#     print('volatility', volatility)
-#     print('sharpe_ratio', sharpe_ratio)
+    kpiComputer = KPIComputer(REPORTING_LOG_PATH, 1)
+    position_value = kpiComputer.old_position_value.head(10)
+    total_return = kpiComputer.old_Total_Return()
+    annualized_return = kpiComputer.old_Annualized_Return()
+    win_rate = kpiComputer.old_Win_Rate()
+    max_drawdown = kpiComputer.old_Max_Drawdown()
+    sharpe_ratio = kpiComputer.old_Sharpe_Ratio()
+    volatility = kpiComputer.old_Volatility()
+    categories = kpiComputer.Categories
+    print('position_value', position_value)
+    print('annualized_return', annualized_return)
+    print('total_return', total_return)
+    print('win_rate', win_rate)
+    print('max_drawdown', max_drawdown)
+    print('categories', categories)
+    print('volatility', volatility)
+    print('sharpe_ratio', sharpe_ratio)
 
 if __name__ == "__main__":
-    #main()
-    pass
+    main()
 
