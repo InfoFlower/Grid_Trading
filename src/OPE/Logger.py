@@ -25,7 +25,6 @@ class Logger:
         """
         Logger class to log backtest, trade, and order data.
         """
-        print(f'Logger initialized : {LoggingFolder}')
         self.files_path = {}
         self.logged_orders=[]
         self.LoggingFolder = LoggingFolder
@@ -55,8 +54,6 @@ class Logger:
                     with open(self.files_path[key], 'a') as f:
                         f.write('\n' + ','.join([str(value[i]) for i in Data_Structure[key]]))
                         f.close()
-            else:
-                print(f'Key {key} not found in files_path.')
 
         
 if __name__ == "__main__":

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Backtest UI</title>
+  <link rel="stylesheet" href="setup_styles.css" />
+</head>
+<body>
+  <header class="header">
+    <img src="/assets/logo.png" alt="Logo" class="logo" />
+    <h1>Backtest Dashboard</h1>
+  </header>
+  <main class="container">
+    <div class="panels-container">
+      <div class="panel">
+        <div class="panel-header">Data Structure</div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="form-label" for="timeCol">Time Column</label>
+            <input class="form-control" id="timeCol" type="text" value="Open time" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="closeCol">Close Column</label>
+            <input class="form-control" id="closeCol" type="text" value="Close" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="lowCol">Low Column</label>
+            <input class="form-control" id="lowCol" type="text" value="Low" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="highCol">High Column</label>
+            <input class="form-control" id="highCol" type="text" value="High" />
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">Grid Order Parameters</div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="form-label" for="qty">Qty</label>
+            <input class="form-control" id="qty" type="number" step="0.01" value="0.1" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="leverage">Leverage</label>
+            <input class="form-control" id="leverage" type="number" value="1" min="1" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="takeProfit">Take Profit</label>
+            <input class="form-control" id="takeProfit" type="number" step="0.001" value="0.01" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="stopLoss">Stop Loss</label>
+            <input class="form-control" id="stopLoss" type="number" step="0.001" value="0.005" />
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">Grid Metadata</div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="form-label" for="prctInterval">% of Interval</label>
+            <input class="form-control" id="prctInterval" type="number" step="0.001" value="0.01" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="nbOrders">Number of Orders</label>
+            <input class="form-control" id="nbOrders" type="number" value="1" min="1" />
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">Environment</div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="form-label" for="moneyBalance">Money Balance</label>
+            <input class="form-control" id="moneyBalance" type="number" step="0.01" value="1000" min="0" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="timeEpoch">Time for Epoch</label>
+            <input class="form-control" id="timeEpoch" type="number" value="50000" min="0" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress-container">
+      <div id="progress-bar">0%</div>
+    </div>
+
+    <button id="runBtn" class="btn btn-primary">Run Backtest</button>
+    <button id="viewResultsBtn" class="btn btn-secondary hidden">Voir les résultats</button>
+    <div id="output-container">
+      <div id="output"></div>
+    </div>
+  </main>
+
+  <script src="setup_script.js"></script>
+</body>
+</html>

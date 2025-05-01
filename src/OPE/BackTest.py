@@ -3,7 +3,7 @@ import polars as pl
 import time
 import shutil
 from dotenv import load_dotenv
-import src.OPE.technical_report.log_time_for_iter as know_your_perf
+import OPE.technical_report.log_time_for_iter as know_your_perf
 load_dotenv()
 WD = os.getenv('WD')
 perf_csv=f'{WD}src/OPE/technical_report/perfs.csv'
@@ -109,7 +109,7 @@ class baktest:
                      'LowCol' : self.LowCol, 
                      'HighCol' : self.HighCol}
         self.strategy = strategy
-        
+        self.data_length = len(self.data)
         self.id_position = 0
         self.orders = None
         self.positions = pl.DataFrame()
@@ -127,7 +127,7 @@ class baktest:
         Returns:
             self: L'instance elle-même pour l'itération.
         """
-        self.checkeur = know_your_perf.know_your_perf(sniffing_name='Sniffeur', perf_csv =perf_csv, epoch= self.time_4_epoch, is_working=True)
+        self.checkeur = know_your_perf.know_your_perf(sniffing_name='Sniffeur', perf_csv =perf_csv, epoch= self.time_4_epoch, is_working=True, verbose=False)
         self.index = self.start_index
         self.orders_n_1 = self.orders
         self.orders=pl.DataFrame(self.strategy(self.data[self.index][self.CloseCol]))
@@ -156,7 +156,7 @@ class baktest:
             self.current_data = self.data[self.index]
             self.check_time_conformity()
             self.trigger()
-            return self.current_data
+            return self.index,self.data_length
         else:
             self.Log_data['FinalCapital'] = f'{self.pool["money_balance"]},{self.pool["crypto_balance"]}'
             send_log={'BackTest':self.Log_data}
@@ -173,7 +173,8 @@ class baktest:
         """
         self.data=data
 
-
+    def __str__(self):
+        return self.index
 #Class trigger ==> EVOL prio 2
     def check_time_conformity(self):
         """
