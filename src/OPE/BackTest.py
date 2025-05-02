@@ -139,6 +139,9 @@ class baktest:
                          'InitialCapital' : f'({self.pool["money_balance"]},{self.pool["crypto_balance"]})'}
         return self
 
+    def __len__(self):
+        return self.length_of_data
+
     def __next__(self):
         """
         Passe à la ligne suivante des données et déclenche la vérification des conditions de trading.

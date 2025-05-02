@@ -21,7 +21,8 @@ load_dotenv()
 start_time = datetime.fromtimestamp(time.time())
 WD = os.getenv('WD')
 
-def main(args_dict):
+def main(args_dict,emit):
+    print('starting backtest')
     ##
     #Set Grid and Strategy names
     GridType = 'BasicGrid'
@@ -32,7 +33,10 @@ def main(args_dict):
     ##
     #SETUP DATA
     if type_of_file=='full':
-        path=f'{WD}data/OPE_DATA/DATA_RAW_S_ORIGIN_test_code/data_raw_BTCUSDT_176.csv'
+        if len(args_dict["DataFile"].split('_'))>3:
+            path=f'{WD}data/OPE_DATA/DATA_RAW_S_ORIGIN_test_code/{args_dict["DataFile"]}.csv'
+        else: 
+            path=f'{WD}data/DATA_RAW_S_ORIGIN/{args_dict["DataFile"]}.csv'
     else :
         start_time = 153
         path=f'data/OPE_DATA/DATA_RAW_S_ORIGIN_test_code/data_raw_BTCUSDT_{start_time}.csv'
@@ -81,10 +85,14 @@ def main(args_dict):
     ###
     ##RUN BACKTEST
     ###
-
+    total_line = len(bktst)
+    i=0
     if type_of_file=='full':
         for _ in bktst:
             _
+            i+=1
+            if emit :
+                  emit('progress', {'type': 'progress', 'value': f'{round(i/total_line,2)*100}'})
         with open(bktst.strategy.grid_maker.write_path, 'a') as f:f.write(']')
 
     else:

@@ -1,17 +1,118 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <title>Simple Chart</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body { font-family: sans-serif; padding: 20px; }
-    canvas { max-width: 600px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Backtest Trading</title>
+    <link rel="stylesheet" href="reporting_styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="reporting_script.js" defer></script>
 </head>
 <body>
-  <h2>Sales Chart</h2>
-  <canvas id="salesChart"></canvas>
+    <header>
+        <h1>Dashboard Backtest Trading</h1>
+        <div class="filters">
+            <select id="strategy-filter">
+                <option value="">Toutes les stratégies</option>
+                <!-- Options dynamiques -->
+            </select>
+            <select id="asset-filter">
+                <option value="">Tous les assets</option>
+                <!-- Options dynamiques -->
+            </select>
+            <select id="timeframe-filter">
+                <option value="">Tous les timeframes</option>
+                <!-- Options dynamiques -->
+            </select>
+            <button id="apply-filters">Appliquer</button>
+        </div>
+    </header>
+    <nav class="view-selector">
+        <button class="view-btn active" data-view="kpi-view">KPIs</button>
+        <button class="view-btn" data-view="chart-view">Graphiques</button>
+        <button class="view-btn" data-view="table-view">Tableau</button>
+    </nav>
+    <main>
+        <section id="kpi-view" class="view active">
+            <h2>KPIs Globaux</h2>
+            <div class="kpi-container">
+                <div class="kpi-card">
+                    <h3>Profit Total</h3>
+                    <p id="total-profit">0 €</p>
+                </div>
+                <div class="kpi-card">
+                    <h3>Win Rate</h3>
+                    <p id="win-rate">0%</p>
+                </div>
+                <div class="kpi-card">
+                    <h3>Profit Factor</h3>
+                    <p id="profit-factor">0</p>
+                </div>
+                <div class="kpi-card">
+                    <h3>Max Drawdown</h3>
+                    <p id="max-drawdown">0%</p>
+                </div>
+            </div>
+        </section>
 
-  <script src="reporting_script.js"></script>
+        <section id="chart-view" class="view">
+            <h2>Analyse Graphique</h2>
+            <div class="chart-container" id="svg-container">
+              <!-- SVG will be injected here -->
+            </div>
+          </section>
+
+        <section id="table-view" class="view">
+            <h2>Détail des Ordres</h2>
+            <div class="table-switcher">
+                <button id="switch-tables-btn" class="switch-btn active" data-table="orders">Voir les Positions</button>
+            </div>
+            <div class="orders-table-container hidden">
+                <table id="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Order_ID</th>
+                            <th>Grid_ID</th>
+                            <th>OrderTime</th>
+                            <th>OrderType</th>
+                            <th>OrderPrice</th>
+                            <th>OrderQuantity</th>
+                            <th>OrderLeverage</th>
+                            <th>OrderTakeProfit</th>
+                            <th>OrderStopLoss</th>
+                            <th>OrderStatus</th>
+                            <th>OrderJustif</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Données dynamiques -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="positions-table-container hidden">
+                    <table id="positions-table">
+                        <thead>
+                            <tr>
+                                <th>Position_ID</th>
+                                <th>OrderId</th>
+                                <th>Grid_ID</th>
+                                <th>EventData_Time</th>
+                                <th>BackTest_ID</th>
+                                <th>EventCode</th>
+                                <th>PositionQty</th>
+                                <th>PositionEntryPrice</th>
+                                <th>PositionClosePrice</th>
+                                <th>ActualPrice</th>
+                                <th>CryptoBalance</th>
+                                <th>MoneyBalance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Données dynamiques -->
+                        </tbody>
+                    </table>
+                </div>
+        </section>
+    </main>
 </body>
 </html>

@@ -45,39 +45,23 @@ class KPIComputer:
         ###### Transformation du dataframe, calcul equity, dradown etc... ######
         
         self.old_equity()
-        print(self.old_position_value.head())
         self.old_drawdown()
-        print('drawdown fini')
         self.old_returns()
-        print('returns fini')
         self.old_Categories()
-        print('categories fini')
         self.old_graphe_equity()
-        print('fig equity fini')
 
     ###### OLD TRANSFORMATION ######
     def old_equity(self):
         """
         """
-        # print(self.old_data.head())
-        # print(self.old_position_event.head())
 
         old_left_merged_data_x_posevent = self.old_data.join(self.old_position_event, left_on='Open time', right_on='timestamp', how = 'left')
         old_left_merged_data_x_posevent = old_left_merged_data_x_posevent.with_columns(
-            [
-                (pl.col('crypto_balance').fill_null(strategy='forward')).alias('crypto_balance'),
-                (pl.col('money_balance').fill_null(strategy='forward')).alias('money_balance')
-            ]
-        )
-        
-        #old_left_merged_data_x_posevent.with_columns([pl.col("")])
+            [(pl.col('crypto_balance').fill_null(strategy='forward')).alias('crypto_balance'),
+            (pl.col('money_balance').fill_null(strategy='forward')).alias('money_balance')])
         self.old_position_value = old_left_merged_data_x_posevent.with_columns(
-            [
-                (pl.col('Close')*pl.col('crypto_balance') + pl.col('money_balance')).alias('Equity')
-            ]
-        ).select(
-            ["Open time", "Open", "High", "Low", "Close", "crypto_balance", "money_balance", "Equity"]
-        )
+            [(pl.col('Close')*pl.col('crypto_balance') + pl.col('money_balance')).alias('Equity')]
+            ).select(["Open time", "Open", "High", "Low", "Close", "crypto_balance", "money_balance", "Equity"])
         
 
     def old_drawdown(self):
@@ -228,10 +212,10 @@ class KPIComputer:
         Pourcentage de gain annualisé
         (CAGR)
         """
-        t = 1 #TODO t durée en année -> 6mois = 0.5
-        ic = self.backtest['InitialCapital'].item()
-        fc = self.backtest['FinalCapital'].item()
-        annualized_return = (fc/ic)**(1/t)-1
+        # t = 1 #TODO t durée en année -> 6mois = 0.5
+        # ic = self.backtest['InitialCapital'].item()
+        # fc = self.backtest['FinalCapital'].item()
+        # annualized_return = (fc/ic)**(1/t)-1
 
     def Monthly_Return(self):
         pass

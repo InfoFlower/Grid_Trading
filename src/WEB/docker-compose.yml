@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: BDD_GridTrading
+    environment:
+      MYSQL_ROOT_PASSWORD: AlexLenul
+      MYSQL_DATABASE: DTM_GridTrading
+      MYSQL_USER: LeRequeteur
+      MYSQL_PASSWORD: LenulAlex
+    ports:
+      - "3306:3306"

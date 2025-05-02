@@ -13,14 +13,36 @@ function addOutputLine(message, type = 'info') {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    const progressBar = document.getElementById('progress-bar');
+    // Launch backtest
+    console.log('socket_opening')
+    const socket = new io();
+    socket.on('connect', () => {
+        console.log("Connected to server");  // Log when connected successfully
+        
+    });
+    socket.on('message',(message)=>{
+        data = message
+        output.textContent = data.message;
+    });
+    socket.on('progress',(progress)=>{
+        data = progress
+        progressBar.style.width = `${data.value}%`;
+    });
+    socket.on('close',(data) =>{
+        console.log(data)
+        addOutputLine('Success')
+        progressBar.style.backgroundColor = 'green';
+        document.querySelector('.btn-secondary').classList.remove('hidden');
+        socket.disconnect();
+    });
     document.getElementById('runBtn').addEventListener('click', async () => {
-        const progressBar = document.getElementById('progress-bar');
         const output = document.getElementById('output');
-        progressBar.style.width = '100%';
+        progressBar.style.width = '1%';
         progressBar.style.backgroundColor = 'blue';
-        output.textContent = 'Starting backtest...';
-
+        output.textContent = 'Initiating backtest...';
         const config = {
+            DataFile : document.getElementById('datafile').value,
             DataStructure: {
                 TimeCol: document.getElementById('timeCol').value,
                 CloseCol: document.getElementById('closeCol').value,
@@ -42,25 +64,12 @@ document.addEventListener('DOMContentLoaded', function() {
             money_balance: parseFloat(document.getElementById('moneyBalance').value),
             time_4_epoch: parseInt(document.getElementById('timeEpoch').value)
         };
-
-        // Launch backtest
-        try {
-            const response = await fetch('/LaunchBacktest', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(config)  // Your config object
-            });
-            const resultText = await response.json(); 
-    
-            addOutputLine(resultText.message,'Success')
-            progressBar.style.backgroundColor = 'green';
-            document.getElementById('viewResultsBtn').classList.remove('hidden');
-        } catch (err) {
-            addOutputLine(err.message, 'Error');
-            progressBar.style.backgroundColor = 'red';
-        }
+        console.log('sending request')
+        socket.emit('start_backtest',config)
     });
     document.getElementById('viewResultsBtn').addEventListener('click', async () => {
+        await fetch(`/put_data/datafile/${document.getElementById('datafile').value}`);
         window.location.href = '/public/reporting_page.html';
     });
 });
+

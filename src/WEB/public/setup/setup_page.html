@@ -11,6 +11,16 @@
     <img src="/assets/logo.png" alt="Logo" class="logo" />
     <h1>Backtest Dashboard</h1>
   </header>
+  <div class="main-panels-container">
+    <div class="panel">
+      <div class="panel-header">Data Files</div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="form-label" for="datafile">Data File</label>
+          <input class="form-control" id="datafile" type="text" value="data_raw_BTCUSDT_175" />
+        </div>
+      </div>
+    </div>
   <main class="container">
     <div class="panels-container">
       <div class="panel">
@@ -96,7 +106,7 @@
       <div id="output"></div>
     </div>
   </main>
-
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <script src="setup_script.js"></script>
 </body>
 </html>
