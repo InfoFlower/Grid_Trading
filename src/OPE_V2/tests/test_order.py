@@ -1,5 +1,6 @@
 import pytest 
 from OPE_V2.order import Order, OrderSide, OrderEvent
+from datetime import datetime, timezone
 
 
 # ───────────────────────────────
@@ -7,14 +8,14 @@ from OPE_V2.order import Order, OrderSide, OrderEvent
 # ───────────────────────────────
 
 @pytest.fixture
-def valid_order() -> Order:
+def valid_order_created_buy() -> Order:
     return Order(
         id=1,
+        created_at=int(datetime.now(timezone.utc).timestamp() * 1000),
         level=1000.0,
         asset_qty=1.0,
-        quote_qty=1000.0,
         side=OrderSide.BUY,
-        leverage=3,
+        leverage=3.0,
         tp_pct=0.1,
         sl_pct=0.05,
         event=OrderEvent.CREATED
@@ -24,40 +25,71 @@ def valid_order() -> Order:
 def order_no_tp_sl() -> Order:
     return Order(
         id=2,
+        created_at=int(datetime.now(timezone.utc).timestamp() * 1000),
         level=500.0,
         asset_qty=2.0,
-        quote_qty=1000.0,
         side=OrderSide.SELL,
-        leverage=2,
+        leverage=2.0,
         tp_pct=None,
         sl_pct=None,
         event=OrderEvent.CREATED
     )
 
-def test_tp_price(valid_order) -> None:
-    assert valid_order.tp_price == 1100.0
+def test_tp_price(valid_order_created_buy:Order) -> None:
+    assert valid_order_created_buy.tp_price == 1100.0
 
-def test_sl_price(valid_order) -> None:
-    assert valid_order.sl_price == 950.0
+def test_sl_price(valid_order_created_buy:Order) -> None:
+    assert valid_order_created_buy.sl_price == 950.0
 
-def test_no_tp_returns_none(order_no_tp_sl) -> None:
+def test_no_tp_returns_none(order_no_tp_sl:Order) -> None:
     assert order_no_tp_sl.tp_price is None
 
-def test_no_sl_returns_none(order_no_tp_sl) -> None:
+def test_no_sl_returns_none(order_no_tp_sl:Order) -> None:
     assert order_no_tp_sl.sl_price is None
 
 # ───────────────────────────────
 # 🔹 TEST RAISE VALUEERROR
 # ───────────────────────────────
 
+@pytest.mark.parametrize(
+    "field, value, match",
+    [
+        ("id", "bad", "id must be int.*"),
+        ("created_at", 12.34, "created_at must be int.*"),
+        ("level", "100", "level must be float.*"),
+        ("asset_qty", "a", "asset_qty must be float.*"),
+        ("leverage", None, "leverage must be float.*"),
+        ("side", "BUY", "side must be an instance of OrderSide.*"),
+        ("event", 123, "event must be an instance of OrderEvent.*"),
+    ]
+)
+def test_invalid_types(field, value, match):
+    kwargs = dict(
+        id=1,
+        created_at=int(datetime.now(timezone.utc).timestamp() * 1000),
+        level=1000.0,
+        asset_qty=1.0,
+        side=OrderSide.BUY,
+        leverage=2.0,
+        tp_pct=0.1,
+        sl_pct=0.1,
+        event=OrderEvent.CREATED
+    )
+    kwargs[field] = value
+    with pytest.raises(TypeError, match=match):
+        Order(**kwargs)
+
+
+# ───────────────────────────────
+# 🔹 TEST DE RAISE VALUEERROR
+# ───────────────────────────────
 
 @pytest.mark.parametrize(
     "field, value, match",
     [
-        ("level", -10, "level .* must be greater or equal to zero"),
-        ("asset_qty", -1, "asset_qty .* must be greater or equal to zero"),
-        ("quote_qty", -100, "quote_qty .* must be greater or equal to zero"),
-        ("leverage", 0.5, "leverage .* must be greater or equal to 1"),
+        ("level", -10.0, "level .* must be greater or equal to 0"),
+        ("asset_qty", -1.0, "asset_qty .* must be greater or equal to 0"),
+        ("leverage", -0.1, "leverage .* must be greater or equal to 0"),
         ("tp_pct", -1.5, "tp_pct .* must be greater than 0"),
         ("sl_pct", -0.1, "sl_pct .* must be greater than 0"),
     ]
@@ -65,11 +97,11 @@ def test_no_sl_returns_none(order_no_tp_sl) -> None:
 def test_invalid_fields(field, value, match):
     kwargs = dict(
         id=1,
-        level=1000,
-        asset_qty=1,
-        quote_qty=1000,
+        created_at=int(datetime.now(timezone.utc).timestamp() * 1000),
+        level=1000.0,
+        asset_qty=1.0,
         side=OrderSide.BUY,
-        leverage=2,
+        leverage=2.0,
         tp_pct=0.1,
         sl_pct=0.1,
         event=OrderEvent.CREATED
