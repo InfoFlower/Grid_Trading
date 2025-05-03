@@ -17,7 +17,7 @@ def valid_order() -> Order:
         leverage=3,
         tp_pct=0.1,
         sl_pct=0.05,
-        event=OrderEvent.OPEN
+        event=OrderEvent.CREATED
     )
 
 @pytest.fixture
@@ -31,7 +31,7 @@ def order_no_tp_sl() -> Order:
         leverage=2,
         tp_pct=None,
         sl_pct=None,
-        event=OrderEvent.OPEN
+        event=OrderEvent.CREATED
     )
 
 def test_tp_price(valid_order) -> None:
@@ -72,7 +72,7 @@ def test_invalid_fields(field, value, match):
         leverage=2,
         tp_pct=0.1,
         sl_pct=0.1,
-        event=OrderEvent.OPEN
+        event=OrderEvent.CREATED
     )
     kwargs[field] = value
     with pytest.raises(ValueError, match=match):

@@ -7,7 +7,7 @@ class OrderSide(Enum):
     SELL = "SELL"
 
 class OrderEvent(Enum):
-    OPEN = "OPEN"
+    CREATED = "CREATED"
     EXECUTED = "EXECUTED"
     CANCELLED = "CANCELLED"
 
@@ -76,7 +76,7 @@ class Order:
 #         leverage=1,
 #         tp_pct=0.1,
 #         sl_pct=None,
-#         event=OrderEvent.OPEN
+#         event=OrderEvent.CREATED
 #     )
 #     print(order.tp_price)
 #     print(order.sl_price)
