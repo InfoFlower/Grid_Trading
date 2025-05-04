@@ -32,6 +32,7 @@ class OrderManager:
         Retourne un dictionnaire des ordres qui vérifient la condition.
         """
         return {order_id : order for order_id, order in self.order_book.items() if condition(order)}
+    
 
     
 if __name__ == '__main__':
