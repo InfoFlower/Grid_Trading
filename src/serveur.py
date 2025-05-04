@@ -1,18 +1,18 @@
-import eventlet
-eventlet.monkey_patch()  # Required for eventlet to work properly
-
 from flask import Flask, send_from_directory, request, jsonify
-from flask_socketio import SocketIO, emit
 from pathlib import Path
+import uuid
 import json
 import os
 from dotenv import load_dotenv
+from concurrent.futures import ThreadPoolExecutor
+from main import main
 load_dotenv()
 WD = os.getenv('WD')
-
+for i in os.listdir(WD+'src/WEB/temp'):
+    os.remove(WD+'src/WEB/temp/'+i)
 app = Flask(__name__)
-port = 3000
-socketio = SocketIO(app, cors_allowed_origins="*")
+port = 5000
+executor = ThreadPoolExecutor(max_workers=3)
 # Absolute path to base directory and public directory
 BASE_DIR = Path(__file__).resolve().parent
 PUBLIC_DIR = BASE_DIR / 'WEB' / 'public'
@@ -47,33 +47,40 @@ def serve_assets_file(filename):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# == Intern API ==
+
 @app.route('/put_data/<path:key>/<path:value>')
 def put_data(key,value):
     cache_data[key]=value
-    with open('memory/last_cache.json','w') as f : f.write(str(jsonify(cache_data)))
+    try :
+        with open(WD + 'src/WEB/memory/last_cache.json','w') as f : f.write(json.dumps(cache_data))
+    except Exception as e:
+        print(f'Error : {e}')
     return jsonify({
         'status':'Logged',
         'Current_cache':cache_data
     })
+
 
 @app.route('/get_data/<path:key>')
 def get_data(key):
     return jsonify({'response' : cache_data[key]})
 # === Backtest Endpoint ===
 
-# @app.route('/LaunchBacktest', methods=['POST'])
-# def launch_backtest():
-#     from main import main
-#     try:
-#         data = request.get_json()
-#         result = main(data)
-#         return jsonify({"status": "success", "message": "Backtest executed", "code": 200}), 200
-#     except json.JSONDecodeError:
-#         return jsonify({"status": "error", "message": "Invalid JSON", "code": 400}), 400
-#     except Exception as e:
-#         print(e)
-#         return jsonify({"status": "error", "message": str(e), "code": 500}), 500
+@app.route('/LaunchBacktest', methods=['POST'])
+def launch_backtest():
+    try:
+        cache_data['task_id'] = str(uuid.uuid4())
+        data = request.get_json()
+        executor.submit(launching_backtest(data), cache_data['task_id'])
+        return jsonify({'status' : 'launched', 'uuid':cache_data['task_id']})
+    except Exception as e:
+        print(e)
+        return jsonify({"status": "error", "message": str(e), "code": 500}), 500
 
+def launching_backtest(data):
+    result = main(data)
+    result.main(cache_data['task_id'])
 # === Reporting Endpoint (placeholder) ===
 
 @app.route('/ReportingData')
@@ -100,25 +107,6 @@ def load_curve(data_file,position_file):
     fig = plot_equity_curve(data_file, position_file)
     return jsonify({'equity_curve':fig})
     
-@socketio.on('connect')
-def handle_connect():
-    print('Client connected')
-    emit('message', {'data': 'Connected'})
-
-@socketio.on('disconnect')
-def handle_disconnect():
-    print('Client disconnected')
-
-@socketio.on('start_backtest')
-def handle_backtest(data):
-    try:
-        from main import main
-        emit('message', {'type': 'progress', 'message': 'Backtest starting...'})
-        result = main(data, emit=emit)
-
-        emit('close', {'message': 'Closing connection...'})
-    except Exception as e:
-        emit('message', {'type': 'error', 'message': str(e)})
 
 # === Run the app ===
 
@@ -126,4 +114,4 @@ if __name__ == '__main__':
     print(f"\nFlask server running on http://localhost:{port}")
     print(f"- Home:    http://localhost:{port}/")
     print(f"- Setup:   http://localhost:{port}/public/setup/setup_page.html\n")
-    socketio.run(app, host='0.0.0.0', port=3000, debug=True)
+    app.run(debug=True)

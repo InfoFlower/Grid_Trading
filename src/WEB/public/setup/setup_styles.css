@@ -14,7 +14,6 @@
     background-color: var(--bg-color);
     font-family: 'Segoe UI', sans-serif;
     color: var(--text-color);
-    overflow: hidden;
   }
   
   header.header {
@@ -141,7 +140,14 @@
   .btn-primary:hover {
     background-color: #ffcb31;
   }
-  
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.disabled {
+    background-color: #cccccc;
+    color: #666666;
+}
   .btn-secondary {
     background-color: #444;
     color: #eee;
