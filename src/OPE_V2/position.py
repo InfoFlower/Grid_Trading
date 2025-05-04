@@ -67,17 +67,17 @@ class Position:
             if self.close_price < 0:
                 raise ValueError(f"close_price {self.close_price} must be greater or equal to 0")
         
-        #Check les positions des takeprofit TP en fonction de l'entryprice EP
+        #Check les positions des takeprofit TP en fonction de l'entryprice EP et du side
         if self.tp_price is not None:
             if (self.tp_price < self.entry_price) if self.side == PositionSide.LONG else (self.tp_price > self.entry_price):
-                raise ValueError(f"Side:{self.side}\n TP={self.tp_price} < EP ={self.entry_price}; TP must be greater than Entry_price EP" if self.side == PositionSide.LONG \
-                                else f"Side:{self.side}\n TP={self.tp_price} > EP ={self.entry_price}; TP must be lower than Entry_price EP")
+                raise ValueError(f"Side:{self.side};TP={self.tp_price} < EP={self.entry_price};TP must be greater than Entry_price EP" if self.side == PositionSide.LONG \
+                                else f"Side:{self.side};TP={self.tp_price} > EP={self.entry_price};TP must be lower than Entry_price EP")
             
-        #Check les positions des stoploss SL en fonction de l'entryprice EP
+        #Check les positions des stoploss SL en fonction de l'entryprice EP et du side
         if self.sl_price is not None:
             if (self.sl_price > self.entry_price) if self.side == PositionSide.LONG else (self.sl_price < self.entry_price):
-                raise ValueError(f"Side:{self.side}\n SL={self.sl_price} > EP ={self.entry_price}; SL must be lower than Entry_price EP" if self.side == PositionSide.LONG \
-                                else f"Side:{self.side}\n SL={self.tp_price} < EP ={self.entry_price}; SL must be greater than Entry_price EP")
+                raise ValueError(f"Side:{self.side};SL={self.sl_price} > EP={self.entry_price};SL must be lower than Entry_price EP" if self.side == PositionSide.LONG \
+                                else f"Side:{self.side};SL={self.sl_price} < EP={self.entry_price};SL must be greater than Entry_price EP")
 
     def pnl(self, current_price : float) -> float:
         """

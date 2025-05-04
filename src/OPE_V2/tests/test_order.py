@@ -48,7 +48,7 @@ def test_no_sl_returns_none(order_no_tp_sl:Order) -> None:
     assert order_no_tp_sl.sl_price is None
 
 # ───────────────────────────────
-# 🔹 TEST RAISE VALUEERROR
+# 🔹 TEST RAISE TYPEERROR
 # ───────────────────────────────
 
 @pytest.mark.parametrize(
@@ -61,6 +61,10 @@ def test_no_sl_returns_none(order_no_tp_sl:Order) -> None:
         ("leverage", None, "leverage must be float.*"),
         ("side", "BUY", "side must be an instance of OrderSide.*"),
         ("event", 123, "event must be an instance of OrderEvent.*"),
+        ("executed_at", 123.0, "executed_at must be int or None.*"),
+        ("tp_pct", 123, "tp_pct must be float or None.*"),
+        ("sl_pct", 123, "sl_pct must be float or None.*"),
+        
     ]
 )
 def test_invalid_types(field, value, match):
