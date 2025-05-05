@@ -12,6 +12,7 @@ function addOutputLine(message, type = 'info') {
     }
 };
 
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -20,8 +21,17 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('runBtn').disabled = false;
     document.getElementById('runBtn').classList.remove('disabled');
     const progressBar = document.getElementById('progress-bar');
-    
+    async function get_progress(uuid){
+        console.log(`/get_data/${uuid}_status`)
+        const progress = await fetch(`/get_data/${current_uuid.uuid}_status`);
+        const data = await progress.json();
+        console.log(data.response);
+        progressBar.style.width = `${data.response}%`;
+        return data.response
+    }
     document.getElementById('runBtn').addEventListener('click', async () => {
+        document.getElementById('runBtn').disabled = true;
+        document.getElementById('runBtn').classList.add('disabled');
         const config = {
             DataFile : document.getElementById('datafile').value,
             DataStructure: {
@@ -57,30 +67,20 @@ document.addEventListener('DOMContentLoaded', function() {
         output.textContent = 'Initiating backtest...';
         console.log('sending request')
         const response = await fetch('/LaunchBacktest',request)
-        current_uuid = response.uuid
-        console.log(response)
-        const progress = 0
-        function get_progress(){
-            const progress = fetch(`/get_data/${current_uuid}_status`);
-            data = progress;
-            console.log(data)
-            progressBar.style.width = `${data.status}%`;
-            return data.status
-        }
+        current_uuid = await response.json();
+        console.log(current_uuid)
+        let progress = 0
         while (progress!=100){
-            progress =  get_progress();
-            await sleep(1000);
+            await sleep(30000);
+            progress = await get_progress(current_uuid.uuid);
+            addOutputLine(`Current at : ${progress}, waiting...`)
             }
-        
-        // console.log(data)
-        // addOutputLine('Success')
-        // progressBar.style.backgroundColor = 'green';
-        // document.querySelector('.btn-secondary').classList.remove('hidden');
-        // document.getElementById('runBtn').disabled = false;
-        // document.getElementById('runBtn').classList.remove('disabled');
-        // document.getElementById('runBtn').disabled = true;
-        // document.getElementById('runBtn').classList.add('disabled');
-    });
+        addOutputLine('Success')
+        progressBar.style.backgroundColor = 'green';
+        document.querySelector('.btn-secondary').classList.remove('hidden');
+        document.getElementById('runBtn').disabled = false;
+        document.getElementById('runBtn').classList.remove('disabled');
+        });
     document.getElementById('viewResultsBtn').addEventListener('click', async () => {
         await fetch(`/put_data/datafile/${document.getElementById('datafile').value}`);
         window.location.href = '/public/reporting_page.html';
