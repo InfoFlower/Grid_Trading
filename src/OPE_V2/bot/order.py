@@ -86,18 +86,20 @@ class Order:
         if self.sl_pct is None:
             return None
         return self.level*(1 + (-1 if self.side == OrderSide.BUY else 1)*self.sl_pct)
+
+
+    def is_executable(self, candle_data:dict) -> bool:
+        """
+        """
+        low = candle_data['LowCol']
+        high = candle_data['HighCol']
+
+        return self.event == OrderEvent.CREATED and low <= self.level <= high
+        
+
+    
     
 
     
 
 
-# def level_open_order(candle:dict) -> Callable[[Order], bool]:
-#     """
-#     """
-#     low = candle['Low']
-#     high = candle['High']
-
-#     def condition(order:Order) -> bool:
-#         return order.event == OrderEvent.CREATED and low <= order.level <= high
-    
-#     return condition

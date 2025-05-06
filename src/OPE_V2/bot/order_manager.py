@@ -1,14 +1,21 @@
 from typing import Dict, Callable
-from order import Order, OrderEvent, OrderSide
+from datetime import datetime
+
+from .order import Order, OrderEvent, OrderSide
+from event import EventDispatcher, Event, EventType
 
 
 class OrderManager:
 
-    def __init__(self) -> None:
+    def __init__(self, event_dispatcher : EventDispatcher) -> None:
         """
         Initialise l'orderbook à un dictionnaire vide
         """
+        self.event_dispatcher = event_dispatcher
         self.order_book : Dict[int, Order] = {}
+
+        event_dispatcher.add_listeners(EventType.MARKET_DATA, self.orders_to_execute)
+        
 
     def make_order(self, order : Order) -> None:
         """
@@ -22,10 +29,22 @@ class OrderManager:
         """
         Retire un ordre de l'order book
         """
-        try:
-            del self.order_book[order.id]
-        except KeyError as e:
-            print(f"Order {order.id} does not exists in the order book")
+        if order.id not in self.order_book:
+            raise KeyError(f"Order {order.id} does not exists in the order book")
+        
+        del self.order_book[order.id]
+        self.event_dispatcher(Event(
+                    type = EventType.ORDER_EXECUTED,
+                    data = order,
+                    timestamp = datetime.now()
+                ))
+
+    def orders_to_execute(self, event : Event):
+        for order in self.order_book.values():
+            if order.is_executable():
+                self.take_order(order)
+                
+
 
     def filter(self, condition : Callable[[Order],bool]) -> Dict[int,Order]:
         """

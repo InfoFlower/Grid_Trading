@@ -1,12 +1,14 @@
 from enum import Enum
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from typing import Any, Dict, List, Callable
 from datetime import datetime
+import json
 
 class EventType(Enum):
     MARKET_DATA = "MARKET_DATA"
     ORDER_CREATED = "ORDER_CREATED"
-    ORDER_FILLED = "ORDER_FILLED"
+    ORDER_EXECUTED = "ORDER_EXECUTED"
+    ORDER_CANCELLED = "ORDER_CANCELLED"
     POSITION_OPENED = "POSITION_OPENED"
     POSITION_CLOSED = "POSITION_CLOSED"
     SIGNAL_GENERATED = "SIGNAL_GENERATED"
@@ -27,3 +29,17 @@ class EventDispatcher:
     def dispatch(self, event : Event) -> None:
         for callback in self._listeners[event.type]:
             callback(event)
+
+    def _setup_event_logging(self):
+        """Enregistre tous les événements pour débogage"""
+        def log_event(event: Event):
+            log_entry = {
+                'timestamp': event.timestamp.isoformat(),
+                'type': event.type.value,
+                'data': asdict(event.data) if hasattr(event.data, '__dataclass_fields__') else event.data
+            }
+            print(f"[EVENT] {json.dumps(log_entry, indent=2)}")
+        
+        # S'abonne à tous les types d'événements
+        for event_type in EventType:
+            self.add_listener(event_type, log_event)

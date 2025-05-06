@@ -8,9 +8,10 @@ class PositionSide(Enum):
     SHORT = "SHORT"
 
 class PositionEvent(Enum):
-    OPEN = "OPEN"
-    TAKE_PROFIT = "TAKE_PROFIT"
-    STOP_LOSS = "STOP_LOSS"
+    OPENED = "OPENED"
+    CLOSED = "CLOSED"
+    # TAKE_PROFIT = "TAKE_PROFIT"
+    # STOP_LOSS = "STOP_LOSS"
     CANCELLED = "CANCELLED"
 
 @dataclass
@@ -26,7 +27,6 @@ class Position:
     sl_price : Optional[float] = None
     closed_at : Optional[int] = None
     close_price : Optional[float] = None
-    
     
 
     def __post_init__(self) -> None:

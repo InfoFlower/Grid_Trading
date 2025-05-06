@@ -1,5 +1,5 @@
 import pytest 
-from OPE_V2.position import Position, PositionSide, PositionEvent
+from OPE_V2.bot.position import Position, PositionSide, PositionEvent
 from datetime import datetime, timezone
 
 # ───────────────────────────────

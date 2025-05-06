@@ -1,5 +1,5 @@
 import pytest 
-from OPE_V2.order import Order, OrderSide, OrderEvent
+from OPE_V2.bot.order import Order, OrderSide, OrderEvent
 from datetime import datetime, timezone
 
 
