@@ -20,6 +20,6 @@ crypto_initial_price = data_provider.get_initial_data()['CloseCol']
 pool = {'money_balance': initial_pool_value/2, 'crypto_balance' : initial_pool_value/2/crypto_initial_price}
 ######################################################################
 
-#trading_bot = TradingBot(event_dispatcher, pool)
+trading_bot = TradingBot(event_dispatcher, data_provider, pool)
 
-data_provider.stream_data()
+trading_bot.run()

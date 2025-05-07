@@ -31,7 +31,13 @@ class CSVDataProvider:
         """
         Emet un évènement de type MARKET_DATA à chaque itération en envoyant la data
         """
-        for row in self.data.iter_rows(named=True):
+        for n, row in enumerate(self.data.iter_rows(named=True)):
+            if n == 0:
+                self.event_dispatcher.dispatch(Event(
+                    type = EventType.INIT_MARKET_DATA,
+                    data = row,
+                    timestamp = datetime.now()
+                    ))
             self.event_dispatcher.dispatch(Event(
                 type = EventType.MARKET_DATA,
                 data = row,

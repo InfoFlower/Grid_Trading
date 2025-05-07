@@ -1,4 +1,4 @@
-from typing import Dict, Callable
+from typing import Dict, Callable, Any
 from datetime import datetime
 
 from .order import Order, OrderEvent, OrderSide
@@ -15,7 +15,14 @@ class OrderManager:
         self.order_book : Dict[int, Order] = {}
 
         event_dispatcher.add_listeners(EventType.MARKET_DATA, self.orders_to_execute)
+        event_dispatcher.add_listeners(EventType.STRATEGY_MAKE_ORDER, self.make_order)
         
+    
+    def construct_order(self, event : Event):
+        
+        order_params = event.data
+        
+
 
     def make_order(self, order : Order) -> None:
         """

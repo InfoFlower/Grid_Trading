@@ -3,6 +3,8 @@ from enum import Enum
 from typing import Optional, Callable
 from datetime import datetime, timezone
 
+
+
 class OrderSide(Enum):
     BUY = "BUY"
     SELL = "SELL"
@@ -21,7 +23,7 @@ class Order:
     asset_qty : float
     side : OrderSide
     leverage : float
-    event : OrderEvent
+    order_event : OrderEvent
     executed_at : Optional[int] = None
     tp_pct: Optional[float] = None
     sl_pct : Optional[float] = None
@@ -47,8 +49,8 @@ class Order:
             raise TypeError(f"leverage must be float, got {type(self.leverage).__name__}")
         if not isinstance(self.side, OrderSide):
             raise TypeError(f"side must be an instance of OrderSide, got {type(self.side).__name__}")
-        if not isinstance(self.event, OrderEvent):
-            raise TypeError(f"event must be an instance of OrderEvent, got {type(self.event).__name__}")
+        if not isinstance(self.order_event, OrderEvent):
+            raise TypeError(f"order_event must be an instance of OrderEvent, got {type(self.order_event).__name__}")
         if self.tp_pct is not None and not isinstance(self.tp_pct, float):
             raise TypeError(f"tp_pct must be float or None, got {type(self.tp_pct).__name__}")
         if self.sl_pct is not None and not isinstance(self.sl_pct, float):
@@ -94,7 +96,7 @@ class Order:
         low = candle_data['LowCol']
         high = candle_data['HighCol']
 
-        return self.event == OrderEvent.CREATED and low <= self.level <= high
+        return self.order_event == OrderEvent.CREATED and low <= self.level <= high
         
 
     
