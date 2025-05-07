@@ -1,5 +1,5 @@
 from typing import Dict, Callable, Any
-from datetime import datetime
+from datetime import datetime, timezone
 
 from .order import Order, OrderEvent, OrderSide
 from event import EventDispatcher, Event, EventType
@@ -15,14 +15,23 @@ class OrderManager:
         self.order_book : Dict[int, Order] = {}
 
         event_dispatcher.add_listeners(EventType.MARKET_DATA, self.orders_to_execute)
-        event_dispatcher.add_listeners(EventType.STRATEGY_MAKE_ORDER, self.make_order)
+        event_dispatcher.add_listeners(EventType.STRATEGY_MAKE_ORDER, self.construct_order)
         
-    
     def construct_order(self, event : Event):
-        
+        """
+        user_params = {
+                'level': crypto_initial_price+200,
+                'asset_qty' : 0.01* pool['crypto_balance'],
+                'side' : OrderSide.SELL,
+                'leverage' : 0
+            }
+        """
         order_params = event.data
-        
-
+        order_params['created_at'] = int(datetime.now(timezone.utc).timestamp() * 1000)
+        order_params['order_event'] = OrderEvent.CREATED
+        print(order_params)
+        order = Order.from_dict(order_params)
+        self.make_order(order)
 
     def make_order(self, order : Order) -> None:
         """
@@ -31,6 +40,16 @@ class OrderManager:
         if order.id in self.order_book:
             raise KeyError(f"Order {order.id} already exists in the order book") 
         self.order_book[order.id] = order
+        self.event_dispatcher.dispatch(Event(
+                    type = EventType.ORDER_CREATED,
+                    data = order,
+                    timestamp = datetime.now()
+                ))
+        
+    def orders_to_execute(self, event : Event):
+        for order_id in list(self.order_book.keys()):
+            if self.order_book[order_id].is_executable(event.data):
+                self.take_order(self.order_book[order_id])
 
     def take_order(self, order : Order) -> None:
         """
@@ -40,18 +59,13 @@ class OrderManager:
             raise KeyError(f"Order {order.id} does not exists in the order book")
         
         del self.order_book[order.id]
-        self.event_dispatcher(Event(
+        self.event_dispatcher.dispatch(Event(
                     type = EventType.ORDER_EXECUTED,
                     data = order,
                     timestamp = datetime.now()
                 ))
 
-    def orders_to_execute(self, event : Event):
-        for order in self.order_book.values():
-            if order.is_executable():
-                self.take_order(order)
-                
-
+    
 
     def filter(self, condition : Callable[[Order],bool]) -> Dict[int,Order]:
         """

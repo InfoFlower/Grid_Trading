@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional, Callable
-from datetime import datetime, timezone
+from typing import Optional, ClassVar
+
 
 
 
@@ -17,13 +17,15 @@ class OrderEvent(Enum):
 @dataclass
 class Order:
 
-    id : int
+    _instance_count: ClassVar[int] = 0 
+
     created_at : int
     level : float
     asset_qty : float
     side : OrderSide
     leverage : float
     order_event : OrderEvent
+    id : Optional[int] = None
     executed_at : Optional[int] = None
     tp_pct: Optional[float] = None
     sl_pct : Optional[float] = None
@@ -35,7 +37,7 @@ class Order:
         Return None si OK ou raise ValueError si l'une des conditions n'est pas vérifiée
         """
         # Typage strict
-        if not isinstance(self.id, int):
+        if self.id is not None and not isinstance(self.id, int):
             raise TypeError(f"id must be int, got {type(self.id).__name__}")
         if not isinstance(self.created_at, int):
             raise TypeError(f"created_at must be int (Unix ms timestamp), got {type(self.created_at).__name__}")
@@ -67,6 +69,23 @@ class Order:
             raise ValueError(f"tp_pct {self.tp_pct} must be greater than 0")
         if self.sl_pct is not None and self.sl_pct <= 0:
             raise ValueError(f"sl_pct {self.sl_pct} must be greater than 0")
+        
+        self.id = Order._instance_count + 1
+    
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            id=data.get('id'),
+            created_at=data['created_at'],
+            level=data['level'],
+            asset_qty=data['asset_qty'],
+            side=OrderSide(data['side']),
+            leverage=data['leverage'],
+            order_event=OrderEvent(data['order_event']),
+            executed_at=data.get('executed_at'),
+            tp_pct=data.get('tp_pct'),
+            sl_pct=data.get('sl_pct')
+        )
 
     
     @property

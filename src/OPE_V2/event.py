@@ -41,6 +41,7 @@ class EventDispatcher:
                 'data': asdict(event.data) if hasattr(event.data, '__dataclass_fields__') else event.data
             }
             print(f"[EVENT] {json.dumps(log_entry, indent=2)}")
+            print(self._listeners)
         
         # S'abonne à tous les types d'événements
         for event_type in EventType:
