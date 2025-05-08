@@ -3,7 +3,7 @@ import polars as pl
 from typing import Dict
 from datetime import datetime
 
-from event import Event, EventType, EventDispatcher
+from event.event import Event, EventType, EventDispatcher
 
 class CSVDataProvider:
     """

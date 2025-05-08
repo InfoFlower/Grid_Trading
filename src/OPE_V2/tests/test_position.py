@@ -9,12 +9,12 @@ from datetime import datetime, timezone
 @pytest.fixture
 def valid_position_long() -> Position:
     return Position(
-        id = 1,
         entry_at = int(datetime.now(timezone.utc).timestamp() * 1000),
         entry_price = 1000.0,
         asset_qty = 1.0,
+        leverage = 1.4,
         side = PositionSide.LONG,
-        event = PositionEvent.OPEN,
+        position_event = PositionEvent.OPENED,
         tp_price = 1200.0,
         sl_price = 900.0,
         )
@@ -22,12 +22,12 @@ def valid_position_long() -> Position:
 @pytest.fixture
 def valid_position_short() -> Position:
     return Position(
-        id = 2,
         entry_at = int(datetime.now(timezone.utc).timestamp() * 1000),
         entry_price = 1000.0,
         asset_qty = 1.0,
+        leverage = 2.4,
         side = PositionSide.SHORT,
-        event = PositionEvent.OPEN,
+        position_event = PositionEvent.OPENED,
         tp_price = 800.0,
         sl_price = 1100.0,
         )
@@ -47,13 +47,13 @@ def test_pnl_valid_position_short(valid_position_short):
 @pytest.mark.parametrize(
     "field, value, match",
     [
-        ("id", "bad", "id must be int.*"),
         ("entry_at", 12.34, "entry_at must be int.*"),
         ("closed_at", "not-an-int", "closed_at must be int or None.*"),
         ("entry_price", "100.0", "entry_price must be float.*"),
         ("asset_qty", "qty", "asset_qty must be float.*"),
+        ("leverage", 2, "leverage must be float.*"),
         ("side", "LONG", "side must be an instance of PositionSide.*"),
-        ("event", 999, "event must be an instance of PositionEvent.*"),
+        ("position_event", 999, "position_event must be an instance of PositionEvent.*"),
         ("close_price", "150.0", "close_price must be float or None.*"),
         ("tp_price", True, "tp_price must be float or None.*"),
         ("sl_price", "stop", "sl_price must be float or None.*"),
@@ -61,13 +61,13 @@ def test_pnl_valid_position_short(valid_position_short):
 )
 def test_position_invalid_types(field, value, match):
     kwargs = dict(
-        id=1,
         entry_at=int(datetime.now(timezone.utc).timestamp() * 1000),
         closed_at=None,
         entry_price=100.0,
         asset_qty=1.0,
+        leverage = 2.4,
         side=PositionSide.LONG,
-        event=PositionEvent.OPEN,
+        position_event=PositionEvent.OPENED,
         close_price=None,
         tp_price=None,
         sl_price=None
@@ -86,18 +86,20 @@ def test_position_invalid_types(field, value, match):
         ("entry_price", -10.0, "entry_price .* must be greater or equal to 0"),
         ("asset_qty", -1.0, "asset_qty .* must be greater or equal to 0"),
         ("close_price", -1.0, "close_price .* must be greater or equal to 0"),
+        ("leverage", -1.0, "leverage .* must be greater or equal to 0"),
+        
         # ("tp_pct", -1.5, "tp_pct .* must be greater than 0"),
         # ("sl_pct", -0.1, "sl_pct .* must be greater than 0"),
     ]
 )
 def test_invalid_fields(field, value, match):
     kwargs = dict(
-        id=1,
         entry_at=int(datetime.now(timezone.utc).timestamp() * 1000),
         entry_price=1000.0,
         asset_qty=1.0,
+        leverage = 2.4,
         side=PositionSide.LONG,
-        event=PositionEvent.OPEN,
+        position_event=PositionEvent.OPENED,
         tp_price=1100.0,
         sl_price=950.0
     )
@@ -117,13 +119,13 @@ def test_invalid_fields(field, value, match):
 def test_invalid_tp_price_for_side(side, entry_price, tp_price, expected_msg):
     with pytest.raises(ValueError, match=expected_msg):
         Position(
-            id=1,
             entry_at=1234567890000,
             closed_at=None,
             entry_price=entry_price,
             asset_qty=1.0,
+            leverage = 2.4,
             side=side,
-            event=PositionEvent.OPEN,
+            position_event=PositionEvent.OPENED,
             close_price=None,
             tp_price=tp_price,
             sl_price=None
@@ -140,13 +142,13 @@ def test_invalid_tp_price_for_side(side, entry_price, tp_price, expected_msg):
 def test_invalid_sl_price_for_side(side, entry_price, sl_price, expected_msg):
     with pytest.raises(ValueError, match=expected_msg):
         Position(
-            id=1,
             entry_at=1234567890000,
             closed_at=None,
             entry_price=entry_price,
             asset_qty=1.0,
+            leverage = 2.4,
             side=side,
-            event=PositionEvent.OPEN,
+            position_event=PositionEvent.OPENED,
             close_price=None,
             tp_price=None,
             sl_price=sl_price

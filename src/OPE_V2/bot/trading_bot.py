@@ -4,17 +4,15 @@ from enum import Enum
 import json
 
 from csv_data_provider import CSVDataProvider
-from .order_manager import OrderManager
-from event import EventDispatcher, Event, EventType
-#from .position_manager import PositionManager
+
+from event.event import EventDispatcher, Event, EventType
+from .position_manager import PositionManager
 
 
 class TradingBot:
 
     #position_manager : PositionManager
     def __init__(self, event_dispatcher : EventDispatcher, data_provider : CSVDataProvider, pool : Dict[str, float | int]) -> None:
-        self.order_manager = OrderManager(event_dispatcher)
-        #self.position_manager = PositionManager()
         self.event_dispatcher = event_dispatcher
         self.data_provider = data_provider
         self.pool = pool

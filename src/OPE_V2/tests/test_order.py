@@ -1,6 +1,8 @@
 import pytest 
-from OPE_V2.bot.order import Order, OrderSide, OrderEvent
 from datetime import datetime, timezone
+
+from OPE_V2.bot.order import Order, OrderSide
+from OPE_V2.event.event_type import EventType
 
 
 # ───────────────────────────────
@@ -10,7 +12,6 @@ from datetime import datetime, timezone
 @pytest.fixture
 def valid_order_created_buy() -> Order:
     return Order(
-        id=1,
         created_at=int(datetime.now(timezone.utc).timestamp() * 1000),
         level=1000.0,
         asset_qty=1.0,
@@ -18,13 +19,12 @@ def valid_order_created_buy() -> Order:
         leverage=3.0,
         tp_pct=0.1,
         sl_pct=0.05,
-        order_event=OrderEvent.CREATED
+        order_event=EventType.ORDER_CREATED
     )
 
 @pytest.fixture
 def order_no_tp_sl() -> Order:
     return Order(
-        id=2,
         created_at=int(datetime.now(timezone.utc).timestamp() * 1000),
         level=500.0,
         asset_qty=2.0,
@@ -32,7 +32,7 @@ def order_no_tp_sl() -> Order:
         leverage=2.0,
         tp_pct=None,
         sl_pct=None,
-        order_event=OrderEvent.CREATED
+        order_event=EventType.ORDER_CREATED
     )
 
 def test_tp_price(valid_order_created_buy:Order) -> None:
@@ -54,13 +54,12 @@ def test_no_sl_returns_none(order_no_tp_sl:Order) -> None:
 @pytest.mark.parametrize(
     "field, value, match",
     [
-        ("id", "bad", "id must be int.*"),
         ("created_at", 12.34, "created_at must be int.*"),
         ("level", "100", "level must be float.*"),
         ("asset_qty", "a", "asset_qty must be float.*"),
         ("leverage", None, "leverage must be float.*"),
         ("side", "BUY", "side must be an instance of OrderSide.*"),
-        ("order_event", 123, "order_event must be an instance of OrderEvent.*"),
+        ("order_event", 123, "order_event must be an instance of EventType.*"),
         ("executed_at", 123.0, "executed_at must be int or None.*"),
         ("tp_pct", 123, "tp_pct must be float or None.*"),
         ("sl_pct", 123, "sl_pct must be float or None.*"),
@@ -69,7 +68,6 @@ def test_no_sl_returns_none(order_no_tp_sl:Order) -> None:
 )
 def test_invalid_types(field, value, match):
     kwargs = dict(
-        id=1,
         created_at=int(datetime.now(timezone.utc).timestamp() * 1000),
         level=1000.0,
         asset_qty=1.0,
@@ -77,7 +75,7 @@ def test_invalid_types(field, value, match):
         leverage=2.0,
         tp_pct=0.1,
         sl_pct=0.1,
-        order_event=OrderEvent.CREATED
+        order_event=EventType.ORDER_CREATED
     )
     kwargs[field] = value
     with pytest.raises(TypeError, match=match):
@@ -100,7 +98,6 @@ def test_invalid_types(field, value, match):
 )
 def test_invalid_fields(field, value, match):
     kwargs = dict(
-        id=1,
         created_at=int(datetime.now(timezone.utc).timestamp() * 1000),
         level=1000.0,
         asset_qty=1.0,
@@ -108,7 +105,7 @@ def test_invalid_fields(field, value, match):
         leverage=2.0,
         tp_pct=0.1,
         sl_pct=0.1,
-        order_event=OrderEvent.CREATED
+        order_event=EventType.ORDER_CREATED
     )
     kwargs[field] = value
     with pytest.raises(ValueError, match=match):

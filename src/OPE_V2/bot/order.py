@@ -1,6 +1,8 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import Optional, ClassVar
+
+from event.event_type import EventType
 
 
 
@@ -9,23 +11,18 @@ class OrderSide(Enum):
     BUY = "BUY"
     SELL = "SELL"
 
-class OrderEvent(Enum):
-    CREATED = "CREATED"
-    EXECUTED = "EXECUTED"
-    CANCELLED = "CANCELLED"
-
 @dataclass
 class Order:
 
     _instance_count: ClassVar[int] = 0 
 
+    id : int = field(init=False)
     created_at : int
     level : float
     asset_qty : float
     side : OrderSide
     leverage : float
-    order_event : OrderEvent
-    id : Optional[int] = None
+    order_event : EventType
     executed_at : Optional[int] = None
     tp_pct: Optional[float] = None
     sl_pct : Optional[float] = None
@@ -37,8 +34,8 @@ class Order:
         Return None si OK ou raise ValueError si l'une des conditions n'est pas vérifiée
         """
         # Typage strict
-        if self.id is not None and not isinstance(self.id, int):
-            raise TypeError(f"id must be int, got {type(self.id).__name__}")
+        # if self.id is not None and not isinstance(self.id, int):
+        #     raise TypeError(f"id must be int, got {type(self.id).__name__}")
         if not isinstance(self.created_at, int):
             raise TypeError(f"created_at must be int (Unix ms timestamp), got {type(self.created_at).__name__}")
         if self.executed_at is not None and not isinstance(self.executed_at, int):
@@ -51,8 +48,8 @@ class Order:
             raise TypeError(f"leverage must be float, got {type(self.leverage).__name__}")
         if not isinstance(self.side, OrderSide):
             raise TypeError(f"side must be an instance of OrderSide, got {type(self.side).__name__}")
-        if not isinstance(self.order_event, OrderEvent):
-            raise TypeError(f"order_event must be an instance of OrderEvent, got {type(self.order_event).__name__}")
+        if not isinstance(self.order_event, EventType):
+            raise TypeError(f"order_event must be an instance of EventType, got {type(self.order_event).__name__}")
         if self.tp_pct is not None and not isinstance(self.tp_pct, float):
             raise TypeError(f"tp_pct must be float or None, got {type(self.tp_pct).__name__}")
         if self.sl_pct is not None and not isinstance(self.sl_pct, float):
@@ -75,13 +72,12 @@ class Order:
     @classmethod
     def from_dict(cls, data: dict):
         return cls(
-            id=data.get('id'),
             created_at=data['created_at'],
             level=data['level'],
             asset_qty=data['asset_qty'],
             side=OrderSide(data['side']),
             leverage=data['leverage'],
-            order_event=OrderEvent(data['order_event']),
+            order_event=EventType(data['order_event']),
             executed_at=data.get('executed_at'),
             tp_pct=data.get('tp_pct'),
             sl_pct=data.get('sl_pct')
@@ -115,7 +111,7 @@ class Order:
         low = candle_data['LowCol']
         high = candle_data['HighCol']
 
-        return self.order_event == OrderEvent.CREATED and low <= self.level <= high
+        return self.order_event == EventType.ORDER_CREATED and low <= self.level <= high
         
 
     

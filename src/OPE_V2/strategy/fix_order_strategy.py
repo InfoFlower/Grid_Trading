@@ -2,7 +2,7 @@ from typing import Dict, Any
 from datetime import datetime
 
 
-from event import EventDispatcher, Event, EventType
+from event.event import EventDispatcher, Event, EventType
 
 class FixOrderStrategy:
 
