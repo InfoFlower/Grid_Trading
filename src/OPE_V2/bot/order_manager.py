@@ -33,6 +33,7 @@ class OrderManager:
         order_params['created_at'] = int(datetime.now(timezone.utc).timestamp() * 1000)
         order_params['order_event'] = EventType.ORDER_CREATED
         print(order_params)
+        #################################################################################
         order = Order(**order_params)
         self.make_order(order)
 
@@ -62,6 +63,8 @@ class OrderManager:
             raise KeyError(f"Order {order.id} does not exists in the order book")
         
         del self.order_book[order.id]
+        order.executed_at = int(datetime.now(timezone.utc).timestamp() * 1000)
+        order.order_event = EventType.ORDER_EXECUTED
         self.event_dispatcher.dispatch(Event(
                     type = EventType.ORDER_EXECUTED,
                     data = order,

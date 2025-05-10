@@ -23,7 +23,7 @@ class Order:
     side : OrderSide
     leverage : float
     order_event : EventType
-    executed_at : Optional[int] = None
+    executed_at : int = 0
     tp_pct: Optional[float] = None
     sl_pct : Optional[float] = None
     
@@ -38,8 +38,8 @@ class Order:
         #     raise TypeError(f"id must be int, got {type(self.id).__name__}")
         if not isinstance(self.created_at, int):
             raise TypeError(f"created_at must be int (Unix ms timestamp), got {type(self.created_at).__name__}")
-        if self.executed_at is not None and not isinstance(self.executed_at, int):
-            raise TypeError(f"executed_at must be int or None, got {type(self.executed_at).__name__}")
+        # if self.executed_at is not None and not isinstance(self.executed_at, int):
+        #     raise TypeError(f"executed_at must be int or None, got {type(self.executed_at).__name__}")
         if not isinstance(self.level, float):
             raise TypeError(f"level must be float, got {type(self.level).__name__}")
         if not isinstance(self.asset_qty, float):
@@ -68,6 +68,7 @@ class Order:
             raise ValueError(f"sl_pct {self.sl_pct} must be greater than 0")
         
         self.id = Order._instance_count + 1
+        #self.executed_at = 0
     
     @classmethod
     def from_dict(cls, data: dict):

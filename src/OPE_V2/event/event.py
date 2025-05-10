@@ -16,6 +16,8 @@ class EventDispatcher:
     def __init__(self) -> None:
         self._listeners : Dict[EventType, List[Callable]] = {e: [] for e in EventType}
 
+        self._setup_event_logging()
+
     def add_listeners(self, event_type : EventType, callback : Callable) -> None:
         self._listeners[event_type].append(callback)
         
@@ -26,14 +28,20 @@ class EventDispatcher:
     def _setup_event_logging(self):
         """Enregistre tous les événements pour débogage"""
         def log_event(event: Event):
-            log_entry = {
-                'timestamp': event.timestamp.isoformat(),
-                'type': event.type.value,
-                'data': asdict(event.data) if hasattr(event.data, '__dataclass_fields__') else event.data
-            }
-            print(f"[EVENT] {json.dumps(log_entry, indent=2)}")
-            print(self._listeners)
-        
-        # S'abonne à tous les types d'événements
+            if event.type.value != 'MARKET_DATA':
+                log_entry = {
+                    'timestamp': event.timestamp.isoformat(),
+                    'type': event.type.value,
+                    'data': asdict(event.data) if hasattr(event.data, '__dataclass_fields__') else event.data
+                }
+                print(f"[EVENT] {json.dumps(log_entry, indent=2, default=enum_encoder)}")
+                #print(self._listeners)
+
+            # S'abonne à tous les types d'événements
         for event_type in EventType:
-            self.add_listener(event_type, log_event)
+            self.add_listeners(event_type, log_event)
+
+def enum_encoder(obj):
+    if isinstance(obj, Enum):
+        return obj.value
+    return obj

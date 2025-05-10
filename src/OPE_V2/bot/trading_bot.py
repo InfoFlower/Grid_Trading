@@ -17,26 +17,26 @@ class TradingBot:
         self.data_provider = data_provider
         self.pool = pool
 
-        self._setup_event_logging()
+        #self._setup_event_logging()
 
     def run(self):
         
         self.data_provider.stream_data()
 
-    def _setup_event_logging(self):
-        """Enregistre tous les événements pour débogage"""
-        def log_event(event: Event):
-            if event.type.value != 'MARKET_DATA':
-                log_entry = {
-                    'timestamp': event.timestamp.isoformat(),
-                    'type': event.type.value,
-                    'data': asdict(event.data) if hasattr(event.data, '__dataclass_fields__') else event.data
-                }
-                print(f"[EVENT] {json.dumps(log_entry, indent=2, default=enum_encoder)}")
+    # def _setup_event_logging(self):
+    #     """Enregistre tous les événements pour débogage"""
+    #     def log_event(event: Event):
+    #         if event.type.value != 'MARKET_DATA':
+    #             log_entry = {
+    #                 'timestamp': event.timestamp.isoformat(),
+    #                 'type': event.type.value,
+    #                 'data': asdict(event.data) if hasattr(event.data, '__dataclass_fields__') else event.data
+    #             }
+    #             print(f"[EVENT] {json.dumps(log_entry, indent=2, default=enum_encoder)}")
         
-        # S'abonne à tous les types d'événements
-        for event_type in EventType:
-            self.event_dispatcher.add_listeners(event_type, log_event)
+    #     # S'abonne à tous les types d'événements
+    #     for event_type in EventType:
+    #         self.event_dispatcher.add_listeners(event_type, log_event)
 
 
 def enum_encoder(obj):
