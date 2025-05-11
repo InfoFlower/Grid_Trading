@@ -33,7 +33,9 @@ user_params = {
     'level': crypto_initial_price+200,
     'asset_qty' : 0.01 * pool['crypto_balance'],
     'side' : OrderSide.SELL,
-    'leverage' : 0.0
+    'leverage' : 0.0,
+    'tp_pct' : 0.01,
+    'sl_pct' : 0.01
 }
 ######################################################################
 

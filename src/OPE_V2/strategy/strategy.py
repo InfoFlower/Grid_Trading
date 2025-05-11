@@ -1,35 +1,29 @@
 from typing import Dict, Any
 from datetime import datetime
+from enum import Enum
 
-from .strategy import Strategy, StrategyType
 from event.event import EventDispatcher, Event, EventType
 
-class FixOrderStrategy(Strategy):
+class StrategyType(Enum):
+    FIX_ORDER = "FIX_ORDER"
+
+
+class Strategy:
 
     # De quels arguments une stratégie a-t-elle tout le temps besoin?
 
     # Pour la fix order ---> TEST :  seul user_params qui sont enfaites les ordres à créer à l'initialisation
+
     def __init__(self, event_dispatcher : EventDispatcher, user_params : Dict[str, Any]): #faire user_params.py???
 
-        self.strategy_type = StrategyType.FIX_ORDER
         self.event_dispatcher = event_dispatcher
         self.user_params = user_params
 
-
         self.event_dispatcher.add_listeners(EventType.INIT_MARKET_DATA, self.init_state)
 
-    
-    def init_state(self, event : Event):
+    def init_state(self):
+        #actuellement FixOrderStrategy.init_orders
+        pass
 
-        data = {
-            'type' : self.strategy_type,
-            'data' : self.user_params
-        }
-
-        self.event_dispatcher.dispatch(Event(
-            type = EventType.STRATEGY_MAKE_ORDER,
-            data = data,
-            timestamp = datetime.now()
-        ))
-
-
+    def create_condition(self):
+        pass

@@ -1,13 +1,17 @@
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional, ClassVar
+from typing import Optional, ClassVar, Dict
 from datetime import datetime, timezone
 
-from event.event_type import EventType
+from event.event import EventType
 
 class PositionSide(Enum):
     LONG = "LONG"
     SHORT = "SHORT"
+
+class PositionCloseType(Enum):
+    TAKEPROFIT = "TAKEPROFIT"
+    STOPLOSS = "STOPLOSS"
 
 @dataclass
 class Position:
@@ -25,6 +29,7 @@ class Position:
     sl_price : Optional[float] = None
     closed_at : int = 0
     close_price : float = 0.0
+    close_type : PositionCloseType = None
 
     def __post_init__(self) -> None:
         """
@@ -90,6 +95,17 @@ class Position:
         """
         bool_side = 1 if self.side == PositionSide.LONG else -1
         return (current_price - self.entry_price) / self.entry_price * bool_side * 100
+    
+    def is_closable_tp(self, current_data : Dict[str, int | float]):
+            low = current_data['LowCol']
+            high = current_data['HighCol']
+            return self.position_event == EventType.POSITION_OPENED and low <= self.tp_price <= high
+
+    def is_closable_sl(self, current_data : Dict[str, int | float]):
+            low = current_data['LowCol']
+            high = current_data['HighCol']
+            return self.position_event == EventType.POSITION_OPENED and low <= self.sl_price <= high
+
 
 # if __name__ == '__main__':
 #     position = Position(

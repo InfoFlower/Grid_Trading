@@ -1,10 +1,8 @@
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional, ClassVar
+from typing import Optional, ClassVar, Dict
 
-from event.event_type import EventType
-
-
+from event.event import EventType
 
 
 class OrderSide(Enum):
@@ -17,13 +15,21 @@ class Order:
     _instance_count: ClassVar[int] = 0 
 
     id : int = field(init=False)
+
+    # Init
     created_at : int
     level : float
     asset_qty : float
     side : OrderSide
     leverage : float
+
+    # Type changeant
     order_event : EventType
+
+    # Variable d'éxecution
     executed_at : int = 0
+
+    #Optionnel
     tp_pct: Optional[float] = None
     sl_pct : Optional[float] = None
     
@@ -70,19 +76,19 @@ class Order:
         self.id = Order._instance_count + 1
         #self.executed_at = 0
     
-    @classmethod
-    def from_dict(cls, data: dict):
-        return cls(
-            created_at=data['created_at'],
-            level=data['level'],
-            asset_qty=data['asset_qty'],
-            side=OrderSide(data['side']),
-            leverage=data['leverage'],
-            order_event=EventType(data['order_event']),
-            executed_at=data.get('executed_at'),
-            tp_pct=data.get('tp_pct'),
-            sl_pct=data.get('sl_pct')
-        )
+    # @classmethod
+    # def from_dict(cls, data: dict):
+    #     return cls(
+    #         created_at=data['created_at'],
+    #         level=data['level'],
+    #         asset_qty=data['asset_qty'],
+    #         side=OrderSide(data['side']),
+    #         leverage=data['leverage'],
+    #         order_event=EventType(data['order_event']),
+    #         executed_at=data.get('executed_at'),
+    #         tp_pct=data.get('tp_pct'),
+    #         sl_pct=data.get('sl_pct')
+    #     )
 
     
     @property
@@ -106,11 +112,12 @@ class Order:
         return self.level*(1 + (-1 if self.side == OrderSide.BUY else 1)*self.sl_pct)
 
 
-    def is_executable(self, candle_data:dict) -> bool:
+    def is_executable(self, current_data:Dict[str, int | float]) -> bool:
         """
         """
-        low = candle_data['LowCol']
-        high = candle_data['HighCol']
+        
+        low = current_data['LowCol']
+        high = current_data['HighCol']
 
         return self.order_event == EventType.ORDER_CREATED and low <= self.level <= high
         

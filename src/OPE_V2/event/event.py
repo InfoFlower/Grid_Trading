@@ -4,7 +4,20 @@ from typing import Any, Dict, List, Callable
 from datetime import datetime
 import json
 
-from .event_type import EventType
+
+class EventType(Enum):
+
+    INIT_MARKET_DATA = "INIT_MARKET_DATA"
+    MARKET_DATA = "MARKET_DATA"
+    ORDER_CREATED = "ORDER_CREATED"
+    ORDER_EXECUTED = "ORDER_EXECUTED"
+    ORDER_CANCELLED = "ORDER_CANCELLED"
+    POSITION_OPENED = "POSITION_OPENED"
+    POSITION_CLOSED = "POSITION_CLOSED"
+    POSITION_CANCELLED = "POSITION_CANCELLED"
+    STRATEGY_MAKE_ORDER = "STRATEGY_MAKE_ORDER"
+    SIGNAL_GENERATED = "SIGNAL_GENERATED"
+
 
 @dataclass
 class Event:
