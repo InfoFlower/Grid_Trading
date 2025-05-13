@@ -1,4 +1,4 @@
-from typing import Dict, Any
+from typing import Dict, Any, Callable
 from datetime import datetime, timezone
 
 from .order import Order
@@ -60,10 +60,9 @@ class OrderManager:
                     timestamp = datetime.now()
                 ))
 
-    
 
-    # def filter(self, condition : Callable[[Order],bool]) -> Dict[int,Order]:
-    #     """
-    #     Retourne un dictionnaire des ordres qui vérifient la condition.
-    #     """
-    #     return {order_id : order for order_id, order in self.order_book.items() if condition(order)}
+    def filter(self, condition : Callable[[Order],bool]) -> Dict[int,Order]:
+        """
+        Retourne un dictionnaire des ordres qui vérifient la condition.
+        """
+        return {order_id : order for order_id, order in self.order_book.items() if condition(order)}

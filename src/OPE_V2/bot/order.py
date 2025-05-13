@@ -76,21 +76,6 @@ class Order:
         self.id = Order._instance_count + 1
         #self.executed_at = 0
     
-    # @classmethod
-    # def from_dict(cls, data: dict):
-    #     return cls(
-    #         created_at=data['created_at'],
-    #         level=data['level'],
-    #         asset_qty=data['asset_qty'],
-    #         side=OrderSide(data['side']),
-    #         leverage=data['leverage'],
-    #         order_event=EventType(data['order_event']),
-    #         executed_at=data.get('executed_at'),
-    #         tp_pct=data.get('tp_pct'),
-    #         sl_pct=data.get('sl_pct')
-    #     )
-
-    
     @property
     def tp_price(self) -> Optional[float]:
         """

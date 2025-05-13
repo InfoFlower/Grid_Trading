@@ -19,7 +19,7 @@ class OrderBuilder:
         """
         """
         strat_type = event.data['type']
-        order_params = event.data['data']
+        order_params = event.data['args']
 
         if strat_type == StrategyType.FIX_ORDER:
             #####Procédure pour FIX_ORDER#######

@@ -19,11 +19,11 @@ class Strategy:
         self.event_dispatcher = event_dispatcher
         self.user_params = user_params
 
-        self.event_dispatcher.add_listeners(EventType.INIT_MARKET_DATA, self.init_state)
+        self.event_dispatcher.add_listeners(EventType.INIT_MARKET_DATA, self.init_statement)
 
-    def init_state(self):
+    def init_statement(self):
         #actuellement FixOrderStrategy.init_orders
         pass
 
-    def create_condition(self):
+    def create_statement(self):
         pass
