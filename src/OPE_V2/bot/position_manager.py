@@ -65,10 +65,13 @@ class PositionManager:
         if position.id not in self.position_book:
             raise KeyError(f"Position {position.id} does not exists in the position book")
         
-        del self.position_book[position.id]
+        self.delete_position(position.id)
 
         self.event_dispatcher.dispatch(Event(
             type = EventType.POSITION_CLOSED,
             data = position,
             timestamp = datetime.now()
         ))
+
+    def delete_position(self, id : int):
+        del self.position_book[id]

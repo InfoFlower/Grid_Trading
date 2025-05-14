@@ -67,8 +67,8 @@ class Position:
         if self.asset_qty < 0:
             raise ValueError(f"asset_qty {self.asset_qty} must be greater or equal to 0")
         
-        if self.leverage < 0:
-            raise ValueError(f"leverage {self.leverage} must be greater or equal to 0")
+        if self.leverage < 1:
+            raise ValueError(f"leverage {self.leverage} must be greater or equal to 1")
 
         if self.close_price is not None:
             if self.close_price < 0:
@@ -88,13 +88,17 @@ class Position:
 
         self.id = Position._instance_count + 1
 
+    @property
+    def margin(self) -> float:
+        return self.asset_qty * self.entry_price / self.leverage
+
 
     def pnl(self, current_price : float) -> float:
         """
-        Calcul le PnL de la position en pourcentage par rapport au prix actuel
+        Calcul le PnL de la position par rapport au prix actuel
         """
         bool_side = 1 if self.side == PositionSide.LONG else -1
-        return (current_price - self.entry_price) / self.entry_price * bool_side * 100
+        return (current_price - self.entry_price) * self.asset_qty * bool_side * self.leverage
     
     def is_closable_tp(self, current_data : Dict[str, int | float]):
             low = current_data['LowCol']

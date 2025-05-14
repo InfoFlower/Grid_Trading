@@ -6,8 +6,8 @@ from event.event import EventType
 
 
 class OrderSide(Enum):
-    BUY = "BUY"
-    SELL = "SELL"
+    LONG = "LONG"
+    SHORT = "SHORT"
 
 @dataclass
 class Order:
@@ -66,8 +66,8 @@ class Order:
             raise ValueError(f"level {self.level} must be greater or equal to 0")
         if self.asset_qty < 0:
             raise ValueError(f"asset_qty {self.asset_qty} must be greater or equal to 0")
-        if self.leverage < 0:
-            raise ValueError(f"leverage {self.leverage} must be greater or equal to 0")
+        if self.leverage < 1:
+            raise ValueError(f"leverage {self.leverage} must be greater or equal to 1")
         if self.tp_pct is not None and self.tp_pct <= 0:
             raise ValueError(f"tp_pct {self.tp_pct} must be greater than 0")
         if self.sl_pct is not None and self.sl_pct <= 0:
@@ -84,7 +84,7 @@ class Order:
         """
         if self.tp_pct is None:
             return None
-        return self.level*(1 + (1 if self.side == OrderSide.BUY else -1)*self.tp_pct)
+        return self.level*(1 + (1 if self.side == OrderSide.LONG else -1)*self.tp_pct)
     
     @property
     def sl_price(self) -> Optional[float]:
@@ -94,8 +94,11 @@ class Order:
         """
         if self.sl_pct is None:
             return None
-        return self.level*(1 + (-1 if self.side == OrderSide.BUY else 1)*self.sl_pct)
+        return self.level*(1 + (-1 if self.side == OrderSide.LONG else 1)*self.sl_pct)
 
+    @property
+    def margin(self) -> float:
+        return self.asset_qty * self.level / self.leverage
 
     def is_executable(self, current_data:Dict[str, int | float]) -> bool:
         """

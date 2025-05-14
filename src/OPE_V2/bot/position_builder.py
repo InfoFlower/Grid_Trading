@@ -19,7 +19,7 @@ class PositionBuilder:
         position_params['entry_price'] = order.level
         position_params['asset_qty'] = order.asset_qty
         position_params['leverage'] = order.leverage
-        position_params['side'] = PositionSide.LONG if order.side == OrderSide.BUY else PositionSide.SHORT
+        position_params['side'] = PositionSide.LONG if order.side == OrderSide.LONG else PositionSide.SHORT
         position_params['position_event'] = EventType.POSITION_OPENED
         
         if order.tp_pct is not None :

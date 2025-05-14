@@ -4,16 +4,17 @@ from datetime import datetime, timezone
 from .order import Order
 from .order_builder import OrderBuilder
 from event.event import EventDispatcher, Event, EventType
+from portfolio.portfolio import Portfolio
 
 
 class OrderManager:
 
-    def __init__(self, event_dispatcher : EventDispatcher) -> None:
+    def __init__(self, order_builder : OrderBuilder,  event_dispatcher : EventDispatcher) -> None:
         """
         Initialise l'orderbook à un dictionnaire vide
         """
         self.event_dispatcher = event_dispatcher
-        self.order_builder = OrderBuilder()
+        self.order_builder = order_builder
         self.order_book : Dict[int, Order] = {}
 
         event_dispatcher.add_listeners(EventType.MARKET_DATA, self.orders_to_execute)

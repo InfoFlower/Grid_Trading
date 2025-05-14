@@ -44,7 +44,7 @@ class FixOrderStrategy(Strategy):
         args = {
             'level' : close_price*(1+self.order_params['tp_pct']),
             'asset_qty' : self.order_params['asset_qty'],
-            'side' : random.choice([OrderSide.BUY, OrderSide.SELL]),
+            'side' : random.choice([OrderSide.LONG, OrderSide.SHORT]),
             'leverage' : self.order_params['leverage'],
             'tp_pct' : self.order_params['tp_pct'],
             'sl_pct' : self.order_params['sl_pct']
