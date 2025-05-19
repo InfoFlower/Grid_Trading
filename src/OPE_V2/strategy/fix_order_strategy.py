@@ -1,4 +1,4 @@
-from typing import Dict, Any, Callable
+from typing import Dict, Any
 from datetime import datetime
 import random
 
@@ -19,8 +19,8 @@ class FixOrderStrategy(Strategy):
         self.order_params = order_params
 
 
-        self.event_dispatcher.add_listeners(EventType.INIT_MARKET_DATA, self.init_statement)
-        self.event_dispatcher.add_listeners(EventType.POSITION_CLOSED, self.create_statement)
+        event_dispatcher.add_listeners(EventType.INIT_MARKET_DATA, self.init_statement)
+        event_dispatcher.add_listeners(EventType.POSITION_CLOSED, self.create_statement)
 
     
     def init_statement(self, event : Event):
@@ -36,7 +36,7 @@ class FixOrderStrategy(Strategy):
             timestamp = datetime.now()
         ))
 
-    def create_statement(self, event : Event):
+    def create_statement(self, event : Event) -> None:
 
         print(event)
         closed_position : Position = event.data

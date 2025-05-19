@@ -1,12 +1,11 @@
 from typing import Dict, Any
-from datetime import datetime
 from enum import Enum
 
-from event.event import EventDispatcher, Event, EventType
+from event.event import EventDispatcher, EventType
 
 class StrategyType(Enum):
     FIX_ORDER = "FIX_ORDER"
-
+    DUMB = "DUMB"
 
 class Strategy:
 

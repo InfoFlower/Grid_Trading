@@ -5,10 +5,6 @@ from .position import Position, PositionSide, PositionCloseType
 from .position_builder import PositionBuilder
 from event.event import EventDispatcher, Event, EventType
 
-
-
-
-
 class PositionManager:
 
     def __init__(self, event_dispatcher : EventDispatcher) -> None:
