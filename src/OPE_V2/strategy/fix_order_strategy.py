@@ -38,7 +38,7 @@ class FixOrderStrategy(Strategy):
 
     def create_statement(self, event : Event) -> None:
 
-        print(event)
+        #print(event)
         closed_position : Position = event.data
         close_price = closed_position.close_price
         args = {
@@ -63,6 +63,6 @@ class FixOrderStrategy(Strategy):
 
 
 # def create_condition(order, **pre_order) -> Callable[[Order:]]:
-#     return order.level == other_order
+#     return order.level == pre_order
 
 

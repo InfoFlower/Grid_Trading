@@ -18,7 +18,6 @@ class Portfolio:
         self.event_dispatcher = event_dispatcher
         
         self.money_balance = money_balance
-        print(self.money_balance)
         self.in_orders = Asset(long = 0, short = 0)
         self.in_positions = Asset(long = 0, short = 0)
 
@@ -31,13 +30,13 @@ class Portfolio:
 
         order : Order = event.data
         margin = order.margin
-        print(margin)
+        #print(margin)
         self.money_balance -= margin
         if order.side == OrderSide.LONG:
             self.in_orders.long += order.asset_qty
         else :
             self.in_orders.short += order.asset_qty 
-        print('ORDER_CREATED', self.money_balance)
+        #print('ORDER_CREATED', self.money_balance)
 
     def set_position_opened(self, event : Event) -> None:
         

@@ -25,16 +25,24 @@ class OrderManager:
         Ajoute un ordre à la liste d'ordre
         """
 
-        order = self.order_builder.build(event)
+        order_already_exists = self.check_order_already_exists(event)
 
-        if order.id in self.order_book:
-            raise KeyError(f"Order {order.id} already exists in the order book") 
-        self.order_book[order.id] = order
-        self.event_dispatcher.dispatch(Event(
-                    type = EventType.ORDER_CREATED,
-                    data = order,
-                    timestamp = datetime.now()
-                ))
+        if not order_already_exists:
+            order = self.order_builder.build(event)
+
+            if order.id in self.order_book:
+                raise KeyError(f"Order {order.id} already exists in the order book") 
+        
+            self.order_book[order.id] = order
+            self.event_dispatcher.dispatch(Event(
+                        type = EventType.ORDER_CREATED,
+                        data = order,
+                        timestamp = datetime.now()
+                    ))
+        
+        else :
+            k, v = order_already_exists.popitem()
+            print(f"L'ordre {k} ({v.level, v.side}) existe déjà")
         
     def orders_to_execute(self, event : Event) -> None:
         for order_id in list(self.order_book.keys()):
@@ -67,3 +75,13 @@ class OrderManager:
         Retourne un dictionnaire des ordres qui vérifient la condition.
         """
         return {order_id : order for order_id, order in self.order_book.items() if condition(order)}
+    
+    def check_order_already_exists(self, event) -> Dict[int,Order]:
+
+        order_args = event.data['args']
+        
+        def condition(order):
+            return order.level == order_args['level'] and order.side == order_args['side']
+        
+        return self.filter(condition)
+

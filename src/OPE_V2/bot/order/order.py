@@ -73,8 +73,10 @@ class Order:
         if self.sl_pct is not None and self.sl_pct <= 0:
             raise ValueError(f"sl_pct {self.sl_pct} must be greater than 0")
         
-        self.id = Order._instance_count + 1
-        #self.executed_at = 0
+        
+        Order._instance_count += 1
+        self.id = Order._instance_count
+
     
     @property
     def tp_price(self) -> Optional[float]:

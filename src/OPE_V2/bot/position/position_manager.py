@@ -21,8 +21,8 @@ class PositionManager:
         position = self.position_builder.build(event)
 
         if position.id in self.position_book:
-            raise KeyError(f"Order {position.id} already exists in the order book") 
-        print("###POSITION###\n###POSITION###\n###POSITION###\n###POSITION###\n")
+            raise KeyError(f"Position {position.id} already exists in the order book") 
+        #print("###POSITION###\n###POSITION###\n###POSITION###\n###POSITION###\n")
         self.position_book[position.id] = position
         self.event_dispatcher.dispatch(Event(
                     type = EventType.POSITION_OPENED,

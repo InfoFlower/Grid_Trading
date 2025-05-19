@@ -1,0 +1,2545 @@
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.670917",
+  "type": "INIT_MARKET_DATA",
+  "data": {
+    "TimeCol": 1511776434000,
+    "OpenCol": 9345.0,
+    "CloseCol": 9345.0,
+    "LowCol": 9345.0,
+    "HighCol": 9345.0
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.670970",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9438.45,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9438.45, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.671217",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 1,
+    "created_at": 1747682128671,
+    "level": 9438.45,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.671258",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9251.55,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9251.55, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.671285",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 2,
+    "created_at": 1747682128671,
+    "level": 9251.55,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.672166",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 2,
+    "created_at": 1747682128671,
+    "level": 9251.55,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128672,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.672194",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 1,
+    "entry_at": 1747682128672,
+    "entry_price": 9251.55,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "LONG",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9344.065499999999,
+    "sl_price": 9205.292249999999,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.672220",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9344.065499999999,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9344.065499999999, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.672245",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 3,
+    "created_at": 1747682128672,
+    "level": 9344.065499999999,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.672264",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9159.0345,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9159.0345, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.672284",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 4,
+    "created_at": 1747682128672,
+    "level": 9159.0345,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.677738",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 3,
+    "created_at": 1747682128672,
+    "level": 9344.065499999999,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128677,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.677782",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 2,
+    "entry_at": 1747682128677,
+    "entry_price": 9344.065499999999,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9250.624844999998,
+    "sl_price": 9390.785827499998,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.677813",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9437.506155,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9437.506155, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.677838",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 5,
+    "created_at": 1747682128677,
+    "level": 9437.506155,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.677858",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9250.624844999998,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9250.624844999998, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.677880",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 6,
+    "created_at": 1747682128677,
+    "level": 9250.624844999998,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.677902",
+  "type": "POSITION_CLOSED",
+  "data": {
+    "id": 1,
+    "entry_at": 1747682128672,
+    "entry_price": 9251.55,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "LONG",
+    "position_event": "POSITION_CLOSED",
+    "tp_price": 9344.065499999999,
+    "sl_price": 9205.292249999999,
+    "closed_at": 1747682128677,
+    "close_price": 9344.065499999999,
+    "close_type": "TAKEPROFIT"
+  }
+}
+0.09899999999999948
+9.899999999999999
+POSITION_CLOSED 950.201
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.678317",
+  "type": "POSITION_CLOSED",
+  "data": {
+    "id": 2,
+    "entry_at": 1747682128677,
+    "entry_price": 9344.065499999999,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_CLOSED",
+    "tp_price": 9250.624844999998,
+    "sl_price": 9390.785827499998,
+    "closed_at": 1747682128678,
+    "close_price": 9390.785827499998,
+    "close_type": "STOPLOSS"
+  }
+}
+-0.0499949999999992
+9.998999999999999
+POSITION_CLOSED 960.150005
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.679172",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 5,
+    "created_at": 1747682128677,
+    "level": 9437.506155,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128679,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.679194",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 3,
+    "entry_at": 1747682128679,
+    "entry_price": 9437.506155,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9343.13109345,
+    "sl_price": 9484.693685774999,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.679287",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9531.881216549998,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9531.881216549998, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.679313",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 7,
+    "created_at": 1747682128679,
+    "level": 9531.881216549998,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.679332",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9343.13109345,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9343.13109345, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.679350",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 8,
+    "created_at": 1747682128679,
+    "level": 9343.13109345,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.680479",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 1,
+    "created_at": 1747682128671,
+    "level": 9438.45,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128680,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.680500",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 4,
+    "entry_at": 1747682128680,
+    "entry_price": 9438.45,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9344.0655,
+    "sl_price": 9485.642249999999,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.680520",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9532.8345,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9532.8345, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.680537",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 9,
+    "created_at": 1747682128680,
+    "level": 9532.8345,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.680553",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9344.0655,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9344.0655, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.680570",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 10,
+    "created_at": 1747682128680,
+    "level": 9344.0655,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.682164",
+  "type": "POSITION_CLOSED",
+  "data": {
+    "id": 3,
+    "entry_at": 1747682128679,
+    "entry_price": 9437.506155,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_CLOSED",
+    "tp_price": 9343.13109345,
+    "sl_price": 9484.693685774999,
+    "closed_at": 1747682128682,
+    "close_price": 9484.693685774999,
+    "close_type": "STOPLOSS"
+  }
+}
+-0.050494949999999664
+10.098989999999999
+POSITION_CLOSED 929.8005200499999
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.682190",
+  "type": "POSITION_CLOSED",
+  "data": {
+    "id": 4,
+    "entry_at": 1747682128680,
+    "entry_price": 9438.45,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_CLOSED",
+    "tp_price": 9344.0655,
+    "sl_price": 9485.642249999999,
+    "closed_at": 1747682128682,
+    "close_price": 9485.642249999999,
+    "close_type": "STOPLOSS"
+  }
+}
+-0.05049999999999811
+10.1
+POSITION_CLOSED 939.8500200499999
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.691490",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 9,
+    "created_at": 1747682128680,
+    "level": 9532.8345,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128691,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.691511",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 5,
+    "entry_at": 1747682128691,
+    "entry_price": 9532.8345,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9437.506155000001,
+    "sl_price": 9580.4986725,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.691530",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9628.162845,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9628.162845, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.691549",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 11,
+    "created_at": 1747682128691,
+    "level": 9628.162845,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.691566",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9437.506155000001,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9437.506155000001, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.691584",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 12,
+    "created_at": 1747682128691,
+    "level": 9437.506155000001,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.692505",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 7,
+    "created_at": 1747682128679,
+    "level": 9531.881216549998,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128692,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.692541",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 6,
+    "entry_at": 1747682128692,
+    "entry_price": 9531.881216549998,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9436.562404384498,
+    "sl_price": 9579.540622632747,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.692563",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9627.200028715499,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9627.200028715499, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.692703",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 13,
+    "created_at": 1747682128692,
+    "level": 9627.200028715499,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.692733",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9436.562404384498,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9436.562404384498, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.692755",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 14,
+    "created_at": 1747682128692,
+    "level": 9436.562404384498,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.704300",
+  "type": "POSITION_CLOSED",
+  "data": {
+    "id": 6,
+    "entry_at": 1747682128692,
+    "entry_price": 9531.881216549998,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_CLOSED",
+    "tp_price": 9436.562404384498,
+    "sl_price": 9579.540622632747,
+    "closed_at": 1747682128704,
+    "close_price": 9579.540622632747,
+    "close_type": "STOPLOSS"
+  }
+}
+-0.0509998994999982
+10.199979899999997
+POSITION_CLOSED 909.1970402505001
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.704719",
+  "type": "POSITION_CLOSED",
+  "data": {
+    "id": 5,
+    "entry_at": 1747682128691,
+    "entry_price": 9532.8345,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_CLOSED",
+    "tp_price": 9437.506155000001,
+    "sl_price": 9580.4986725,
+    "closed_at": 1747682128704,
+    "close_price": 9580.4986725,
+    "close_type": "STOPLOSS"
+  }
+}
+-0.05100499999999897
+10.201
+POSITION_CLOSED 919.3470352505001
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.720872",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 11,
+    "created_at": 1747682128691,
+    "level": 9628.162845,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128720,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.720894",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 7,
+    "entry_at": 1747682128720,
+    "entry_price": 9628.162845,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9531.88121655,
+    "sl_price": 9676.303659225,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.720913",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9724.444473450001,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9724.444473450001, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.720931",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 15,
+    "created_at": 1747682128720,
+    "level": 9724.444473450001,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.720947",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9531.88121655,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9531.88121655, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.720964",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 16,
+    "created_at": 1747682128720,
+    "level": 9531.88121655,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.720981",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 13,
+    "created_at": 1747682128692,
+    "level": 9627.200028715499,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128720,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.720999",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 8,
+    "entry_at": 1747682128720,
+    "entry_price": 9627.200028715499,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9530.928028428343,
+    "sl_price": 9675.336028859076,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.721018",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9723.472029002654,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9723.472029002654, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.721035",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 17,
+    "created_at": 1747682128721,
+    "level": 9723.472029002654,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.721050",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9530.928028428343,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9530.928028428343, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.721068",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 18,
+    "created_at": 1747682128721,
+    "level": 9530.928028428343,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.752003",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 12,
+    "created_at": 1747682128691,
+    "level": 9437.506155000001,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128752,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.752024",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 9,
+    "entry_at": 1747682128752,
+    "entry_price": 9437.506155000001,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "LONG",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9531.88121655,
+    "sl_price": 9390.318624225001,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.752043",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9531.88121655,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9531.88121655, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.752061",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 19,
+    "created_at": 1747682128752,
+    "level": 9531.88121655,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.752077",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9343.131093450002,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9343.131093450002, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.752095",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 20,
+    "created_at": 1747682128752,
+    "level": 9343.131093450002,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.752113",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 14,
+    "created_at": 1747682128692,
+    "level": 9436.562404384498,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128752,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.752132",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 10,
+    "entry_at": 1747682128752,
+    "entry_price": 9436.562404384498,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "LONG",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9530.928028428343,
+    "sl_price": 9389.379592362575,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.752209",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9530.928028428343,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9530.928028428343, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.752228",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 21,
+    "created_at": 1747682128752,
+    "level": 9530.928028428343,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.752244",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9342.196780340653,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9342.196780340653, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.752261",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 22,
+    "created_at": 1747682128752,
+    "level": 9342.196780340653,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760349",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 16,
+    "created_at": 1747682128720,
+    "level": 9531.88121655,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128760,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760373",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 11,
+    "entry_at": 1747682128760,
+    "entry_price": 9531.88121655,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "LONG",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9627.2000287155,
+    "sl_price": 9484.22181046725,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760394",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9627.2000287155,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9627.2000287155, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760413",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 23,
+    "created_at": 1747682128760,
+    "level": 9627.2000287155,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760430",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9436.5624043845,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9436.5624043845, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760449",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 24,
+    "created_at": 1747682128760,
+    "level": 9436.5624043845,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760467",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 18,
+    "created_at": 1747682128721,
+    "level": 9530.928028428343,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128760,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760487",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 12,
+    "entry_at": 1747682128760,
+    "entry_price": 9530.928028428343,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "LONG",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9626.237308712627,
+    "sl_price": 9483.273388286201,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760522",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9626.237308712627,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9626.237308712627, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760542",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 25,
+    "created_at": 1747682128760,
+    "level": 9626.237308712627,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760558",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9435.61874814406,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9435.61874814406, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760575",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 26,
+    "created_at": 1747682128760,
+    "level": 9435.61874814406,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760591",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 19,
+    "created_at": 1747682128752,
+    "level": 9531.88121655,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128760,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760610",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 13,
+    "entry_at": 1747682128760,
+    "entry_price": 9531.88121655,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9436.5624043845,
+    "sl_price": 9579.540622632749,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760628",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9627.2000287155,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+L'ordre 23 ((9627.2000287155, <OrderSide.SHORT: 'SHORT'>)) existe déjà
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760645",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9436.5624043845,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+L'ordre 24 ((9436.5624043845, <OrderSide.LONG: 'LONG'>)) existe déjà
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760662",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 21,
+    "created_at": 1747682128752,
+    "level": 9530.928028428343,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128760,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760680",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 14,
+    "entry_at": 1747682128760,
+    "entry_price": 9530.928028428343,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9435.61874814406,
+    "sl_price": 9578.582668570483,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760698",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9626.237308712627,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+L'ordre 25 ((9626.237308712627, <OrderSide.SHORT: 'SHORT'>)) existe déjà
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760713",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9435.61874814406,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+L'ordre 26 ((9435.61874814406, <OrderSide.LONG: 'LONG'>)) existe déjà
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760736",
+  "type": "POSITION_CLOSED",
+  "data": {
+    "id": 7,
+    "entry_at": 1747682128720,
+    "entry_price": 9628.162845,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_CLOSED",
+    "tp_price": 9531.88121655,
+    "sl_price": 9676.303659225,
+    "closed_at": 1747682128760,
+    "close_price": 9531.88121655,
+    "close_type": "TAKEPROFIT"
+  }
+}
+0.10303010000000044
+10.30301
+POSITION_CLOSED 807.3512761464802
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760819",
+  "type": "POSITION_CLOSED",
+  "data": {
+    "id": 8,
+    "entry_at": 1747682128720,
+    "entry_price": 9627.200028715499,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_CLOSED",
+    "tp_price": 9530.928028428343,
+    "sl_price": 9675.336028859076,
+    "closed_at": 1747682128760,
+    "close_price": 9530.928028428343,
+    "close_type": "TAKEPROFIT"
+  }
+}
+0.10301979699000065
+10.301979698999999
+POSITION_CLOSED 817.7562756424702
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760841",
+  "type": "POSITION_CLOSED",
+  "data": {
+    "id": 9,
+    "entry_at": 1747682128752,
+    "entry_price": 9437.506155000001,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "LONG",
+    "position_event": "POSITION_CLOSED",
+    "tp_price": 9531.88121655,
+    "sl_price": 9390.318624225001,
+    "closed_at": 1747682128760,
+    "close_price": 9531.88121655,
+    "close_type": "TAKEPROFIT"
+  }
+}
+0.10098989999999933
+10.09899
+POSITION_CLOSED 827.9562555424702
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.760863",
+  "type": "POSITION_CLOSED",
+  "data": {
+    "id": 10,
+    "entry_at": 1747682128752,
+    "entry_price": 9436.562404384498,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "LONG",
+    "position_event": "POSITION_CLOSED",
+    "tp_price": 9530.928028428343,
+    "sl_price": 9389.379592362575,
+    "closed_at": 1747682128760,
+    "close_price": 9530.928028428343,
+    "close_type": "TAKEPROFIT"
+  }
+}
+0.10097980100999994
+10.097980100999997
+POSITION_CLOSED 838.1552154444802
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.762511",
+  "type": "POSITION_CLOSED",
+  "data": {
+    "id": 11,
+    "entry_at": 1747682128760,
+    "entry_price": 9531.88121655,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "LONG",
+    "position_event": "POSITION_CLOSED",
+    "tp_price": 9627.2000287155,
+    "sl_price": 9484.22181046725,
+    "closed_at": 1747682128762,
+    "close_price": 9484.22181046725,
+    "close_type": "STOPLOSS"
+  }
+}
+-0.05099989950000015
+10.199979899999999
+POSITION_CLOSED 848.3041954449802
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.762533",
+  "type": "POSITION_CLOSED",
+  "data": {
+    "id": 12,
+    "entry_at": 1747682128760,
+    "entry_price": 9530.928028428343,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "LONG",
+    "position_event": "POSITION_CLOSED",
+    "tp_price": 9626.237308712627,
+    "sl_price": 9483.273388286201,
+    "closed_at": 1747682128762,
+    "close_price": 9483.273388286201,
+    "close_type": "STOPLOSS"
+  }
+}
+-0.05099479951005023
+10.198959902009998
+POSITION_CLOSED 858.4521605474802
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.767171",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 24,
+    "created_at": 1747682128760,
+    "level": 9436.5624043845,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128767,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.767191",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 15,
+    "entry_at": 1747682128767,
+    "entry_price": 9436.5624043845,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "LONG",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9530.928028428345,
+    "sl_price": 9389.379592362577,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.767209",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9530.928028428345,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9530.928028428345, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.767228",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 27,
+    "created_at": 1747682128767,
+    "level": 9530.928028428345,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.767246",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9342.196780340655,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9342.196780340655, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.767264",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 28,
+    "created_at": 1747682128767,
+    "level": 9342.196780340655,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.767282",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 26,
+    "created_at": 1747682128760,
+    "level": 9435.61874814406,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128767,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.767300",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 16,
+    "entry_at": 1747682128767,
+    "entry_price": 9435.61874814406,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "LONG",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9529.9749356255,
+    "sl_price": 9388.440654403339,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.767318",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9529.9749356255,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9529.9749356255, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.767336",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 29,
+    "created_at": 1747682128767,
+    "level": 9529.9749356255,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.767351",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9341.262560662619,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9341.262560662619, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.767368",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 30,
+    "created_at": 1747682128767,
+    "level": 9341.262560662619,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.767384",
+  "type": "POSITION_CLOSED",
+  "data": {
+    "id": 13,
+    "entry_at": 1747682128760,
+    "entry_price": 9531.88121655,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_CLOSED",
+    "tp_price": 9436.5624043845,
+    "sl_price": 9579.540622632749,
+    "closed_at": 1747682128767,
+    "close_price": 9436.5624043845,
+    "close_type": "TAKEPROFIT"
+  }
+}
+0.1019997990000003
+10.199979899999999
+POSITION_CLOSED 828.3642394385004
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.767407",
+  "type": "POSITION_CLOSED",
+  "data": {
+    "id": 14,
+    "entry_at": 1747682128760,
+    "entry_price": 9530.928028428343,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_CLOSED",
+    "tp_price": 9435.61874814406,
+    "sl_price": 9578.582668570483,
+    "closed_at": 1747682128767,
+    "close_price": 9435.61874814406,
+    "close_type": "TAKEPROFIT"
+  }
+}
+0.10198959902010046
+10.198959902009998
+POSITION_CLOSED 838.6651889395305
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.791115",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 27,
+    "created_at": 1747682128767,
+    "level": 9530.928028428345,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128791,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.791180",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 17,
+    "entry_at": 1747682128791,
+    "entry_price": 9530.928028428345,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9435.618748144061,
+    "sl_price": 9578.582668570485,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.791209",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9626.237308712629,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9626.237308712629, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.791239",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 31,
+    "created_at": 1747682128791,
+    "level": 9626.237308712629,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.791258",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9435.618748144061,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9435.618748144061, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.791330",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 32,
+    "created_at": 1747682128791,
+    "level": 9435.618748144061,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.791788",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 29,
+    "created_at": 1747682128767,
+    "level": 9529.9749356255,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128791,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.791811",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 18,
+    "entry_at": 1747682128791,
+    "entry_price": 9529.9749356255,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9434.675186269245,
+    "sl_price": 9577.624810303627,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.791832",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9625.274684981754,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9625.274684981754, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.791852",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 33,
+    "created_at": 1747682128791,
+    "level": 9625.274684981754,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.791870",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9434.675186269245,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9434.675186269245, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.791888",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 34,
+    "created_at": 1747682128791,
+    "level": 9434.675186269245,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.791907",
+  "type": "POSITION_CLOSED",
+  "data": {
+    "id": 15,
+    "entry_at": 1747682128767,
+    "entry_price": 9436.5624043845,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "LONG",
+    "position_event": "POSITION_CLOSED",
+    "tp_price": 9530.928028428345,
+    "sl_price": 9389.379592362577,
+    "closed_at": 1747682128791,
+    "close_price": 9530.928028428345,
+    "close_type": "TAKEPROFIT"
+  }
+}
+0.10097980100999994
+10.097980101
+POSITION_CLOSED 808.0703490254808
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.791932",
+  "type": "POSITION_CLOSED",
+  "data": {
+    "id": 16,
+    "entry_at": 1747682128767,
+    "entry_price": 9435.61874814406,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "LONG",
+    "position_event": "POSITION_CLOSED",
+    "tp_price": 9529.9749356255,
+    "sl_price": 9388.440654403339,
+    "closed_at": 1747682128791,
+    "close_price": 9529.9749356255,
+    "close_type": "TAKEPROFIT"
+  }
+}
+0.1009697030298988
+10.096970302989897
+POSITION_CLOSED 818.2682890315007
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.795426",
+  "type": "POSITION_CLOSED",
+  "data": {
+    "id": 17,
+    "entry_at": 1747682128791,
+    "entry_price": 9530.928028428345,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_CLOSED",
+    "tp_price": 9435.618748144061,
+    "sl_price": 9578.582668570485,
+    "closed_at": 1747682128795,
+    "close_price": 9578.582668570485,
+    "close_type": "STOPLOSS"
+  }
+}
+-0.05099479951004828
+10.19895990201
+POSITION_CLOSED 828.4162541340006
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.795451",
+  "type": "POSITION_CLOSED",
+  "data": {
+    "id": 18,
+    "entry_at": 1747682128791,
+    "entry_price": 9529.9749356255,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_CLOSED",
+    "tp_price": 9434.675186269245,
+    "sl_price": 9577.624810303627,
+    "closed_at": 1747682128795,
+    "close_price": 9577.624810303627,
+    "close_type": "STOPLOSS"
+  }
+}
+-0.05098970003009862
+10.197940006019795
+POSITION_CLOSED 838.5632044399903
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802439",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 23,
+    "created_at": 1747682128760,
+    "level": 9627.2000287155,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128802,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802468",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 19,
+    "entry_at": 1747682128802,
+    "entry_price": 9627.2000287155,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9530.928028428345,
+    "sl_price": 9675.336028859077,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802490",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9723.472029002656,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9723.472029002656, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802512",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 35,
+    "created_at": 1747682128802,
+    "level": 9723.472029002656,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802529",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9530.928028428345,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9530.928028428345, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802548",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 36,
+    "created_at": 1747682128802,
+    "level": 9530.928028428345,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802567",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 25,
+    "created_at": 1747682128760,
+    "level": 9626.237308712627,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128802,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802612",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 20,
+    "entry_at": 1747682128802,
+    "entry_price": 9626.237308712627,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9529.974935625502,
+    "sl_price": 9674.368495256189,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802632",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9722.499681799753,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9722.499681799753, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802651",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 37,
+    "created_at": 1747682128802,
+    "level": 9722.499681799753,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802667",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9529.974935625502,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9529.974935625502, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802684",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 38,
+    "created_at": 1747682128802,
+    "level": 9529.974935625502,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802702",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 31,
+    "created_at": 1747682128791,
+    "level": 9626.237308712629,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128802,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802719",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 21,
+    "entry_at": 1747682128802,
+    "entry_price": 9626.237308712629,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9529.974935625503,
+    "sl_price": 9674.36849525619,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802737",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9722.499681799754,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9722.499681799754, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802816",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 39,
+    "created_at": 1747682128802,
+    "level": 9722.499681799754,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802834",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9529.974935625503,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9529.974935625503, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802852",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 40,
+    "created_at": 1747682128802,
+    "level": 9529.974935625503,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802869",
+  "type": "ORDER_EXECUTED",
+  "data": {
+    "id": 33,
+    "created_at": 1747682128791,
+    "level": 9625.274684981754,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_EXECUTED",
+    "executed_at": 1747682128802,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802887",
+  "type": "POSITION_OPENED",
+  "data": {
+    "id": 22,
+    "entry_at": 1747682128802,
+    "entry_price": 9625.274684981754,
+    "asset_qty": 0.001070090957731407,
+    "leverage": 1.0,
+    "side": "SHORT",
+    "position_event": "POSITION_OPENED",
+    "tp_price": 9529.021938131937,
+    "sl_price": 9673.401058406662,
+    "closed_at": 0,
+    "close_price": 0.0,
+    "close_type": null
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802905",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9721.527431831571,
+      "asset_qty": 0.001070090957731407,
+      "side": "SHORT",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9721.527431831571, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802923",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 41,
+    "created_at": 1747682128802,
+    "level": 9721.527431831571,
+    "asset_qty": 0.001070090957731407,
+    "side": "SHORT",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802938",
+  "type": "STRATEGY_MAKE_ORDER",
+  "data": {
+    "type": "DUMB",
+    "args": {
+      "level": 9529.021938131937,
+      "asset_qty": 0.001070090957731407,
+      "side": "LONG",
+      "leverage": 1.0,
+      "tp_pct": 0.01,
+      "sl_pct": 0.005
+    }
+  }
+}
+{'level': 9529.021938131937, 'asset_qty': 0.001070090957731407, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
+[EVENT] {
+  "timestamp": "2025-05-19T21:15:28.802955",
+  "type": "ORDER_CREATED",
+  "data": {
+    "id": 42,
+    "created_at": 1747682128802,
+    "level": 9529.021938131937,
+    "asset_qty": 0.001070090957731407,
+    "side": "LONG",
+    "leverage": 1.0,
+    "order_event": "ORDER_CREATED",
+    "executed_at": 0,
+    "tp_pct": 0.01,
+    "sl_pct": 0.005
+  }
+}

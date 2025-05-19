@@ -1,6 +1,5 @@
 from typing import Dict, Any
 from datetime import datetime
-from enum import Enum
 
 from .strategy import Strategy, StrategyType
 from event.event import EventDispatcher, Event, EventType
@@ -18,7 +17,7 @@ class DumbStrategy(Strategy):
         event_dispatcher.add_listeners(EventType.INIT_MARKET_DATA, self.init_statement)
         event_dispatcher.add_listeners(EventType.POSITION_OPENED, self.create_statement)
 
-    def init_statement(self):
+    def init_statement(self, event : Event):
         
         orders_args = self.pre_create_orders_args(self.order_params['level'])
         
@@ -42,8 +41,19 @@ class DumbStrategy(Strategy):
         
         orders_args = self.pre_create_orders_args(entry_price)
 
-    
-    
+        for args in orders_args:
+            
+            data = {
+                'type': self.strategy_type,
+                'args':args
+                }
+            
+            self.event_dispatcher.dispatch(Event(
+                type = EventType.STRATEGY_MAKE_ORDER,
+                data = data,
+                timestamp = datetime.now()
+            ))
+
     
     def pre_create_orders_args(self, level):
         
@@ -61,5 +71,3 @@ class DumbStrategy(Strategy):
                 }
             )
         return orders_args
-        
-        

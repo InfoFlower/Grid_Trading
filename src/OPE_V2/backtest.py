@@ -7,6 +7,7 @@ from bot.trading_bot import TradingBot
 from event.event import EventDispatcher
 from csv_data_provider import CSVDataProvider
 from strategy.fix_order_strategy import FixOrderStrategy
+from strategy.dumb_strategy import DumbStrategy
 from bot.order.order_manager import OrderManager
 from bot.position.position_manager import PositionManager
 from bot.order.order_builder import OrderBuilder
@@ -44,7 +45,8 @@ init_params = {
 
 ######################################################################
 
-strategy = FixOrderStrategy(event_dispatcher, init_params)
+#strategy = FixOrderStrategy(event_dispatcher, init_params)
+strategy = DumbStrategy(event_dispatcher, init_params)
 trading_bot = TradingBot(event_dispatcher, data_provider)
 
 trading_bot.run()

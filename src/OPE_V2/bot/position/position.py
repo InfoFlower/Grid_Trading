@@ -86,7 +86,8 @@ class Position:
                 raise ValueError(f"Side:{self.side};SL={self.sl_price} > EP={self.entry_price};SL must be lower than Entry_price EP" if self.side == PositionSide.LONG \
                                 else f"Side:{self.side};SL={self.sl_price} < EP={self.entry_price};SL must be greater than Entry_price EP")
 
-        self.id = Position._instance_count + 1
+        Position._instance_count += 1
+        self.id = Position._instance_count
 
     @property
     def margin(self) -> float:
@@ -111,18 +112,3 @@ class Position:
             return self.position_event == EventType.POSITION_OPENED and low <= self.sl_price <= high
 
 
-# if __name__ == '__main__':
-#     position = Position(
-#         id = 1,
-#         entry_at = int(datetime.now(timezone.utc).timestamp() * 1000),
-#         entry_price = 1000.0,
-#         asset_qty = 1,
-#         side = PositionSide.LONG,
-#         position_event = EventType.POSITION_OPENED,
-#         tp_price = 1200.0,
-#         sl_price = 900.0,
-#         )
-#     print(position.entry_at)
-#     print(position.tp_price)
-#     print(position.sl_price)
-#     print(position.pnl(1100.0))
