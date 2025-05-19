@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from event.event import EventType, Event
 from .position import Position, PositionSide
 
-from .order import Order, OrderSide
+from bot.order.order import Order, OrderSide
 
 
 class PositionBuilder:

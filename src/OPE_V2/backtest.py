@@ -7,13 +7,13 @@ from bot.trading_bot import TradingBot
 from event.event import EventDispatcher
 from csv_data_provider import CSVDataProvider
 from strategy.fix_order_strategy import FixOrderStrategy
-from bot.order_manager import OrderManager
-from bot.position_manager import PositionManager
-from bot.order_builder import OrderBuilder
+from bot.order.order_manager import OrderManager
+from bot.position.position_manager import PositionManager
+from bot.order.order_builder import OrderBuilder
 from portfolio.portfolio import Portfolio
 
 #IMPORT POUR LE TEST
-from bot.order import  OrderSide
+from bot.order.order import  OrderSide
 
 load_dotenv()
 WD = os.getenv('WD')

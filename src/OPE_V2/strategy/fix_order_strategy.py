@@ -4,8 +4,8 @@ import random
 
 from .strategy import Strategy, StrategyType
 from event.event import EventDispatcher, Event, EventType
-from bot.position import Position
-from bot.order import OrderSide
+from bot.position.position import Position
+from bot.order.order import OrderSide
 
 class FixOrderStrategy(Strategy):
 

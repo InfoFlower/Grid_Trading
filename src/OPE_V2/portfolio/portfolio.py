@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from typing import Dict
 
 from event.event import EventDispatcher, Event, EventType
-from bot.order import OrderSide, Order
-from bot.position import PositionSide, Position
+from bot.order.order import OrderSide, Order
+from bot.position.position import PositionSide, Position
 
 @dataclass
 class Asset:
