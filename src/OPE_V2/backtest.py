@@ -22,21 +22,23 @@ WD = os.getenv('WD')
 event_dispatcher = EventDispatcher()
 data_provider = CSVDataProvider(file_path=f'{WD}data/OPE_DATA/DATA_RAW_S_ORIGIN_test_code/data_raw_BTCUSDT_176.csv',
                                     event_dispatcher = event_dispatcher)
-
+########## Mieux construire les paramètres users##########
 initial_money_balance = 1000
+tolerance_pct = 0.005
+##########################################################
 portfolio = Portfolio(initial_money_balance, event_dispatcher)
 order_builder = OrderBuilder(portfolio)
-order_manager = OrderManager(order_builder, event_dispatcher)
+order_manager = OrderManager(order_builder, tolerance_pct, event_dispatcher)
 position_manager = PositionManager(event_dispatcher)
 
 ########## Mieux construire la pool -> @dataclass Pool ?? ##########
 initial_crypto_price = data_provider.get_initial_data()['CloseCol']
 ######################################################################
 
-########## Mieux construire les paramètres users##########
+########## Mieux construire les paramètres users######################
 init_params = {
     'level': initial_crypto_price,
-    'asset_qty' : 0.01 * initial_money_balance/initial_crypto_price,
+    'asset_qty' : 0.001,#0.01 * initial_money_balance/initial_crypto_price,
     'side' : OrderSide.SHORT,
     'leverage' : 1.0,
     'tp_pct' : 0.01,

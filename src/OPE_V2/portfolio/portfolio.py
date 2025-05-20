@@ -30,13 +30,13 @@ class Portfolio:
 
         order : Order = event.data
         margin = order.margin
-        #print(margin)
+        print("ORDER MARGIN: ", margin)
         self.money_balance -= margin
         if order.side == OrderSide.LONG:
             self.in_orders.long += order.asset_qty
         else :
             self.in_orders.short += order.asset_qty 
-        #print('ORDER_CREATED', self.money_balance)
+        print('MONEY BALANCE AFTER ORDER CREATED: ', self.money_balance)
 
     def set_position_opened(self, event : Event) -> None:
         
@@ -60,12 +60,12 @@ class Portfolio:
             self.in_positions.short -= position.asset_qty
 
         pnl = position.pnl(position.close_price)
-        print(pnl)
+        print("POSITION PNL: ", pnl)
         margin = position.margin
-        print(margin)
+        print("POSITION MARGIN: ", margin)
         self.money_balance += margin + pnl
 
-        print('POSITION_CLOSED', self.money_balance)
+        print('MONEY BALANCE AFTER POSITION CLOSED: ', self.money_balance)
 
     def enough_money(self, money) -> bool:
         return money < self.money_balance

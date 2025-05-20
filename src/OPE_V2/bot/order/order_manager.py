@@ -9,12 +9,13 @@ from portfolio.portfolio import Portfolio
 
 class OrderManager:
 
-    def __init__(self, order_builder : OrderBuilder,  event_dispatcher : EventDispatcher) -> None:
+    def __init__(self, order_builder : OrderBuilder, tolerance_pct : int, event_dispatcher : EventDispatcher) -> None:
         """
         Initialise l'orderbook à un dictionnaire vide
         """
         self.event_dispatcher = event_dispatcher
         self.order_builder = order_builder
+        self.tolerance_pct = tolerance_pct
         self.order_book : Dict[int, Order] = {}
 
         event_dispatcher.add_listeners(EventType.MARKET_DATA, self.orders_to_execute)
@@ -81,7 +82,7 @@ class OrderManager:
         order_args = event.data['args']
         
         def condition(order):
-            return order.level == order_args['level'] and order.side == order_args['side']
+            return abs(order.level - order_args['level']) <= order_args['level']*self.tolerance_pct and order.side == order_args['side']
         
         return self.filter(condition)
 
