@@ -99,12 +99,12 @@ class Order:
         return self.level*(1 + (-1 if self.side == OrderSide.LONG else 1)*self.sl_pct)
 
     @property
-    def margin(self) -> float:
-        return self.value / self.leverage
-    
-    @property
     def value(self) -> float:
         return self.asset_qty * self.level
+
+    @property
+    def margin(self) -> float:
+        return self.value / self.leverage
 
     def is_executable(self, current_data:Dict[str, int | float]) -> bool:
         """

@@ -9,7 +9,6 @@ class OrderBuilder:
     def __init__(self) -> None:
         pass
 
-
     def build(self, strat_type : dict, order_params : dict) -> Order :
         """
         """

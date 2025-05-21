@@ -65,7 +65,7 @@ class OrderManager:
         if order.id not in self.order_book:
             raise KeyError(f"Order {order.id} does not exists in the order book")
         
-        del self.order_book[order.id]
+        self.delete_order(order.id)
         
         #### BUILDER & MODIFIER ####
         order.executed_at = int(datetime.now(timezone.utc).timestamp() * 1000)
@@ -77,6 +77,9 @@ class OrderManager:
                     data = order,
                     timestamp = datetime.now()
                 ))
+        
+    def delete_order(self, id : int):
+        del self.order_book[id]
 
     def filter(self, condition : Callable[[Order],bool]) -> Dict[int,Order]:
         """

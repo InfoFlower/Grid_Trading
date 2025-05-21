@@ -1,5 +1,5 @@
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.114871",
+  "timestamp": "2025-05-21T21:19:04.128330",
   "type": "INIT_MARKET_DATA",
   "data": {
     "TimeCol": 1511776434000,
@@ -10,7 +10,7 @@
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.114924",
+  "timestamp": "2025-05-21T21:19:04.128389",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -26,11 +26,11 @@
 }
 {'level': 9438.45, 'asset_qty': 0.001, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.115137",
+  "timestamp": "2025-05-21T21:19:04.128614",
   "type": "ORDER_CREATED",
   "data": {
     "id": 1,
-    "created_at": 1747851467114,
+    "created_at": 1747855144128,
     "level": 9438.45,
     "asset_qty": 0.001,
     "side": "SHORT",
@@ -42,9 +42,11 @@
   }
 }
 ORDER MARGIN:  9.438450000000001
-MONEY BALANCE AFTER ORDER CREATED:  990.56155
+MONEY AVAILABLE AFTER ORDER CREATED:  990.56155
+MONEY IN ORDERS 9.438450000000001
+NOT LOCKED MONEY AFTER ORDER CREATED:  1000.0
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.115189",
+  "timestamp": "2025-05-21T21:19:04.128669",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -60,11 +62,11 @@ MONEY BALANCE AFTER ORDER CREATED:  990.56155
 }
 {'level': 9251.55, 'asset_qty': 0.001, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.115219",
+  "timestamp": "2025-05-21T21:19:04.128699",
   "type": "ORDER_CREATED",
   "data": {
     "id": 2,
-    "created_at": 1747851467115,
+    "created_at": 1747855144128,
     "level": 9251.55,
     "asset_qty": 0.001,
     "side": "LONG",
@@ -76,29 +78,31 @@ MONEY BALANCE AFTER ORDER CREATED:  990.56155
   }
 }
 ORDER MARGIN:  9.25155
-MONEY BALANCE AFTER ORDER CREATED:  981.3100000000001
+MONEY AVAILABLE AFTER ORDER CREATED:  981.3100000000001
+MONEY IN ORDERS 18.69
+NOT LOCKED MONEY AFTER ORDER CREATED:  1000.0000000000001
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.116096",
+  "timestamp": "2025-05-21T21:19:04.129542",
   "type": "ORDER_EXECUTED",
   "data": {
     "id": 2,
-    "created_at": 1747851467115,
+    "created_at": 1747855144128,
     "level": 9251.55,
     "asset_qty": 0.001,
     "side": "LONG",
     "leverage": 1.0,
     "order_event": "ORDER_EXECUTED",
-    "executed_at": 1747851467116,
+    "executed_at": 1747855144129,
     "tp_pct": 0.01,
     "sl_pct": 0.005
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.116123",
+  "timestamp": "2025-05-21T21:19:04.129570",
   "type": "POSITION_OPENED",
   "data": {
     "id": 1,
-    "entry_at": 1747851467116,
+    "entry_at": 1747855144129,
     "entry_price": 9251.55,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -112,7 +116,7 @@ MONEY BALANCE AFTER ORDER CREATED:  981.3100000000001
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.116146",
+  "timestamp": "2025-05-21T21:19:04.129594",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -128,11 +132,11 @@ MONEY BALANCE AFTER ORDER CREATED:  981.3100000000001
 }
 {'level': 9344.065499999999, 'asset_qty': 0.001, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.116168",
+  "timestamp": "2025-05-21T21:19:04.129616",
   "type": "ORDER_CREATED",
   "data": {
     "id": 3,
-    "created_at": 1747851467116,
+    "created_at": 1747855144129,
     "level": 9344.065499999999,
     "asset_qty": 0.001,
     "side": "SHORT",
@@ -144,9 +148,11 @@ MONEY BALANCE AFTER ORDER CREATED:  981.3100000000001
   }
 }
 ORDER MARGIN:  9.3440655
-MONEY BALANCE AFTER ORDER CREATED:  971.9659345
+MONEY AVAILABLE AFTER ORDER CREATED:  971.9659345
+MONEY IN ORDERS 28.034065500000004
+NOT LOCKED MONEY AFTER ORDER CREATED:  1000.0
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.116189",
+  "timestamp": "2025-05-21T21:19:04.129637",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -162,11 +168,11 @@ MONEY BALANCE AFTER ORDER CREATED:  971.9659345
 }
 {'level': 9159.0345, 'asset_qty': 0.001, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.116208",
+  "timestamp": "2025-05-21T21:19:04.129659",
   "type": "ORDER_CREATED",
   "data": {
     "id": 4,
-    "created_at": 1747851467116,
+    "created_at": 1747855144129,
     "level": 9159.0345,
     "asset_qty": 0.001,
     "side": "LONG",
@@ -178,29 +184,31 @@ MONEY BALANCE AFTER ORDER CREATED:  971.9659345
   }
 }
 ORDER MARGIN:  9.1590345
-MONEY BALANCE AFTER ORDER CREATED:  962.8069
+MONEY AVAILABLE AFTER ORDER CREATED:  962.8069
+MONEY IN ORDERS 37.1931
+NOT LOCKED MONEY AFTER ORDER CREATED:  1000.0
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.121738",
+  "timestamp": "2025-05-21T21:19:04.134899",
   "type": "ORDER_EXECUTED",
   "data": {
     "id": 3,
-    "created_at": 1747851467116,
+    "created_at": 1747855144129,
     "level": 9344.065499999999,
     "asset_qty": 0.001,
     "side": "SHORT",
     "leverage": 1.0,
     "order_event": "ORDER_EXECUTED",
-    "executed_at": 1747851467121,
+    "executed_at": 1747855144134,
     "tp_pct": 0.01,
     "sl_pct": 0.005
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.121770",
+  "timestamp": "2025-05-21T21:19:04.134926",
   "type": "POSITION_OPENED",
   "data": {
     "id": 2,
-    "entry_at": 1747851467121,
+    "entry_at": 1747855144134,
     "entry_price": 9344.065499999999,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -214,7 +222,7 @@ MONEY BALANCE AFTER ORDER CREATED:  962.8069
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.121793",
+  "timestamp": "2025-05-21T21:19:04.134947",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -230,7 +238,7 @@ MONEY BALANCE AFTER ORDER CREATED:  962.8069
 }
 L'ordre 1 ((9438.45, <OrderSide.SHORT: 'SHORT'>)) existe déjà
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.121815",
+  "timestamp": "2025-05-21T21:19:04.134966",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -246,11 +254,11 @@ L'ordre 1 ((9438.45, <OrderSide.SHORT: 'SHORT'>)) existe déjà
 }
 {'level': 9250.624844999998, 'asset_qty': 0.001, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.121834",
+  "timestamp": "2025-05-21T21:19:04.134985",
   "type": "ORDER_CREATED",
   "data": {
     "id": 5,
-    "created_at": 1747851467121,
+    "created_at": 1747855144134,
     "level": 9250.624844999998,
     "asset_qty": 0.001,
     "side": "LONG",
@@ -262,13 +270,15 @@ L'ordre 1 ((9438.45, <OrderSide.SHORT: 'SHORT'>)) existe déjà
   }
 }
 ORDER MARGIN:  9.250624844999999
-MONEY BALANCE AFTER ORDER CREATED:  953.5562751550001
+MONEY AVAILABLE AFTER ORDER CREATED:  953.5562751550001
+MONEY IN ORDERS 46.443724845
+NOT LOCKED MONEY AFTER ORDER CREATED:  1000.0000000000001
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.121857",
+  "timestamp": "2025-05-21T21:19:04.135013",
   "type": "POSITION_CLOSED",
   "data": {
     "id": 1,
-    "entry_at": 1747851467116,
+    "entry_at": 1747855144129,
     "entry_price": 9251.55,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -276,7 +286,7 @@ MONEY BALANCE AFTER ORDER CREATED:  953.5562751550001
     "position_event": "POSITION_CLOSED",
     "tp_price": 9344.065499999999,
     "sl_price": 9205.292249999999,
-    "closed_at": 1747851467121,
+    "closed_at": 1747855144135,
     "close_price": 9344.065499999999,
     "close_type": "TAKEPROFIT"
   }
@@ -285,11 +295,11 @@ POSITION PNL:  0.09251549999999951
 POSITION MARGIN:  9.25155
 MONEY BALANCE AFTER POSITION CLOSED:  962.900340655
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.122191",
+  "timestamp": "2025-05-21T21:19:04.135345",
   "type": "POSITION_CLOSED",
   "data": {
     "id": 2,
-    "entry_at": 1747851467121,
+    "entry_at": 1747855144134,
     "entry_price": 9344.065499999999,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -297,7 +307,7 @@ MONEY BALANCE AFTER POSITION CLOSED:  962.900340655
     "position_event": "POSITION_CLOSED",
     "tp_price": 9250.624844999998,
     "sl_price": 9390.785827499998,
-    "closed_at": 1747851467122,
+    "closed_at": 1747855144135,
     "close_price": 9390.785827499998,
     "close_type": "STOPLOSS"
   }
@@ -306,27 +316,27 @@ POSITION PNL:  -0.046720327499999256
 POSITION MARGIN:  9.3440655
 MONEY BALANCE AFTER POSITION CLOSED:  972.1976858275
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.123891",
+  "timestamp": "2025-05-21T21:19:04.137004",
   "type": "ORDER_EXECUTED",
   "data": {
     "id": 1,
-    "created_at": 1747851467114,
+    "created_at": 1747855144128,
     "level": 9438.45,
     "asset_qty": 0.001,
     "side": "SHORT",
     "leverage": 1.0,
     "order_event": "ORDER_EXECUTED",
-    "executed_at": 1747851467123,
+    "executed_at": 1747855144137,
     "tp_pct": 0.01,
     "sl_pct": 0.005
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.123912",
+  "timestamp": "2025-05-21T21:19:04.137026",
   "type": "POSITION_OPENED",
   "data": {
     "id": 3,
-    "entry_at": 1747851467123,
+    "entry_at": 1747855144137,
     "entry_price": 9438.45,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -340,7 +350,7 @@ MONEY BALANCE AFTER POSITION CLOSED:  972.1976858275
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.123931",
+  "timestamp": "2025-05-21T21:19:04.137084",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -356,11 +366,11 @@ MONEY BALANCE AFTER POSITION CLOSED:  972.1976858275
 }
 {'level': 9532.8345, 'asset_qty': 0.001, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.123992",
+  "timestamp": "2025-05-21T21:19:04.137110",
   "type": "ORDER_CREATED",
   "data": {
     "id": 6,
-    "created_at": 1747851467123,
+    "created_at": 1747855144137,
     "level": 9532.8345,
     "asset_qty": 0.001,
     "side": "SHORT",
@@ -372,9 +382,11 @@ MONEY BALANCE AFTER POSITION CLOSED:  972.1976858275
   }
 }
 ORDER MARGIN:  9.532834500000002
-MONEY BALANCE AFTER ORDER CREATED:  962.6648513275
+MONEY AVAILABLE AFTER ORDER CREATED:  962.6648513275
+MONEY IN ORDERS 55.976559345
+NOT LOCKED MONEY AFTER ORDER CREATED:  1018.6414106724999
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.124012",
+  "timestamp": "2025-05-21T21:19:04.137130",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -390,11 +402,11 @@ MONEY BALANCE AFTER ORDER CREATED:  962.6648513275
 }
 {'level': 9344.0655, 'asset_qty': 0.001, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.124029",
+  "timestamp": "2025-05-21T21:19:04.137147",
   "type": "ORDER_CREATED",
   "data": {
     "id": 7,
-    "created_at": 1747851467124,
+    "created_at": 1747855144137,
     "level": 9344.0655,
     "asset_qty": 0.001,
     "side": "LONG",
@@ -406,13 +418,15 @@ MONEY BALANCE AFTER ORDER CREATED:  962.6648513275
   }
 }
 ORDER MARGIN:  9.344065500000001
-MONEY BALANCE AFTER ORDER CREATED:  953.3207858274999
+MONEY AVAILABLE AFTER ORDER CREATED:  953.3207858274999
+MONEY IN ORDERS 65.320624845
+NOT LOCKED MONEY AFTER ORDER CREATED:  1018.6414106724999
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.125372",
+  "timestamp": "2025-05-21T21:19:04.138572",
   "type": "POSITION_CLOSED",
   "data": {
     "id": 3,
-    "entry_at": 1747851467123,
+    "entry_at": 1747855144137,
     "entry_price": 9438.45,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -420,7 +434,7 @@ MONEY BALANCE AFTER ORDER CREATED:  953.3207858274999
     "position_event": "POSITION_CLOSED",
     "tp_price": 9344.0655,
     "sl_price": 9485.642249999999,
-    "closed_at": 1747851467125,
+    "closed_at": 1747855144138,
     "close_price": 9485.642249999999,
     "close_type": "STOPLOSS"
   }
@@ -429,27 +443,27 @@ POSITION PNL:  -0.04719224999999824
 POSITION MARGIN:  9.438450000000001
 MONEY BALANCE AFTER POSITION CLOSED:  962.7120435774999
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.134280",
+  "timestamp": "2025-05-21T21:19:04.146822",
   "type": "ORDER_EXECUTED",
   "data": {
     "id": 6,
-    "created_at": 1747851467123,
+    "created_at": 1747855144137,
     "level": 9532.8345,
     "asset_qty": 0.001,
     "side": "SHORT",
     "leverage": 1.0,
     "order_event": "ORDER_EXECUTED",
-    "executed_at": 1747851467134,
+    "executed_at": 1747855144146,
     "tp_pct": 0.01,
     "sl_pct": 0.005
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.134346",
+  "timestamp": "2025-05-21T21:19:04.146850",
   "type": "POSITION_OPENED",
   "data": {
     "id": 4,
-    "entry_at": 1747851467134,
+    "entry_at": 1747855144146,
     "entry_price": 9532.8345,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -463,7 +477,7 @@ MONEY BALANCE AFTER POSITION CLOSED:  962.7120435774999
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.134378",
+  "timestamp": "2025-05-21T21:19:04.146873",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -479,11 +493,11 @@ MONEY BALANCE AFTER POSITION CLOSED:  962.7120435774999
 }
 {'level': 9628.162845, 'asset_qty': 0.001, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.134410",
+  "timestamp": "2025-05-21T21:19:04.146896",
   "type": "ORDER_CREATED",
   "data": {
     "id": 8,
-    "created_at": 1747851467134,
+    "created_at": 1747855144146,
     "level": 9628.162845,
     "asset_qty": 0.001,
     "side": "SHORT",
@@ -495,9 +509,11 @@ MONEY BALANCE AFTER POSITION CLOSED:  962.7120435774999
   }
 }
 ORDER MARGIN:  9.628162845
-MONEY BALANCE AFTER ORDER CREATED:  953.0838807324999
+MONEY AVAILABLE AFTER ORDER CREATED:  953.0838807324999
+MONEY IN ORDERS 74.94878768999999
+NOT LOCKED MONEY AFTER ORDER CREATED:  1028.0326684225
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.134431",
+  "timestamp": "2025-05-21T21:19:04.146919",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -513,11 +529,11 @@ MONEY BALANCE AFTER ORDER CREATED:  953.0838807324999
 }
 {'level': 9437.506155000001, 'asset_qty': 0.001, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.134451",
+  "timestamp": "2025-05-21T21:19:04.146938",
   "type": "ORDER_CREATED",
   "data": {
     "id": 9,
-    "created_at": 1747851467134,
+    "created_at": 1747855144146,
     "level": 9437.506155000001,
     "asset_qty": 0.001,
     "side": "LONG",
@@ -529,13 +545,15 @@ MONEY BALANCE AFTER ORDER CREATED:  953.0838807324999
   }
 }
 ORDER MARGIN:  9.437506155000001
-MONEY BALANCE AFTER ORDER CREATED:  943.6463745774998
+MONEY AVAILABLE AFTER ORDER CREATED:  943.6463745774998
+MONEY IN ORDERS 84.386293845
+NOT LOCKED MONEY AFTER ORDER CREATED:  1028.0326684225
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.144993",
+  "timestamp": "2025-05-21T21:19:04.157338",
   "type": "POSITION_CLOSED",
   "data": {
     "id": 4,
-    "entry_at": 1747851467134,
+    "entry_at": 1747855144146,
     "entry_price": 9532.8345,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -543,7 +561,7 @@ MONEY BALANCE AFTER ORDER CREATED:  943.6463745774998
     "position_event": "POSITION_CLOSED",
     "tp_price": 9437.506155000001,
     "sl_price": 9580.4986725,
-    "closed_at": 1747851467144,
+    "closed_at": 1747855144157,
     "close_price": 9580.4986725,
     "close_type": "STOPLOSS"
   }
@@ -552,27 +570,27 @@ POSITION PNL:  -0.04766417249999904
 POSITION MARGIN:  9.532834500000002
 MONEY BALANCE AFTER POSITION CLOSED:  953.1315449049998
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.159019",
+  "timestamp": "2025-05-21T21:19:04.171111",
   "type": "ORDER_EXECUTED",
   "data": {
     "id": 8,
-    "created_at": 1747851467134,
+    "created_at": 1747855144146,
     "level": 9628.162845,
     "asset_qty": 0.001,
     "side": "SHORT",
     "leverage": 1.0,
     "order_event": "ORDER_EXECUTED",
-    "executed_at": 1747851467159,
+    "executed_at": 1747855144171,
     "tp_pct": 0.01,
     "sl_pct": 0.005
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.159058",
+  "timestamp": "2025-05-21T21:19:04.171153",
   "type": "POSITION_OPENED",
   "data": {
     "id": 5,
-    "entry_at": 1747851467159,
+    "entry_at": 1747855144171,
     "entry_price": 9628.162845,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -586,7 +604,7 @@ MONEY BALANCE AFTER POSITION CLOSED:  953.1315449049998
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.159087",
+  "timestamp": "2025-05-21T21:19:04.171178",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -602,11 +620,11 @@ MONEY BALANCE AFTER POSITION CLOSED:  953.1315449049998
 }
 {'level': 9724.444473450001, 'asset_qty': 0.001, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.159111",
+  "timestamp": "2025-05-21T21:19:04.171203",
   "type": "ORDER_CREATED",
   "data": {
     "id": 10,
-    "created_at": 1747851467159,
+    "created_at": 1747855144171,
     "level": 9724.444473450001,
     "asset_qty": 0.001,
     "side": "SHORT",
@@ -618,9 +636,11 @@ MONEY BALANCE AFTER POSITION CLOSED:  953.1315449049998
   }
 }
 ORDER MARGIN:  9.724444473450001
-MONEY BALANCE AFTER ORDER CREATED:  943.4071004315498
+MONEY AVAILABLE AFTER ORDER CREATED:  943.4071004315498
+MONEY IN ORDERS 94.11073831844999
+NOT LOCKED MONEY AFTER ORDER CREATED:  1037.5178387499998
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.159133",
+  "timestamp": "2025-05-21T21:19:04.171233",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -636,11 +656,11 @@ MONEY BALANCE AFTER ORDER CREATED:  943.4071004315498
 }
 {'level': 9531.88121655, 'asset_qty': 0.001, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.159157",
+  "timestamp": "2025-05-21T21:19:04.171252",
   "type": "ORDER_CREATED",
   "data": {
     "id": 11,
-    "created_at": 1747851467159,
+    "created_at": 1747855144171,
     "level": 9531.88121655,
     "asset_qty": 0.001,
     "side": "LONG",
@@ -652,29 +672,31 @@ MONEY BALANCE AFTER ORDER CREATED:  943.4071004315498
   }
 }
 ORDER MARGIN:  9.531881216550001
-MONEY BALANCE AFTER ORDER CREATED:  933.8752192149998
+MONEY AVAILABLE AFTER ORDER CREATED:  933.8752192149998
+MONEY IN ORDERS 103.642619535
+NOT LOCKED MONEY AFTER ORDER CREATED:  1037.5178387499998
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.183673",
+  "timestamp": "2025-05-21T21:19:04.195315",
   "type": "ORDER_EXECUTED",
   "data": {
     "id": 9,
-    "created_at": 1747851467134,
+    "created_at": 1747855144146,
     "level": 9437.506155000001,
     "asset_qty": 0.001,
     "side": "LONG",
     "leverage": 1.0,
     "order_event": "ORDER_EXECUTED",
-    "executed_at": 1747851467183,
+    "executed_at": 1747855144195,
     "tp_pct": 0.01,
     "sl_pct": 0.005
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.183703",
+  "timestamp": "2025-05-21T21:19:04.195347",
   "type": "POSITION_OPENED",
   "data": {
     "id": 6,
-    "entry_at": 1747851467183,
+    "entry_at": 1747855144195,
     "entry_price": 9437.506155000001,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -688,7 +710,7 @@ MONEY BALANCE AFTER ORDER CREATED:  933.8752192149998
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.183774",
+  "timestamp": "2025-05-21T21:19:04.195371",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -704,11 +726,11 @@ MONEY BALANCE AFTER ORDER CREATED:  933.8752192149998
 }
 {'level': 9531.88121655, 'asset_qty': 0.001, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.183798",
+  "timestamp": "2025-05-21T21:19:04.195393",
   "type": "ORDER_CREATED",
   "data": {
     "id": 12,
-    "created_at": 1747851467183,
+    "created_at": 1747855144195,
     "level": 9531.88121655,
     "asset_qty": 0.001,
     "side": "SHORT",
@@ -720,9 +742,11 @@ MONEY BALANCE AFTER ORDER CREATED:  933.8752192149998
   }
 }
 ORDER MARGIN:  9.531881216550001
-MONEY BALANCE AFTER ORDER CREATED:  924.3433379984498
+MONEY AVAILABLE AFTER ORDER CREATED:  924.3433379984498
+MONEY IN ORDERS 113.17450075155
+NOT LOCKED MONEY AFTER ORDER CREATED:  1037.5178387499998
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.183877",
+  "timestamp": "2025-05-21T21:19:04.195476",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -738,27 +762,27 @@ MONEY BALANCE AFTER ORDER CREATED:  924.3433379984498
 }
 L'ordre 7 ((9344.0655, <OrderSide.LONG: 'LONG'>)) existe déjà
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.189655",
+  "timestamp": "2025-05-21T21:19:04.201215",
   "type": "ORDER_EXECUTED",
   "data": {
     "id": 11,
-    "created_at": 1747851467159,
+    "created_at": 1747855144171,
     "level": 9531.88121655,
     "asset_qty": 0.001,
     "side": "LONG",
     "leverage": 1.0,
     "order_event": "ORDER_EXECUTED",
-    "executed_at": 1747851467189,
+    "executed_at": 1747855144201,
     "tp_pct": 0.01,
     "sl_pct": 0.005
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.189685",
+  "timestamp": "2025-05-21T21:19:04.201237",
   "type": "POSITION_OPENED",
   "data": {
     "id": 7,
-    "entry_at": 1747851467189,
+    "entry_at": 1747855144201,
     "entry_price": 9531.88121655,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -772,7 +796,7 @@ L'ordre 7 ((9344.0655, <OrderSide.LONG: 'LONG'>)) existe déjà
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.189707",
+  "timestamp": "2025-05-21T21:19:04.201257",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -788,11 +812,11 @@ L'ordre 7 ((9344.0655, <OrderSide.LONG: 'LONG'>)) existe déjà
 }
 {'level': 9627.2000287155, 'asset_qty': 0.001, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.189729",
+  "timestamp": "2025-05-21T21:19:04.201275",
   "type": "ORDER_CREATED",
   "data": {
     "id": 13,
-    "created_at": 1747851467189,
+    "created_at": 1747855144201,
     "level": 9627.2000287155,
     "asset_qty": 0.001,
     "side": "SHORT",
@@ -804,9 +828,11 @@ L'ordre 7 ((9344.0655, <OrderSide.LONG: 'LONG'>)) existe déjà
   }
 }
 ORDER MARGIN:  9.627200028715501
-MONEY BALANCE AFTER ORDER CREATED:  914.7161379697343
+MONEY AVAILABLE AFTER ORDER CREATED:  914.7161379697343
+MONEY IN ORDERS 122.8017007802655
+NOT LOCKED MONEY AFTER ORDER CREATED:  1037.5178387499998
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.189749",
+  "timestamp": "2025-05-21T21:19:04.201295",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -822,11 +848,11 @@ MONEY BALANCE AFTER ORDER CREATED:  914.7161379697343
 }
 {'level': 9436.5624043845, 'asset_qty': 0.001, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.189768",
+  "timestamp": "2025-05-21T21:19:04.201313",
   "type": "ORDER_CREATED",
   "data": {
     "id": 14,
-    "created_at": 1747851467189,
+    "created_at": 1747855144201,
     "level": 9436.5624043845,
     "asset_qty": 0.001,
     "side": "LONG",
@@ -838,29 +864,31 @@ MONEY BALANCE AFTER ORDER CREATED:  914.7161379697343
   }
 }
 ORDER MARGIN:  9.4365624043845
-MONEY BALANCE AFTER ORDER CREATED:  905.2795755653498
+MONEY AVAILABLE AFTER ORDER CREATED:  905.2795755653498
+MONEY IN ORDERS 132.23826318465
+NOT LOCKED MONEY AFTER ORDER CREATED:  1037.5178387499998
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.189788",
+  "timestamp": "2025-05-21T21:19:04.201334",
   "type": "ORDER_EXECUTED",
   "data": {
     "id": 12,
-    "created_at": 1747851467183,
+    "created_at": 1747855144195,
     "level": 9531.88121655,
     "asset_qty": 0.001,
     "side": "SHORT",
     "leverage": 1.0,
     "order_event": "ORDER_EXECUTED",
-    "executed_at": 1747851467189,
+    "executed_at": 1747855144201,
     "tp_pct": 0.01,
     "sl_pct": 0.005
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.189807",
+  "timestamp": "2025-05-21T21:19:04.201352",
   "type": "POSITION_OPENED",
   "data": {
     "id": 8,
-    "entry_at": 1747851467189,
+    "entry_at": 1747855144201,
     "entry_price": 9531.88121655,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -874,7 +902,7 @@ MONEY BALANCE AFTER ORDER CREATED:  905.2795755653498
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.189827",
+  "timestamp": "2025-05-21T21:19:04.201374",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -890,7 +918,7 @@ MONEY BALANCE AFTER ORDER CREATED:  905.2795755653498
 }
 L'ordre 13 ((9627.2000287155, <OrderSide.SHORT: 'SHORT'>)) existe déjà
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.189843",
+  "timestamp": "2025-05-21T21:19:04.201389",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -906,11 +934,11 @@ L'ordre 13 ((9627.2000287155, <OrderSide.SHORT: 'SHORT'>)) existe déjà
 }
 L'ordre 14 ((9436.5624043845, <OrderSide.LONG: 'LONG'>)) existe déjà
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.189863",
+  "timestamp": "2025-05-21T21:19:04.201407",
   "type": "POSITION_CLOSED",
   "data": {
     "id": 5,
-    "entry_at": 1747851467159,
+    "entry_at": 1747855144171,
     "entry_price": 9628.162845,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -918,7 +946,7 @@ L'ordre 14 ((9436.5624043845, <OrderSide.LONG: 'LONG'>)) existe déjà
     "position_event": "POSITION_CLOSED",
     "tp_price": 9531.88121655,
     "sl_price": 9676.303659225,
-    "closed_at": 1747851467189,
+    "closed_at": 1747855144201,
     "close_price": 9531.88121655,
     "close_type": "TAKEPROFIT"
   }
@@ -927,11 +955,11 @@ POSITION PNL:  0.09628162845000043
 POSITION MARGIN:  9.628162845
 MONEY BALANCE AFTER POSITION CLOSED:  915.0040200387998
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.189888",
+  "timestamp": "2025-05-21T21:19:04.201433",
   "type": "POSITION_CLOSED",
   "data": {
     "id": 6,
-    "entry_at": 1747851467183,
+    "entry_at": 1747855144195,
     "entry_price": 9437.506155000001,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -939,7 +967,7 @@ MONEY BALANCE AFTER POSITION CLOSED:  915.0040200387998
     "position_event": "POSITION_CLOSED",
     "tp_price": 9531.88121655,
     "sl_price": 9390.318624225001,
-    "closed_at": 1747851467189,
+    "closed_at": 1747855144201,
     "close_price": 9531.88121655,
     "close_type": "TAKEPROFIT"
   }
@@ -948,11 +976,11 @@ POSITION PNL:  0.09437506154999938
 POSITION MARGIN:  9.437506155000001
 MONEY BALANCE AFTER POSITION CLOSED:  924.5359012553498
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.191018",
+  "timestamp": "2025-05-21T21:19:04.202543",
   "type": "POSITION_CLOSED",
   "data": {
     "id": 7,
-    "entry_at": 1747851467189,
+    "entry_at": 1747855144201,
     "entry_price": 9531.88121655,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -960,7 +988,7 @@ MONEY BALANCE AFTER POSITION CLOSED:  924.5359012553498
     "position_event": "POSITION_CLOSED",
     "tp_price": 9627.2000287155,
     "sl_price": 9484.22181046725,
-    "closed_at": 1747851467191,
+    "closed_at": 1747855144202,
     "close_price": 9484.22181046725,
     "close_type": "STOPLOSS"
   }
@@ -969,27 +997,27 @@ POSITION PNL:  -0.04765940608275014
 POSITION MARGIN:  9.531881216550001
 MONEY BALANCE AFTER POSITION CLOSED:  934.0201230658171
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.194429",
+  "timestamp": "2025-05-21T21:19:04.205976",
   "type": "ORDER_EXECUTED",
   "data": {
     "id": 14,
-    "created_at": 1747851467189,
+    "created_at": 1747855144201,
     "level": 9436.5624043845,
     "asset_qty": 0.001,
     "side": "LONG",
     "leverage": 1.0,
     "order_event": "ORDER_EXECUTED",
-    "executed_at": 1747851467194,
+    "executed_at": 1747855144205,
     "tp_pct": 0.01,
     "sl_pct": 0.005
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.194449",
+  "timestamp": "2025-05-21T21:19:04.206002",
   "type": "POSITION_OPENED",
   "data": {
     "id": 9,
-    "entry_at": 1747851467194,
+    "entry_at": 1747855144205,
     "entry_price": 9436.5624043845,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -1003,7 +1031,7 @@ MONEY BALANCE AFTER POSITION CLOSED:  934.0201230658171
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.194472",
+  "timestamp": "2025-05-21T21:19:04.206024",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -1019,11 +1047,11 @@ MONEY BALANCE AFTER POSITION CLOSED:  934.0201230658171
 }
 {'level': 9530.928028428345, 'asset_qty': 0.001, 'side': <OrderSide.SHORT: 'SHORT'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.194511",
+  "timestamp": "2025-05-21T21:19:04.206044",
   "type": "ORDER_CREATED",
   "data": {
     "id": 15,
-    "created_at": 1747851467194,
+    "created_at": 1747855144206,
     "level": 9530.928028428345,
     "asset_qty": 0.001,
     "side": "SHORT",
@@ -1035,9 +1063,11 @@ MONEY BALANCE AFTER POSITION CLOSED:  934.0201230658171
   }
 }
 ORDER MARGIN:  9.530928028428345
-MONEY BALANCE AFTER ORDER CREATED:  924.4891950373888
+MONEY AVAILABLE AFTER ORDER CREATED:  924.4891950373888
+MONEY IN ORDERS 141.76919121307836
+NOT LOCKED MONEY AFTER ORDER CREATED:  1066.258386250467
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.194532",
+  "timestamp": "2025-05-21T21:19:04.206065",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -1053,11 +1083,11 @@ MONEY BALANCE AFTER ORDER CREATED:  924.4891950373888
 }
 L'ordre 7 ((9344.0655, <OrderSide.LONG: 'LONG'>)) existe déjà
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.194550",
+  "timestamp": "2025-05-21T21:19:04.206084",
   "type": "POSITION_CLOSED",
   "data": {
     "id": 8,
-    "entry_at": 1747851467189,
+    "entry_at": 1747855144201,
     "entry_price": 9531.88121655,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -1065,7 +1095,7 @@ L'ordre 7 ((9344.0655, <OrderSide.LONG: 'LONG'>)) existe déjà
     "position_event": "POSITION_CLOSED",
     "tp_price": 9436.5624043845,
     "sl_price": 9579.540622632749,
-    "closed_at": 1747851467194,
+    "closed_at": 1747855144206,
     "close_price": 9436.5624043845,
     "close_type": "TAKEPROFIT"
   }
@@ -1074,27 +1104,27 @@ POSITION PNL:  0.09531881216550028
 POSITION MARGIN:  9.531881216550001
 MONEY BALANCE AFTER POSITION CLOSED:  934.1163950661042
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.210629",
+  "timestamp": "2025-05-21T21:19:04.222040",
   "type": "ORDER_EXECUTED",
   "data": {
     "id": 15,
-    "created_at": 1747851467194,
+    "created_at": 1747855144206,
     "level": 9530.928028428345,
     "asset_qty": 0.001,
     "side": "SHORT",
     "leverage": 1.0,
     "order_event": "ORDER_EXECUTED",
-    "executed_at": 1747851467210,
+    "executed_at": 1747855144222,
     "tp_pct": 0.01,
     "sl_pct": 0.005
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.210653",
+  "timestamp": "2025-05-21T21:19:04.222063",
   "type": "POSITION_OPENED",
   "data": {
     "id": 10,
-    "entry_at": 1747851467210,
+    "entry_at": 1747855144222,
     "entry_price": 9530.928028428345,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -1108,7 +1138,7 @@ MONEY BALANCE AFTER POSITION CLOSED:  934.1163950661042
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.210673",
+  "timestamp": "2025-05-21T21:19:04.222083",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -1124,7 +1154,7 @@ MONEY BALANCE AFTER POSITION CLOSED:  934.1163950661042
 }
 L'ordre 13 ((9627.2000287155, <OrderSide.SHORT: 'SHORT'>)) existe déjà
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.210690",
+  "timestamp": "2025-05-21T21:19:04.222100",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -1140,11 +1170,11 @@ L'ordre 13 ((9627.2000287155, <OrderSide.SHORT: 'SHORT'>)) existe déjà
 }
 {'level': 9435.618748144061, 'asset_qty': 0.001, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.210708",
+  "timestamp": "2025-05-21T21:19:04.222118",
   "type": "ORDER_CREATED",
   "data": {
     "id": 16,
-    "created_at": 1747851467210,
+    "created_at": 1747855144222,
     "level": 9435.618748144061,
     "asset_qty": 0.001,
     "side": "LONG",
@@ -1156,13 +1186,15 @@ L'ordre 13 ((9627.2000287155, <OrderSide.SHORT: 'SHORT'>)) existe déjà
   }
 }
 ORDER MARGIN:  9.435618748144062
-MONEY BALANCE AFTER ORDER CREATED:  924.6807763179602
+MONEY AVAILABLE AFTER ORDER CREATED:  924.6807763179602
+MONEY IN ORDERS 151.20480996122242
+NOT LOCKED MONEY AFTER ORDER CREATED:  1075.8855862791827
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.210786",
+  "timestamp": "2025-05-21T21:19:04.222203",
   "type": "POSITION_CLOSED",
   "data": {
     "id": 9,
-    "entry_at": 1747851467194,
+    "entry_at": 1747855144205,
     "entry_price": 9436.5624043845,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -1170,7 +1202,7 @@ MONEY BALANCE AFTER ORDER CREATED:  924.6807763179602
     "position_event": "POSITION_CLOSED",
     "tp_price": 9530.928028428345,
     "sl_price": 9389.379592362577,
-    "closed_at": 1747851467210,
+    "closed_at": 1747855144222,
     "close_price": 9530.928028428345,
     "close_type": "TAKEPROFIT"
   }
@@ -1179,11 +1211,11 @@ POSITION PNL:  0.09436562404384495
 POSITION MARGIN:  9.4365624043845
 MONEY BALANCE AFTER POSITION CLOSED:  934.2117043463885
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.213041",
+  "timestamp": "2025-05-21T21:19:04.224442",
   "type": "POSITION_CLOSED",
   "data": {
     "id": 10,
-    "entry_at": 1747851467210,
+    "entry_at": 1747855144222,
     "entry_price": 9530.928028428345,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -1191,7 +1223,7 @@ MONEY BALANCE AFTER POSITION CLOSED:  934.2117043463885
     "position_event": "POSITION_CLOSED",
     "tp_price": 9435.618748144061,
     "sl_price": 9578.582668570485,
-    "closed_at": 1747851467213,
+    "closed_at": 1747855144224,
     "close_price": 9578.582668570485,
     "close_type": "STOPLOSS"
   }
@@ -1200,27 +1232,27 @@ POSITION PNL:  -0.047654640142140124
 POSITION MARGIN:  9.530928028428345
 MONEY BALANCE AFTER POSITION CLOSED:  943.6949777346747
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.217664",
+  "timestamp": "2025-05-21T21:19:04.229009",
   "type": "ORDER_EXECUTED",
   "data": {
     "id": 13,
-    "created_at": 1747851467189,
+    "created_at": 1747855144201,
     "level": 9627.2000287155,
     "asset_qty": 0.001,
     "side": "SHORT",
     "leverage": 1.0,
     "order_event": "ORDER_EXECUTED",
-    "executed_at": 1747851467217,
+    "executed_at": 1747855144229,
     "tp_pct": 0.01,
     "sl_pct": 0.005
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.217684",
+  "timestamp": "2025-05-21T21:19:04.229029",
   "type": "POSITION_OPENED",
   "data": {
     "id": 11,
-    "entry_at": 1747851467217,
+    "entry_at": 1747855144229,
     "entry_price": 9627.2000287155,
     "asset_qty": 0.001,
     "leverage": 1.0,
@@ -1234,7 +1266,7 @@ MONEY BALANCE AFTER POSITION CLOSED:  943.6949777346747
   }
 }
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.217701",
+  "timestamp": "2025-05-21T21:19:04.229047",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -1250,7 +1282,7 @@ MONEY BALANCE AFTER POSITION CLOSED:  943.6949777346747
 }
 L'ordre 10 ((9724.444473450001, <OrderSide.SHORT: 'SHORT'>)) existe déjà
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.217717",
+  "timestamp": "2025-05-21T21:19:04.229063",
   "type": "STRATEGY_MAKE_ORDER",
   "data": {
     "type": "DUMB",
@@ -1266,11 +1298,11 @@ L'ordre 10 ((9724.444473450001, <OrderSide.SHORT: 'SHORT'>)) existe déjà
 }
 {'level': 9530.928028428345, 'asset_qty': 0.001, 'side': <OrderSide.LONG: 'LONG'>, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005}
 [EVENT] {
-  "timestamp": "2025-05-21T20:17:47.217734",
+  "timestamp": "2025-05-21T21:19:04.229080",
   "type": "ORDER_CREATED",
   "data": {
     "id": 17,
-    "created_at": 1747851467217,
+    "created_at": 1747855144229,
     "level": 9530.928028428345,
     "asset_qty": 0.001,
     "side": "LONG",
@@ -1282,4 +1314,6 @@ L'ordre 10 ((9724.444473450001, <OrderSide.SHORT: 'SHORT'>)) existe déjà
   }
 }
 ORDER MARGIN:  9.530928028428345
-MONEY BALANCE AFTER ORDER CREATED:  934.1640497062464
+MONEY AVAILABLE AFTER ORDER CREATED:  934.1640497062464
+MONEY IN ORDERS 160.73573798965077
+NOT LOCKED MONEY AFTER ORDER CREATED:  1094.8997876958972
