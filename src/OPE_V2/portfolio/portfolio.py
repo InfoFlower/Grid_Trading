@@ -5,11 +5,11 @@ from event.event import EventDispatcher, Event, EventType
 from bot.order.order import OrderSide, Order
 from bot.position.position import PositionSide, Position
 
-@dataclass
-class Asset:
+# @dataclass
+# class Asset:
 
-    long : float
-    short : float
+#     long : float
+#     short : float
 
 class Portfolio:
     
@@ -18,11 +18,11 @@ class Portfolio:
         self.event_dispatcher = event_dispatcher
         
         self.money_balance = money_balance
-        self.in_orders = Asset(long = 0, short = 0)
-        self.in_positions = Asset(long = 0, short = 0)
+        # self.in_orders = Asset(long = 0, short = 0)
+        # self.in_positions = Asset(long = 0, short = 0)
 
         event_dispatcher.add_listeners(EventType.ORDER_CREATED, self.set_order_created)
-        event_dispatcher.add_listeners(EventType.POSITION_OPENED, self.set_position_opened)
+        #event_dispatcher.add_listeners(EventType.POSITION_OPENED, self.set_position_opened)
         event_dispatcher.add_listeners(EventType.POSITION_CLOSED, self.set_position_closed)
 
     def set_order_created(self, event : Event) -> None:
@@ -32,32 +32,32 @@ class Portfolio:
         margin = order.margin
         print("ORDER MARGIN: ", margin)
         self.money_balance -= margin
-        if order.side == OrderSide.LONG:
-            self.in_orders.long += order.asset_qty
-        else :
-            self.in_orders.short += order.asset_qty 
+        # if order.side == OrderSide.LONG:
+        #     self.in_orders.long += order.asset_qty
+        # else :
+        #     self.in_orders.short += order.asset_qty 
         print('MONEY BALANCE AFTER ORDER CREATED: ', self.money_balance)
 
-    def set_position_opened(self, event : Event) -> None:
+    # def set_position_opened(self, event : Event) -> None:
         
-        position : Position = event.data
+    #     position : Position = event.data
 
-        if position.side == PositionSide.LONG:
-            self.in_orders.long -= position.asset_qty
-            self.in_positions.long += position.asset_qty
+    #     if position.side == PositionSide.LONG:
+    #         self.in_orders.long -= position.asset_qty
+    #         self.in_positions.long += position.asset_qty
         
-        else :
-            self.in_orders.short -= position.asset_qty
-            self.in_positions.short += position.asset_qty
+    #     else :
+    #         self.in_orders.short -= position.asset_qty
+    #         self.in_positions.short += position.asset_qty
 
     def set_position_closed(self, event : Event) -> None:
         
         position : Position = event.data
 
-        if position.side == PositionSide.LONG:
-            self.in_positions.long -= position.asset_qty
-        else :
-            self.in_positions.short -= position.asset_qty
+        # if position.side == PositionSide.LONG:
+        #     self.in_positions.long -= position.asset_qty
+        # else :
+        #     self.in_positions.short -= position.asset_qty
 
         pnl = position.pnl(position.close_price)
         print("POSITION PNL: ", pnl)

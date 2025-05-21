@@ -92,7 +92,9 @@ class Position:
     @property
     def margin(self) -> float:
         return self.asset_qty * self.entry_price / self.leverage
-
+    
+    def value(self, current_price : float) -> float:
+        return self.asset_qty * current_price
 
     def pnl(self, current_price : float) -> float:
         """

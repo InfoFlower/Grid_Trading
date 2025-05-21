@@ -9,12 +9,13 @@ from portfolio.portfolio import Portfolio
 
 class OrderManager:
 
-    def __init__(self, order_builder : OrderBuilder, tolerance_pct : int, event_dispatcher : EventDispatcher) -> None:
+    def __init__(self, portfolio : Portfolio, tolerance_pct : int, event_dispatcher : EventDispatcher) -> None:
         """
         Initialise l'orderbook à un dictionnaire vide
         """
+        self.portfolio = portfolio
+        self.order_builder = OrderBuilder()
         self.event_dispatcher = event_dispatcher
-        self.order_builder = order_builder
         self.tolerance_pct = tolerance_pct
         self.order_book : Dict[int, Order] = {}
 
@@ -25,25 +26,32 @@ class OrderManager:
         """
         Ajoute un ordre à la liste d'ordre
         """
+        strat_type = event.data['type']
+        order_params = event.data['args']
+        margin = order_params['level'] * order_params['asset_qty'] / order_params['leverage']
 
-        order_already_exists = self.check_order_already_exists(event)
+        if self.portfolio.enough_money(margin):
+            
+            order_already_exists = self.check_order_already_exists(event)
 
-        if not order_already_exists:
-            order = self.order_builder.build(event)
+            if not order_already_exists:
+                order = self.order_builder.build(strat_type, order_params)
 
-            if order.id in self.order_book:
-                raise KeyError(f"Order {order.id} already exists in the order book") 
+                if order.id in self.order_book:
+                    raise KeyError(f"Order {order.id} already exists in the order book") 
+            
+                self.order_book[order.id] = order
+                self.event_dispatcher.dispatch(Event(
+                            type = EventType.ORDER_CREATED,
+                            data = order,
+                            timestamp = datetime.now()
+                        ))
+            else :
+                k, v = order_already_exists.popitem()
+                print(f"L'ordre {k} ({v.level, v.side}) existe déjà")
         
-            self.order_book[order.id] = order
-            self.event_dispatcher.dispatch(Event(
-                        type = EventType.ORDER_CREATED,
-                        data = order,
-                        timestamp = datetime.now()
-                    ))
-        
-        else :
-            k, v = order_already_exists.popitem()
-            print(f"L'ordre {k} ({v.level, v.side}) existe déjà")
+        else:
+            raise ValueError(f'Not enough money: wanted = {margin}> available={self.portfolio.money_balance}')
         
     def orders_to_execute(self, event : Event) -> None:
         for order_id in list(self.order_book.keys()):
@@ -69,7 +77,6 @@ class OrderManager:
                     data = order,
                     timestamp = datetime.now()
                 ))
-
 
     def filter(self, condition : Callable[[Order],bool]) -> Dict[int,Order]:
         """

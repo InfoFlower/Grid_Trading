@@ -100,7 +100,11 @@ class Order:
 
     @property
     def margin(self) -> float:
-        return self.asset_qty * self.level / self.leverage
+        return self.value / self.leverage
+    
+    @property
+    def value(self) -> float:
+        return self.asset_qty * self.level
 
     def is_executable(self, current_data:Dict[str, int | float]) -> bool:
         """

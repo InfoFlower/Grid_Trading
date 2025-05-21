@@ -27,8 +27,7 @@ initial_money_balance = 1000
 tolerance_pct = 0.005
 ##########################################################
 portfolio = Portfolio(initial_money_balance, event_dispatcher)
-order_builder = OrderBuilder(portfolio)
-order_manager = OrderManager(order_builder, tolerance_pct, event_dispatcher)
+order_manager = OrderManager(portfolio, tolerance_pct, event_dispatcher)
 position_manager = PositionManager(event_dispatcher)
 
 ########## Mieux construire la pool -> @dataclass Pool ?? ##########
