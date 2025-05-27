@@ -1,0 +1,1 @@
+OrderId,OrderEventTimestamp,OrderEventType,OrderSide,OrderLevel,OrderAssetQty,OrderLeverage,OrderTakeprofitPrice,OrderStoplossPrice,CreatedAt,ExecutedAt,OperationnalTimestamp

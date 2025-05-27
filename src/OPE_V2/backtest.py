@@ -1,16 +1,14 @@
 #Main de test au moins pour le moment
 import os
-import polars as pl
 from dotenv import load_dotenv
 
 from bot.trading_bot import TradingBot
 from event.event import EventDispatcher
-from csv_data_provider import CSVDataProvider
-from strategy.fix_order_strategy import FixOrderStrategy
+from data.data_provider.csv_data_provider import CSVDataProvider
+#from strategy.fix_order_strategy import FixOrderStrategy
 from strategy.dumb_strategy import DumbStrategy
 from bot.order.order_manager import OrderManager
 from bot.position.position_manager import PositionManager
-from bot.order.order_builder import OrderBuilder
 from portfolio.portfolio import Portfolio
 
 #IMPORT POUR LE TEST
@@ -34,7 +32,7 @@ position_manager = PositionManager(event_dispatcher)
 initial_crypto_price = data_provider.get_initial_data()['CloseCol']
 ######################################################################
 
-########## Mieux construire les paramètres users######################
+########## Mieux construire les paramètres users ######################
 init_params = {
     'level': initial_crypto_price,
     'asset_qty' : 0.001,#0.01 * initial_money_balance/initial_crypto_price,

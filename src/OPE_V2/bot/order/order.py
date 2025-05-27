@@ -114,11 +114,3 @@ class Order:
         high = current_data['HighCol']
 
         return self.order_event == EventType.ORDER_CREATED and low <= self.level <= high
-        
-
-    
-    
-
-    
-
-

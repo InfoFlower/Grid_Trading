@@ -15,6 +15,7 @@ class PositionBuilder:
         """
         """
         position_params = {}
+        position_params['order_id'] = order.id
         position_params['entry_at'] = int(datetime.now(timezone.utc).timestamp() * 1000)
         position_params['entry_price'] = order.level
         position_params['asset_qty'] = order.asset_qty

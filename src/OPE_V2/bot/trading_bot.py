@@ -1,7 +1,7 @@
 from typing import Dict
 from dataclasses import asdict
 
-from csv_data_provider import CSVDataProvider
+from data.data_provider.csv_data_provider import CSVDataProvider
 
 from event.event import EventDispatcher
 

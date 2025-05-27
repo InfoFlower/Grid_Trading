@@ -95,4 +95,3 @@ class OrderManager:
             return abs(order.level - order_args['level']) <= order_args['level']*self.tolerance_pct and order.side == order_args['side']
         
         return self.filter(condition)
-

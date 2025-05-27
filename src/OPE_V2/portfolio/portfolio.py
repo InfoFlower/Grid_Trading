@@ -92,11 +92,5 @@ class Portfolio:
     
     @property
     def all_not_locked_money(self) -> float:
-        money_in_orders = self.money_in_orders()
+        money_in_orders = self.money_in_orders
         return self.portfolio_balance.money_available + money_in_orders
-
-    
-
-
-
-

@@ -1,7 +1,7 @@
 from typing import Dict, Any
 from datetime import datetime, timezone
 
-from .position import Position, PositionSide, PositionCloseType
+from .position import Position, PositionCloseType
 from .position_builder import PositionBuilder
 from event.event import EventDispatcher, Event, EventType
 
@@ -22,7 +22,7 @@ class PositionManager:
 
         if position.id in self.position_book:
             raise KeyError(f"Position {position.id} already exists in the order book") 
-        #print("###POSITION###\n###POSITION###\n###POSITION###\n###POSITION###\n")
+        print("###POSITION###\n###POSITION###\n###POSITION###\n###POSITION###\n")
         self.position_book[position.id] = position
         self.event_dispatcher.dispatch(Event(
                     type = EventType.POSITION_OPENED,

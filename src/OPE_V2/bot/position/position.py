@@ -19,6 +19,7 @@ class Position:
     _instance_count: ClassVar[int] = 0 
 
     id : int  = field(init=False)
+    order_id : int 
     entry_at : int
     entry_price : float
     asset_qty : float
@@ -112,5 +113,3 @@ class Position:
             low = current_data['LowCol']
             high = current_data['HighCol']
             return self.position_event == EventType.POSITION_OPENED and low <= self.sl_price <= high
-
-

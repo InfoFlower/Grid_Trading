@@ -1,0 +1,1 @@
+PositionId,OrderId,PositionEventTimestamp,PositionEventType,PositionSide,PositionAssetQty,PositionLeverage,PositionTakeprofitPrice,PositionStoplossPrice,PositionEntryPrice,PositionClosePrice,PositionCloseType,OperationnalTimestamp
