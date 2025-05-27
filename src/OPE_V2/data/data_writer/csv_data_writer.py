@@ -15,10 +15,11 @@ class CSVDataWriter:
 
     }
 
-    def __init__(self, output_dir=dir, sep=',', append=False):
+    def __init__(self, event_dispatcher, output_dir=dir, sep=',', append=False):
         """
         """
         self.files_path = {}
+        self.event_dispatcher = event_dispatcher
         #self.output_dir = output_dir
 
         if not os.path.exists(output_dir):
@@ -32,4 +33,4 @@ class CSVDataWriter:
                     f.write(sep.join(self.DATA_STRUCTURE[filename]))
                     f.close()
 
-csv_data_writer = CSVDataWriter()
+#csv_data_writer = CSVDataWriter()

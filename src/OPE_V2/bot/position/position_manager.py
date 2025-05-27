@@ -4,11 +4,12 @@ from datetime import datetime, timezone
 from .position import Position, PositionCloseType
 from .position_builder import PositionBuilder
 from event.event import EventDispatcher, Event, EventType
+from data.data_provider.market_data_cache import DataCache
 
 class PositionManager:
 
-    def __init__(self, event_dispatcher : EventDispatcher) -> None:
-        self.position_builder = PositionBuilder()
+    def __init__(self, event_dispatcher : EventDispatcher, data_cache = DataCache) -> None:
+        self.position_builder = PositionBuilder(data_cache)
         self.event_dispatcher = event_dispatcher
         self.position_book : Dict[int, Position] = {}
 
@@ -36,23 +37,20 @@ class PositionManager:
             position = self.position_book[position_id]
             
             if position.is_closable_tp(event.data):
+
+                event_type = EventType.POSITION_CLOSED
+                close_type = PositionCloseType.TAKEPROFIT
                 
-                #### BUILDER & MODIFIER ####
-                position.position_event = EventType.POSITION_CLOSED
-                position.close_type = PositionCloseType.TAKEPROFIT
-                position.closed_at = int(datetime.now(timezone.utc).timestamp() * 1000)
-                position.close_price = position.tp_price
-                ############################
+                position = self.position_builder.modify(position, event_type, close_type)
+                
                 self.close_position(position)
 
             if position.is_closable_sl(event.data):
 
-                #### BUILDER & MODIFIER ####
-                position.position_event = EventType.POSITION_CLOSED
-                position.close_type = PositionCloseType.STOPLOSS
-                position.closed_at = int(datetime.now(timezone.utc).timestamp() * 1000)
-                position.close_price = position.sl_price
-                ############################
+                event_type = EventType.POSITION_CLOSED
+                close_type = PositionCloseType.STOPLOSS
+
+                position = self.position_builder.modify(position, event_type, close_type)
                 
                 self.close_position(position)
 
@@ -64,7 +62,7 @@ class PositionManager:
         self.delete_position(position.id)
 
         self.event_dispatcher.dispatch(Event(
-            type = EventType.POSITION_CLOSED,
+            type = position.position_event,
             data = position,
             timestamp = datetime.now()
         ))

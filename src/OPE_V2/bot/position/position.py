@@ -18,20 +18,26 @@ class Position:
 
     _instance_count: ClassVar[int] = 0 
 
+    # Constant
     id : int  = field(init=False)
     order_id : int 
-    entry_at : int
     entry_price : float
     asset_qty : float
     leverage : float
     side : PositionSide
+    
+    #Events
+    position_event_timestamp : int
     position_event : EventType
+    
+    #Optionnel
     tp_price : Optional[float] = None
     sl_price : Optional[float] = None
-    closed_at : int = 0
+    
+    # Closing
     close_price : float = 0.0
     close_type : PositionCloseType = None
-
+    
     def __post_init__(self) -> None:
         """
         Data Validation
@@ -40,8 +46,8 @@ class Position:
         # Typage strict
         # if self.id is not None and not isinstance(self.id, int):
         #     raise TypeError(f"id must be int, got {type(self.id).__name__}")
-        if not isinstance(self.entry_at, int):
-            raise TypeError(f"entry_at must be int (Unix ms timestamp), got {type(self.entry_at).__name__}")
+        # if not isinstance(self.entry_at, int):
+        #     raise TypeError(f"entry_at must be int (Unix ms timestamp), got {type(self.entry_at).__name__}")
         # if self.closed_at is not None and not isinstance(self.closed_at, int):
         #     raise TypeError(f"closed_at must be int or None, got {type(self.closed_at).__name__}")
         if not isinstance(self.entry_price, float):

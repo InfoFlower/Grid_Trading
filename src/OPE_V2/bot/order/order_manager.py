@@ -5,18 +5,24 @@ from .order import Order
 from .order_builder import OrderBuilder
 from event.event import EventDispatcher, Event, EventType
 from portfolio.portfolio import Portfolio
+from data.data_provider.market_data_cache import DataCache
 
 
 class OrderManager:
 
-    def __init__(self, portfolio : Portfolio, tolerance_pct : int, event_dispatcher : EventDispatcher) -> None:
+    def __init__(self, 
+                portfolio : Portfolio, 
+                tolerance_pct : int,
+                event_dispatcher : EventDispatcher,
+                data_cache : DataCache) -> None:
         """
         Initialise l'orderbook à un dictionnaire vide
         """
         self.portfolio = portfolio
-        self.order_builder = OrderBuilder()
+        self.order_builder = OrderBuilder(data_cache)
         self.event_dispatcher = event_dispatcher
         self.tolerance_pct = tolerance_pct
+
         self.order_book : Dict[int, Order] = {}
 
         event_dispatcher.add_listeners(EventType.MARKET_DATA, self.orders_to_execute)
@@ -28,6 +34,7 @@ class OrderManager:
         """
         strat_type = event.data['type']
         order_params = event.data['args']
+        event_type = EventType.ORDER_CREATED
         margin = order_params['level'] * order_params['asset_qty'] / order_params['leverage']
 
         if self.portfolio.enough_money(margin):
@@ -35,7 +42,7 @@ class OrderManager:
             order_already_exists = self.check_order_already_exists(event)
 
             if not order_already_exists:
-                order = self.order_builder.build(strat_type, order_params)
+                order = self.order_builder.build(strat_type, order_params, event_type)
 
                 if order.id in self.order_book:
                     raise KeyError(f"Order {order.id} already exists in the order book") 
@@ -51,7 +58,7 @@ class OrderManager:
                 print(f"L'ordre {k} ({v.level, v.side}) existe déjà")
         
         else:
-            raise ValueError(f'Not enough money: wanted = {margin}> available={self.portfolio.money_balance}')
+            raise ValueError(f'Not enough money: wanted = {margin}> available={self.portfolio.portfolio_balance.money_available}')
         
     def orders_to_execute(self, event : Event) -> None:
         for order_id in list(self.order_book.keys()):
@@ -66,14 +73,13 @@ class OrderManager:
             raise KeyError(f"Order {order.id} does not exists in the order book")
         
         self.delete_order(order.id)
+
+        event_type = EventType.ORDER_EXECUTED
         
-        #### BUILDER & MODIFIER ####
-        order.executed_at = int(datetime.now(timezone.utc).timestamp() * 1000)
-        order.order_event = EventType.ORDER_EXECUTED
-        ############################
+        order = self.order_builder.modify(order, event_type)
 
         self.event_dispatcher.dispatch(Event(
-                    type = EventType.ORDER_EXECUTED,
+                    type = event_type,
                     data = order,
                     timestamp = datetime.now()
                 ))

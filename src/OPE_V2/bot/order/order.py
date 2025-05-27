@@ -16,18 +16,15 @@ class Order:
 
     id : int = field(init=False)
 
-    # Init
-    created_at : int
+    # Constant
     level : float
     asset_qty : float
     side : OrderSide
     leverage : float
 
-    # Type changeant
+    # Events
+    order_event_timestamp : int
     order_event : EventType
-
-    # Variable d'éxecution
-    executed_at : int = 0
 
     #Optionnel
     tp_pct: Optional[float] = None
@@ -42,8 +39,8 @@ class Order:
         # Typage strict
         # if self.id is not None and not isinstance(self.id, int):
         #     raise TypeError(f"id must be int, got {type(self.id).__name__}")
-        if not isinstance(self.created_at, int):
-            raise TypeError(f"created_at must be int (Unix ms timestamp), got {type(self.created_at).__name__}")
+        # if not isinstance(self.created_at, int):
+        #     raise TypeError(f"created_at must be int (Unix ms timestamp), got {type(self.created_at).__name__}")
         # if self.executed_at is not None and not isinstance(self.executed_at, int):
         #     raise TypeError(f"executed_at must be int or None, got {type(self.executed_at).__name__}")
         if not isinstance(self.level, float):
