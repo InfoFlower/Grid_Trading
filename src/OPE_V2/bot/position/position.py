@@ -50,22 +50,22 @@ class Position:
         #     raise TypeError(f"entry_at must be int (Unix ms timestamp), got {type(self.entry_at).__name__}")
         # if self.closed_at is not None and not isinstance(self.closed_at, int):
         #     raise TypeError(f"closed_at must be int or None, got {type(self.closed_at).__name__}")
-        if not isinstance(self.entry_price, float):
-            raise TypeError(f"entry_price must be float, got {type(self.entry_price).__name__}")
-        if not isinstance(self.asset_qty, float):
-            raise TypeError(f"asset_qty must be float, got {type(self.asset_qty).__name__}")
-        if not isinstance(self.leverage, float):
-            raise TypeError(f"leverage must be float, got {type(self.leverage).__name__}")
-        if not isinstance(self.side, PositionSide):
-            raise TypeError(f"side must be an instance of PositionSide, got {type(self.side).__name__}")
-        if not isinstance(self.position_event, EventType):
-            raise TypeError(f"position_event must be an instance of EventType, got {type(self.position_event).__name__}")
-        # if self.close_price is not None and not isinstance(self.close_price, float):
-        #     raise TypeError(f"close_price must be float or None, got {type(self.close_price).__name__}")
-        if self.tp_price is not None and not isinstance(self.tp_price, float):
-            raise TypeError(f"tp_price must be float or None, got {type(self.tp_price).__name__}")
-        if self.sl_price is not None and not isinstance(self.sl_price, float):
-            raise TypeError(f"sl_price must be float or None, got {type(self.sl_price).__name__}")
+        # if not isinstance(self.entry_price, float):
+        #     raise TypeError(f"entry_price must be float, got {type(self.entry_price).__name__}")
+        # if not isinstance(self.asset_qty, float):
+        #     raise TypeError(f"asset_qty must be float, got {type(self.asset_qty).__name__}")
+        # if not isinstance(self.leverage, float):
+        #     raise TypeError(f"leverage must be float, got {type(self.leverage).__name__}")
+        # if not isinstance(self.side, PositionSide):
+        #     raise TypeError(f"side must be an instance of PositionSide, got {type(self.side).__name__}")
+        # if not isinstance(self.position_event, EventType):
+        #     raise TypeError(f"position_event must be an instance of EventType, got {type(self.position_event).__name__}")
+        # # if self.close_price is not None and not isinstance(self.close_price, float):
+        # #     raise TypeError(f"close_price must be float or None, got {type(self.close_price).__name__}")
+        # if self.tp_price is not None and not isinstance(self.tp_price, float):
+        #     raise TypeError(f"tp_price must be float or None, got {type(self.tp_price).__name__}")
+        # if self.sl_price is not None and not isinstance(self.sl_price, float):
+        #     raise TypeError(f"sl_price must be float or None, got {type(self.sl_price).__name__}")
 
         # Validation de valeurs
         if self.entry_price < 0:

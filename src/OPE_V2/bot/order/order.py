@@ -43,20 +43,20 @@ class Order:
         #     raise TypeError(f"created_at must be int (Unix ms timestamp), got {type(self.created_at).__name__}")
         # if self.executed_at is not None and not isinstance(self.executed_at, int):
         #     raise TypeError(f"executed_at must be int or None, got {type(self.executed_at).__name__}")
-        if not isinstance(self.level, float):
-            raise TypeError(f"level must be float, got {type(self.level).__name__}")
-        if not isinstance(self.asset_qty, float):
-            raise TypeError(f"asset_qty must be float, got {type(self.asset_qty).__name__}")
-        if not isinstance(self.leverage, float):
-            raise TypeError(f"leverage must be float, got {type(self.leverage).__name__}")
-        if not isinstance(self.side, OrderSide):
-            raise TypeError(f"side must be an instance of OrderSide, got {type(self.side).__name__}")
-        if not isinstance(self.order_event, EventType):
-            raise TypeError(f"order_event must be an instance of EventType, got {type(self.order_event).__name__}")
-        if self.tp_pct is not None and not isinstance(self.tp_pct, float):
-            raise TypeError(f"tp_pct must be float or None, got {type(self.tp_pct).__name__}")
-        if self.sl_pct is not None and not isinstance(self.sl_pct, float):
-            raise TypeError(f"sl_pct must be float or None, got {type(self.sl_pct).__name__}")
+        # if not isinstance(self.level, float):
+        #     raise TypeError(f"level must be float, got {type(self.level).__name__}")
+        # if not isinstance(self.asset_qty, float):
+        #     raise TypeError(f"asset_qty must be float, got {type(self.asset_qty).__name__}")
+        # if not isinstance(self.leverage, float):
+        #     raise TypeError(f"leverage must be float, got {type(self.leverage).__name__}")
+        # if not isinstance(self.side, OrderSide):
+        #     raise TypeError(f"side must be an instance of OrderSide, got {type(self.side).__name__}")
+        # if not isinstance(self.order_event, EventType):
+        #     raise TypeError(f"order_event must be an instance of EventType, got {type(self.order_event).__name__}")
+        # if self.tp_pct is not None and not isinstance(self.tp_pct, float):
+        #     raise TypeError(f"tp_pct must be float or None, got {type(self.tp_pct).__name__}")
+        # if self.sl_pct is not None and not isinstance(self.sl_pct, float):
+        #     raise TypeError(f"sl_pct must be float or None, got {type(self.sl_pct).__name__}")
 
         # Validation de valeurs
         if self.level < 0:
