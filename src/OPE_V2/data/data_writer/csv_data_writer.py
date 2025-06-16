@@ -84,7 +84,6 @@ class CSVDataWriter:
             'PositionCloseType' : position.close_type,
             'OperationnalTimestamp' : event.timestamp
         }
-        ['PositionClosePrice', 'PositionCloseType', 'OperationnalTimestamp']
     
     def log(self, event : Event) -> None:
 
