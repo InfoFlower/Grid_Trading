@@ -20,7 +20,8 @@ class CSVDataProvider(DataProvider):
 
         self.event_dispatcher = event_dispatcher
         self.file_path = file_path
-        self.pair = file_path.split("_")[2] ### ATTENTION AU CHANGEMENT DE FORMAT DANS LE NOM DES FICHIERS
+        print(file_path)
+        self.pair = file_path.split("/")[-1].split("_")[2] ### ATTENTION AU CHANGEMENT DE FORMAT DANS LE NOM DES FICHIERS
 
         #Initialisation de la data
         data = pl.read_csv(file_path, truncate_ragged_lines=True)

@@ -32,7 +32,6 @@ initial_crypto_price = data_provider.initial_data['CloseCol']
 strat_params = {
     'level': initial_crypto_price,
     'asset_qty' : 0.001,#0.01 * initial_money_balance/initial_crypto_price,
-    'side' : OrderSide.SHORT,
     'leverage' : 1.0,
     'tp_pct' : 0.01,
     'sl_pct' : 0.005
@@ -50,7 +49,7 @@ order_manager = OrderManager(portfolio, tolerance_pct, event_dispatcher, data_ca
 position_manager = PositionManager(event_dispatcher, data_cache)
 
 strategy = DumbStrategy(event_dispatcher, strat_params)
-backtest = Backtest(data_provider, strategy, portfolio)
+backtest = Backtest(data_provider, strategy, portfolio, event_dispatcher)
 trading_bot = TradingBot(event_dispatcher, data_provider)
 
 trading_bot.run()

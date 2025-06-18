@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from bot.order.order import Order
 from bot.position.position import Position
 from  event.event import EventType, EventDispatcher, Event
+from backtest import Backtest
 
 
 load_dotenv()
@@ -15,11 +16,12 @@ class CSVDataWriter:
 
     METADATA = {
 
-        'ORDER' : ['OrderId', 'OrderEventTimestamp', 'OrderEventType', 'OrderSide', 'OrderLevel','OrderAssetQty','OrderLeverage','OrderTakeprofitPrice','OrderStoplossPrice','OperationnalTimestamp'],
-        'POSITION' : ['PositionId', 'OrderId', 'PositionEventTimestamp', 'PositionEventType', 'PositionSide', 'PositionEntryPrice', 'PositionAssetQty', 'PositionLeverage', 'PositionTakeprofitPrice', 'PositionStoplossPrice', 'PositionClosePrice', 'PositionCloseType', 'OperationnalTimestamp']
-
+        'ORDER' : ['OrderId', 'OrderEventTimestamp', 'OrderEventType', 'OrderSide', 'OrderLevel','OrderAssetQty','OrderLeverage','OrderTakeprofitPrice','OrderStoplossPrice','OperationalTimestamp'],
+        'POSITION' : ['PositionId', 'OrderId', 'PositionEventTimestamp', 'PositionEventType', 'PositionSide', 'PositionEntryPrice', 'PositionAssetQty', 'PositionLeverage', 'PositionTakeprofitPrice', 'PositionStoplossPrice', 'PositionClosePrice', 'PositionCloseType', 'OperationalTimestamp'],
+        'BACKTEST' : ['BacktestId','HistoricalStartTimestamp','HistoricalEndTimestamp','Symbol','StrategyName','StrategyType','StrategyParams','InitialMoney','OperationalTimestamp']
     }
-    EVENTS = [EventType.ORDER_EXECUTED,
+    EVENTS = [EventType.INIT_BACKTEST,
+              EventType.ORDER_EXECUTED,
               EventType.ORDER_CREATED,
               EventType.ORDER_CANCELLED,
               EventType.POSITION_CANCELLED,
@@ -63,7 +65,7 @@ class CSVDataWriter:
             'OrderLeverage' : order.leverage,
             'OrderTakeprofitPrice' : order.tp_price,
             'OrderStoplossPrice' : order.sl_price,
-            'OperationnalTimestamp' : event.timestamp
+            'OperationalTimestamp' : event.timestamp
         }
     
     def mapping_position(self, event : Event) -> dict:
@@ -82,7 +84,22 @@ class CSVDataWriter:
             'PositionStoplossPrice' : position.sl_price,
             'PositionClosePrice' : position.close_price,
             'PositionCloseType' : position.close_type,
-            'OperationnalTimestamp' : event.timestamp
+            'OperationalTimestamp' : event.timestamp
+        }
+    
+    def mapping_backtest(self, event : Event) -> dict:
+        backtest : Backtest = event.data
+        return {
+            'BacktestId' : backtest.id,
+            'HistoricalStartTimestamp' : backtest.historical_start_timestamp,
+            'HistoricalEndTimestamp' : backtest.historical_end_timestamp,
+            'Symbol' : backtest.pair,
+            'StrategyName' : backtest.strategy_name,
+            'StrategyType' : backtest.strategy_type,
+            'StrategyParams' : backtest.strategy_params,
+            'InitialMoney' : backtest.initial_money,
+            'OperationalTimestamp' : backtest.technical_start_timestamp
+
         }
     
     def log(self, event : Event) -> None:
@@ -94,7 +111,10 @@ class CSVDataWriter:
         elif obj.__class__ == Position:
             key = 'POSITION'
             map = self.mapping_position(event)
-        
+        elif obj.__class__ == Backtest:
+            key = 'BACKTEST'
+            map = self.mapping_backtest(event)
+
         with open (self.files_path[key], 'a') as f:
             f.write('\n'+self.sep.join([str(map[column]) for column in self.METADATA[key]]))
             f.close()

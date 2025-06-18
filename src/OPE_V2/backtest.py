@@ -4,6 +4,7 @@ from datetime import datetime
 from data.data_provider.csv_data_provider import CSVDataProvider
 from strategy.strategy import Strategy, StrategyType
 from portfolio.portfolio import Portfolio
+from event.event import EventDispatcher, Event, EventType
 
 class Backtest:
 
@@ -19,7 +20,11 @@ class Backtest:
     # technical_start_timestamp : datetime
     # technical_end_timestamp : datetime
 
-    def __init__(self, data_provider : CSVDataProvider, strategy : Strategy, portfolio : Portfolio) -> None:
+    def __init__(self, data_provider : CSVDataProvider,
+                strategy : Strategy, portfolio : Portfolio,
+                event_dispatcher : EventDispatcher) -> None:
+        
+        self.event_dispatcher = event_dispatcher
 
         self.id : int = 0 #SHA1
         self.label_id : str = "AAA"
@@ -32,3 +37,9 @@ class Backtest:
         self.initial_money : float = portfolio.initial_money
         self.technical_start_timestamp : datetime = datetime.now()
         #self.technical_end_timestamp : datetime = datetime.now()
+
+        self.event_dispatcher.dispatch(Event(
+                            type = EventType.INIT_BACKTEST,
+                            data = self,
+                            timestamp = datetime.now()
+                        ))

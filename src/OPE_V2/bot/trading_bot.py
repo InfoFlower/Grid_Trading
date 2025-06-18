@@ -15,5 +15,4 @@ class TradingBot:
         self.data_provider = data_provider
 
     def run(self):
-        
         self.data_provider.stream_data()
