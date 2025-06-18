@@ -1,3 +1,4 @@
 data/DATA_RAW_S_ORIGIN/*
 data/OPE_DATA/*
 .env
+src/OPE_V2/data/BOT_OPE_DATA/*
