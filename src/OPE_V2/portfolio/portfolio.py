@@ -1,34 +1,33 @@
 from dataclasses import dataclass, field
+from datetime import datetime
 
 from event.event import EventDispatcher, Event, EventType
 from bot.order.order import Order, OrderSide
-from bot.position.position import Position
+from bot.position.position import Position, PositionSide
 
 @dataclass
-class LongShortBalance:
+class LongShortAssetBalance:
 
-    long : dict = field(default_factory=lambda: {'money': 0,
-                                                 'asset': 0})
-    short : dict = field(default_factory=lambda: {'money': 0,
-                                                  'asset': 0})
+    long : int = 0
+    short : int = 0
     
 @dataclass 
 class PortfolioBalance:
 
-    money_available : float
-    orders : LongShortBalance
-    positions : LongShortBalance
+    cash_balance : float
+    orders : LongShortAssetBalance
+    positions : LongShortAssetBalance
 
 class Portfolio:
     
-    def __init__(self, money_balance : float, event_dispatcher : EventDispatcher) -> None:
+    def __init__(self, cash_balance : float, event_dispatcher : EventDispatcher) -> None:
 
         self.event_dispatcher = event_dispatcher
-        self.initial_money = money_balance
+        self.initial_cash = cash_balance
         self.portfolio_balance = PortfolioBalance(
-            money_available = money_balance,
-            orders = LongShortBalance(),
-            positions = LongShortBalance()
+            cash_balance = cash_balance,
+            orders = LongShortAssetBalance(),
+            positions = LongShortAssetBalance()
         )
 
         event_dispatcher.add_listeners(EventType.ORDER_CREATED, self.update_order_created)
@@ -38,21 +37,25 @@ class Portfolio:
     def update_order_created(self, event : Event) -> None:
        
         order : Order = event.data
+        self.portfolio_event_timestamp = order.order_event_timestamp
+        self.portfolio_event_type = order.order_event
         
         print("ORDER MARGIN: ", order.margin)
-        self.portfolio_balance.money_available -= order.margin
+        self.portfolio_balance.cash_balance -= order.margin
         
         if order.side == OrderSide.LONG:
-            self.portfolio_balance.orders.long['money'] += order.margin
-            self.portfolio_balance.orders.long['asset'] += order.asset_qty
+            self.portfolio_balance.orders.long += order.asset_qty
         
         elif order.side == OrderSide.SHORT:
-            self.portfolio_balance.orders.short['money'] += order.margin
-            self.portfolio_balance.orders.short['asset'] += order.asset_qty
+            self.portfolio_balance.orders.short += order.asset_qty
 
-        print('MONEY AVAILABLE AFTER ORDER CREATED: ', self.portfolio_balance.money_available)
-        print('MONEY IN ORDERS', self.money_in_orders)
-        print('NOT LOCKED MONEY AFTER ORDER CREATED: ', self.all_not_locked_money)
+        self.event_dispatcher.dispatch(Event(
+                            type = EventType.UPDATE_PORTFOLIO,
+                            data = self,
+                            timestamp = datetime.now()
+                        ))
+        
+        
 
     # def set_position_opened(self, event : Event) -> None:
         
@@ -69,28 +72,34 @@ class Portfolio:
     def update_position_closed(self, event : Event) -> None:
         
         position : Position = event.data
+        self.portfolio_event_timestamp = position.position_event_timestamp
+        self.portfolio_event_type = position.position_event
 
-        # if position.side == PositionSide.LONG:
-        #     self.in_positions.long -= position.asset_qty
-        # else :
-        #     self.in_positions.short -= position.asset_qty
+        if position.side == PositionSide.LONG:
+            self.portfolio_balance.positions.long -= position.asset_qty
+        else :
+            self.portfolio_balance.positions.short -= position.asset_qty
 
         pnl = position.pnl(position.close_price)
-        print("POSITION PNL: ", pnl)
-        margin = position.margin
-        print("POSITION MARGIN: ", margin)
-        self.portfolio_balance.money_available += margin + pnl
 
-        print('MONEY BALANCE AFTER POSITION CLOSED: ', self.portfolio_balance.money_available)
+        margin = position.margin
+
+        self.portfolio_balance.cash_balance += margin + pnl
+
+        self.event_dispatcher.dispatch(Event(
+                            type = EventType.UPDATE_PORTFOLIO,
+                            data = self,
+                            timestamp = datetime.now()
+                        ))
+
 
     def enough_money(self, money) -> bool:
-        return money < self.portfolio_balance.money_available
+        return money < self.portfolio_balance.cash_balance
     
     @property
-    def money_in_orders(self) -> float:
-        return self.portfolio_balance.orders.short['money'] + self.portfolio_balance.orders.long['money']
+    def asset_in_orders(self) -> float:
+        return self.portfolio_balance.orders.short + self.portfolio_balance.orders.long
     
-    @property
-    def all_not_locked_money(self) -> float:
-        money_in_orders = self.money_in_orders
-        return self.portfolio_balance.money_available + money_in_orders
+    # @property
+    # def all_not_locked_money(self) -> float:
+    #     return self.portfolio_balance.cash_balance + self.money_in_orders

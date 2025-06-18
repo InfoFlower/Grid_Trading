@@ -3,8 +3,9 @@ from dotenv import load_dotenv
 
 from bot.order.order import Order
 from bot.position.position import Position
-from  event.event import EventType, EventDispatcher, Event
+from event.event import EventType, EventDispatcher, Event
 from backtest import Backtest
+from portfolio.portfolio import Portfolio
 
 
 load_dotenv()
@@ -15,12 +16,23 @@ dir = f"{WD}src/OPE_V2/data/BOT_OPE_DATA"
 class CSVDataWriter:
 
     METADATA = {
-
-        'ORDER' : ['OrderId', 'OrderEventTimestamp', 'OrderEventType', 'OrderSide', 'OrderLevel','OrderAssetQty','OrderLeverage','OrderTakeprofitPrice','OrderStoplossPrice','OperationalTimestamp'],
-        'POSITION' : ['PositionId', 'OrderId', 'PositionEventTimestamp', 'PositionEventType', 'PositionSide', 'PositionEntryPrice', 'PositionAssetQty', 'PositionLeverage', 'PositionTakeprofitPrice', 'PositionStoplossPrice', 'PositionClosePrice', 'PositionCloseType', 'OperationalTimestamp'],
-        'BACKTEST' : ['BacktestId','HistoricalStartTimestamp','HistoricalEndTimestamp','Symbol','StrategyName','StrategyType','StrategyParams','InitialMoney','OperationalTimestamp']
+        'BACKTEST' : ['BacktestId','HistoricalStartTimestamp','HistoricalEndTimestamp','Symbol',
+                      'StrategyName','StrategyType','StrategyParams',
+                      'InitialMoney','OperationalStartTimestamp'],
+        'ORDER' : ['BacktestId', 'OrderId', 'OrderEventTimestamp', 'OrderEventType',
+                   'OrderSide', 'OrderLevel','OrderAssetQty','OrderLeverage',
+                   'OrderTakeprofitPrice','OrderStoplossPrice','OperationalTimestamp'],
+        'POSITION' : ['BacktestId', 'PositionId', 'OrderId', 'PositionEventTimestamp', 'PositionEventType', 
+                      'PositionSide', 'PositionEntryPrice', 'PositionAssetQty', 'PositionLeverage', 
+                      'PositionTakeprofitPrice', 'PositionStoplossPrice', 
+                      'PositionClosePrice', 'PositionCloseType', 'OperationalTimestamp'],
+        'PORTFOLIO' : ['BacktestId', 'PortfolioEventTimestamp', 'PortfolioEventType',
+                       'CashBalance', 'OrderLongAsset', 'OrderShortAsset',
+                        'PositionLongAsset', 'PositionShortAsset','OperationalTimestamp']
     }
     EVENTS = [EventType.INIT_BACKTEST,
+              EventType.INIT_PORTFOLIO,
+              EventType.UPDATE_PORTFOLIO,
               EventType.ORDER_EXECUTED,
               EventType.ORDER_CREATED,
               EventType.ORDER_CANCELLED,
@@ -56,6 +68,7 @@ class CSVDataWriter:
 
         order : Order = event.data
         return {
+            'BacktestId' : self.backtest_id,
             'OrderId': order.id,
             'OrderEventTimestamp' : order.order_event_timestamp,
             'OrderEventType' : order.order_event,
@@ -72,6 +85,7 @@ class CSVDataWriter:
 
         position : Position = event.data
         return {
+            'BacktestId' : self.backtest_id,
             'PositionId': position.id,
             'OrderId': position.order_id,
             'PositionEventTimestamp' : position.position_event_timestamp,
@@ -98,22 +112,39 @@ class CSVDataWriter:
             'StrategyType' : backtest.strategy_type,
             'StrategyParams' : backtest.strategy_params,
             'InitialMoney' : backtest.initial_money,
-            'OperationalTimestamp' : backtest.technical_start_timestamp
+            'OperationalStartTimestamp' : event.timestamp
 
         }
     
+    def mapping_portfolio(self, event : Event) -> dict:
+        portfolio : Portfolio = event.data
+        return {
+            'BacktestId':self.backtest_id,
+            'PortfolioEventTimestamp': portfolio.portfolio_event_timestamp,
+            'PortfolioEventType' : portfolio.portfolio_event_type,
+            'CashBalance' : portfolio.portfolio_balance.cash_balance,
+            'OrderLongAsset' : portfolio.portfolio_balance.orders.long,
+            'OrderShortAsset' : portfolio.portfolio_balance.orders.short,
+            'PositionLongAsset' : portfolio.portfolio_balance.positions.long,
+            'PositionShortAsset' : portfolio.portfolio_balance.positions.short,
+            'OperationalTimestamp' : event.timestamp
+        }
     def log(self, event : Event) -> None:
 
         obj = event.data
-        if obj.__class__ == Order:
+        if obj.__class__ == Backtest:
+            key = 'BACKTEST'
+            self.backtest_id = obj.id
+            map = self.mapping_backtest(event)
+        elif obj.__class__ == Portfolio:
+            key = 'PORTFOLIO'
+            map = self.mapping_portfolio(event)
+        elif obj.__class__ == Order:
             key = 'ORDER'
             map = self.mapping_order(event)
         elif obj.__class__ == Position:
             key = 'POSITION'
             map = self.mapping_position(event)
-        elif obj.__class__ == Backtest:
-            key = 'BACKTEST'
-            map = self.mapping_backtest(event)
 
         with open (self.files_path[key], 'a') as f:
             f.write('\n'+self.sep.join([str(map[column]) for column in self.METADATA[key]]))

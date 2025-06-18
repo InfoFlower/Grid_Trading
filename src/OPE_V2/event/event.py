@@ -2,12 +2,13 @@ from enum import Enum
 from dataclasses import dataclass, asdict
 from typing import Any, Dict, List, Callable
 from datetime import datetime
-import json
 
 
 class EventType(Enum):
 
     INIT_BACKTEST = "INIT_BACKTEST"
+    INIT_PORTFOLIO = "INIT_PORTFOLIO"
+    UPDATE_PORTFOLIO = "UPDATE_PORTFOLIO"
     INIT_MARKET_DATA = "INIT_MARKET_DATA"
     MARKET_DATA = "MARKET_DATA"
     ORDER_CREATED = "ORDER_CREATED"
