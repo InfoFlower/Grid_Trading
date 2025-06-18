@@ -24,7 +24,7 @@ class Portfolio:
     def __init__(self, money_balance : float, event_dispatcher : EventDispatcher) -> None:
 
         self.event_dispatcher = event_dispatcher
-
+        self.initial_money = money_balance
         self.portfolio_balance = PortfolioBalance(
             money_available = money_balance,
             orders = LongShortBalance(),

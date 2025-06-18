@@ -12,22 +12,23 @@ class FixOrderStrategy(Strategy):
     # De quels arguments une stratégie a-t-elle tout le temps besoin?
 
     # Pour la fix order ---> TEST :  seul user_params qui sont enfaites les ordres à créer à l'initialisation
-    def __init__(self, event_dispatcher : EventDispatcher, order_params : Dict[str, Any]): #faire user_params.py???
-
+    def __init__(self, event_dispatcher : EventDispatcher, params : Dict[str, Any])-> None: #faire user_params.py???
+        
+        super().__init__(event_dispatcher,params)
         self.strategy_type = StrategyType.FIX_ORDER
         self.event_dispatcher = event_dispatcher
-        self.order_params = order_params
+        self.params = params
 
 
         event_dispatcher.add_listeners(EventType.INIT_MARKET_DATA, self.init_statement)
         event_dispatcher.add_listeners(EventType.POSITION_CLOSED, self.create_statement)
 
     
-    def init_statement(self, event : Event):
+    def init_statement(self, event : Event)-> None:
 
         data = {
             'type' : self.strategy_type,
-            'args' : self.order_params
+            'args' : self.params
         }
 
         self.event_dispatcher.dispatch(Event(
@@ -42,12 +43,12 @@ class FixOrderStrategy(Strategy):
         closed_position : Position = event.data
         close_price = closed_position.close_price
         args = {
-            'level' : close_price*(1+self.order_params['tp_pct']),
-            'asset_qty' : self.order_params['asset_qty'],
+            'level' : close_price*(1+self.params['tp_pct']),
+            'asset_qty' : self.params['asset_qty'],
             'side' : random.choice([OrderSide.LONG, OrderSide.SHORT]),
-            'leverage' : self.order_params['leverage'],
-            'tp_pct' : self.order_params['tp_pct'],
-            'sl_pct' : self.order_params['sl_pct']
+            'leverage' : self.params['leverage'],
+            'tp_pct' : self.params['tp_pct'],
+            'sl_pct' : self.params['sl_pct']
         }
         data = {
             'type' : self.strategy_type,
@@ -60,9 +61,5 @@ class FixOrderStrategy(Strategy):
             timestamp = datetime.now()
         ))
 
-
-
-# def create_condition(order, **pre_order) -> Callable[[Order:]]:
-#     return order.level == pre_order
 
 

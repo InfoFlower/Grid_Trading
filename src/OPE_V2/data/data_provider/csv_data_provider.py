@@ -3,9 +3,10 @@ import polars as pl
 from typing import Dict
 from datetime import datetime
 
+from data.data_provider.data_provider import DataProvider
 from event.event import Event, EventType, EventDispatcher
 
-class CSVDataProvider:
+class CSVDataProvider(DataProvider):
     """
     Gère la donnée chargée en csv
     Emet un event de type MARKET_DATA à chaque itération grâce à stream_data()
@@ -18,14 +19,21 @@ class CSVDataProvider:
     def __init__(self, file_path : str, event_dispatcher : EventDispatcher):
 
         self.event_dispatcher = event_dispatcher
-        
+        self.file_path = file_path
+        self.pair = file_path.split("_")[2] ### ATTENTION AU CHANGEMENT DE FORMAT DANS LE NOM DES FICHIERS
+
         #Initialisation de la data
         data = pl.read_csv(file_path, truncate_ragged_lines=True)
         self.data = data[self.CSV_DATA_STRUCTURE]
         self.data.columns = self.DATA_STRUCTURE
-
-    def get_initial_data(self) -> Dict[str, float | int]:
+    
+    @property
+    def initial_data(self) -> Dict[str, float | int]:
         return self.data.row(0, named=True)
+
+    @property
+    def last_data(self) -> Dict[str, float | int]:
+        return self.data.row(-1, named=True)
 
     def stream_data(self):
         """
