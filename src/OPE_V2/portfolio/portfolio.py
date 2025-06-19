@@ -31,7 +31,7 @@ class Portfolio:
         )
 
         event_dispatcher.add_listeners(EventType.ORDER_CREATED, self.update_order_created)
-        event_dispatcher.add_listeners(EventType.POSITION_OPENED, self.set_position_opened)
+        event_dispatcher.add_listeners(EventType.POSITION_OPENED, self.update_position_opened)
         event_dispatcher.add_listeners(EventType.POSITION_CLOSED, self.update_position_closed)
 
     def update_order_created(self, event : Event) -> None:
@@ -57,7 +57,7 @@ class Portfolio:
         
         
 
-    def set_position_opened(self, event : Event) -> None:
+    def update_position_opened(self, event : Event) -> None:
         
         position : Position = event.data
 
