@@ -31,7 +31,7 @@ class Portfolio:
         )
 
         event_dispatcher.add_listeners(EventType.ORDER_CREATED, self.update_order_created)
-        #event_dispatcher.add_listeners(EventType.POSITION_OPENED, self.set_position_opened)
+        event_dispatcher.add_listeners(EventType.POSITION_OPENED, self.set_position_opened)
         event_dispatcher.add_listeners(EventType.POSITION_CLOSED, self.update_position_closed)
 
     def update_order_created(self, event : Event) -> None:
@@ -57,17 +57,17 @@ class Portfolio:
         
         
 
-    # def set_position_opened(self, event : Event) -> None:
+    def set_position_opened(self, event : Event) -> None:
         
-    #     position : Position = event.data
+        position : Position = event.data
 
-    #     if position.side == PositionSide.LONG:
-    #         self.in_orders.long -= position.asset_qty
-    #         self.in_positions.long += position.asset_qty
+        if position.side == PositionSide.LONG:
+            self.portfolio_balance.orders.long -= position.asset_qty
+            self.portfolio_balance.positions.long += position.asset_qty
         
-    #     else :
-    #         self.in_orders.short -= position.asset_qty
-    #         self.in_positions.short += position.asset_qty
+        else :
+            self.portfolio_balance.orders.short -= position.asset_qty
+            self.portfolio_balance.positions.short += position.asset_qty
 
     def update_position_closed(self, event : Event) -> None:
         
