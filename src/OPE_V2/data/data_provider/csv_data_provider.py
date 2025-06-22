@@ -52,7 +52,12 @@ class CSVDataProvider(DataProvider):
                 data = row,
                 timestamp = datetime.now()
             ))
-    
+        else:
+            self.event_dispatcher.dispatch(Event(
+                type = EventType.END_MARKET_DATA,
+                data = 'C FINI',
+                timestamp = datetime.now()
+            ))
 
     
 

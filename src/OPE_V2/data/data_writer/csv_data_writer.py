@@ -11,7 +11,7 @@ from portfolio.portfolio import Portfolio
 load_dotenv()
 WD = os.getenv('WD')
 
-dir = f"{WD}src/OPE_V2/data/BOT_OPE_DATA"
+dir = f"{WD}src/OPE_V2/data/BACKTEST_OPE_DATA"
 
 class CSVDataWriter:
 

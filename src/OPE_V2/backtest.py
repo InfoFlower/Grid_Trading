@@ -30,7 +30,7 @@ class Backtest:
 
         self.id : int = 0 #SHA1
         self.label_id : str = "AAA"
-        self.data = data_provider.data.clone()
+        #self.data = data_provider.data.clone()
         self.historical_start_timestamp : int = data_provider.initial_data['TimeCol']
         self.historical_end_timestamp : int = data_provider.last_data['TimeCol']
         self.pair : str = data_provider.pair
@@ -41,11 +41,18 @@ class Backtest:
         self.technical_start_timestamp : datetime = datetime.now()
         #self.technical_end_timestamp : datetime = datetime.now()
 
-        self.event_dispatcher.dispatch(Event(
+        event_dispatcher.add_listeners(EventType.END_MARKET_DATA, self.compute_kpi)
+
+        event_dispatcher.dispatch(Event(
                             type = EventType.INIT_BACKTEST,
                             data = self,
                             timestamp = datetime.now()
                         ))
+        
+    def compute_kpi(self, event : Event):
+        print("BACKTEST TERMINÉ")
+        
+
         
     def equity(self, position : pl.DataFrame):
 

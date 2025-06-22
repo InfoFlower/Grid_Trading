@@ -2,7 +2,7 @@
 import os
 from dotenv import load_dotenv
 
-from bot.trading_bot import TradingBot
+from trading_bot import TradingBot
 from event.event import EventDispatcher
 from data.data_provider.csv_data_provider import CSVDataProvider
 from strategy.dumb_strategy import DumbStrategy

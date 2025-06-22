@@ -54,8 +54,6 @@ class Portfolio:
                             data = self,
                             timestamp = datetime.now()
                         ))
-        
-        
 
     def update_position_opened(self, event : Event) -> None:
         
