@@ -93,11 +93,11 @@ class OrderManager:
         """
         return {order_id : order for order_id, order in self.order_book.items() if condition(order)}
     
-    def check_order_already_exists(self, event) -> Dict[int,Order]:
+    def check_order_already_exists(self, event : Event) -> Dict[int,Order]:
 
         order_args = event.data['args']
         
-        def condition(order):
+        def condition(order : Order):
             return abs(order.level - order_args['level']) <= order_args['level']*self.tolerance_pct and order.side == order_args['side']
         
         return self.filter(condition)
