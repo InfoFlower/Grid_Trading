@@ -60,14 +60,85 @@ class Backtest:
         print("BACKTEST TERMINÉ")
 
         self.load_data()
+        self.mapping_position_1()
 
+        self.returns().balance().pnl()
+
+        #self.graph()
+    ################################################################################
+    #########################       SQL LITE ????     ##############################
+    #####################     METTRE DANS AUTRE FICHIER     ########################
+    ################################################################################
+    
+    ##### LOAD DATA #####
     def load_data(self):
-        #########################       SQL LITE ????     ##############################
         self.data = self.data_provider.data.clone().select(['TimeCol', 'OpenCol','CloseCol','LowCol','HighCol'])
         self.order = pl.read_csv(f"{self.BACKTEST_OPE_DATA}ORDER.csv")
         self.position = pl.read_csv(f"{self.BACKTEST_OPE_DATA}POSITION.csv")
+        print(self.position.__class__)
         self.portfolio = pl.read_csv(f"{self.BACKTEST_OPE_DATA}PORTFOLIO.csv")
-        ################################################################################
+    
+    ##### TRANSFORM TABLES #####
+    def mapping_position_1(self):
+        self.position_open_to_close = self.position.clone().\
+            filter(pl.col("PositionEventType")=="EventType.POSITION_OPENED").\
+            select(
+                ["BacktestId","PositionId","OrderId","PositionEventTimestamp","PositionEventType",
+            "PositionSide","PositionMargin","PositionEntryPrice","PositionAssetQty","PositionEntryValue",
+            "PositionLeverage","PositionTakeprofitPrice","PositionStoplossPrice"]
+            ).join(
+            self.position.clone().\
+            filter(pl.col("PositionEventType")=="EventType.POSITION_CLOSED").\
+            select(
+                ["PositionId","PositionEventTimestamp", "PositionEventType", "PositionClosePrice", "PositionCloseValue", "PositionClosePnl", "PositionCloseType"]
+            ),
+            left_on="PositionId", right_on="PositionId", how="left"
+            ).\
+            rename(mapping = {"PositionEventTimestamp":"PositionOpenEventTimestamp",
+                                "PositionEventTimestamp_right":"PositionCloseEventTimestamp"}).\
+            drop(["PositionEventType", "PositionEventType_right"])
+        
+        with pl.Config(tbl_cols=19, tbl_rows=12):
+            print(self.position_open_to_close.columns)
+
+
+
+
+
+    ##### ADD COLUMNS #####
+    def returns(self):
+
+        self.data = self.data.with_columns(pl.col("CloseCol").pct_change().alias("Returns"))
+        return self
+
+    def balance(self):
+        self.data = self.data.join(
+            self.portfolio.select(["PortfolioEventTimestamp", "CashBalance"]),
+            left_on="TimeCol", right_on="PortfolioEventTimestamp", how="left"
+                            ).group_by("TimeCol", maintain_order=True).tail(1
+                            ).with_columns(
+                                [pl.col("CashBalance").fill_null(strategy='forward').alias("CashBalance")]
+                            )
+        return self
+
+    def pnl(self):
+        print(self.position_open_to_close)
+        ctx = pl.SQLContext(DATA=self.data, POSITION_OC=self.position_open_to_close)
+        result = ctx.execute("""
+                SELECT * 
+                FROM  DATA
+                LEFT JOIN POSITION_OC ON DATA.TimeCol >= POSITION_OC.PositionOpenEventTimestamp AND DATA.TimeCol <= POSITION_OC.PositionCloseEventTimestamp
+        """).collect()
+        
+        with pl.Config(tbl_cols=20):
+            print(result.head())
+
+    def graph(self):
+
+        import matplotlib.pyplot as plt
+        plt.plot(self.data["TimeCol"].to_numpy(),self.data["CashBalance"].to_numpy())
+        plt.show()
+
 
 
     
