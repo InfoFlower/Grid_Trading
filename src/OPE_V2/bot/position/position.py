@@ -16,7 +16,7 @@ class PositionCloseType(Enum):
 @dataclass
 class Position:
 
-    _instance_count: ClassVar[int] = 0 
+    _instance_count: ClassVar[int] = -1
 
     # Constant
     id : int  = field(init=False)
@@ -35,7 +35,7 @@ class Position:
     sl_price : Optional[float] = None
     
     # Closing
-    close_price : float = 0.0
+    close_price : float = None
     close_type : PositionCloseType = None
     
     def __post_init__(self) -> None:
@@ -101,14 +101,18 @@ class Position:
         return self.asset_qty * self.entry_price / self.leverage
     
     def value(self, current_price : float) -> float:
+        if current_price is None:
+            return None
         return self.asset_qty * current_price
 
     def pnl(self, current_price : float) -> float:
         """
         Calcul le PnL de la position par rapport au prix actuel
         """
+        if current_price is None:
+            return None
         bool_side = 1 if self.side == PositionSide.LONG else -1
-        return (current_price - self.entry_price) * self.asset_qty * bool_side * self.leverage
+        return (current_price - self.entry_price) * self.asset_qty * bool_side #* self.leverage
     
     def is_closable_tp(self, current_data : Dict[str, int | float]):
             low = current_data['LowCol']

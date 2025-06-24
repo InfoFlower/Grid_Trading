@@ -12,7 +12,7 @@ class OrderSide(Enum):
 @dataclass
 class Order:
 
-    _instance_count: ClassVar[int] = 0 
+    _instance_count: ClassVar[int] = -1
 
     id : int = field(init=False)
 
