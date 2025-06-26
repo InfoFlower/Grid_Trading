@@ -1,9 +1,10 @@
 from typing import Dict
 from dataclasses import asdict
+from datetime import datetime
 
 from data.data_provider.csv_data_provider import CSVDataProvider
 
-from event.event import EventDispatcher
+from event.event import EventDispatcher, Event, EventType
 
 
 
@@ -14,5 +15,19 @@ class TradingBot:
         self.event_dispatcher = event_dispatcher
         self.data_provider = data_provider
 
+        event_dispatcher.add_listeners(EventType.END_MARKET_DATA, self.end)
+
     def run(self):
         self.data_provider.stream_data()
+
+    def end(self):
+
+
+        
+
+        self.event_dispatcher.dispatch(Event(
+                            type = EventType.END_BACKTEST,
+                            data = 'fin backtest',
+                            timestamp = datetime.now()
+                        ))
+
