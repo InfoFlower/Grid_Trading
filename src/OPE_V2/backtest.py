@@ -48,7 +48,7 @@ class Backtest:
         self.technical_start_timestamp : datetime = datetime.now()
         #self.technical_end_timestamp : datetime = datetime.now()
 
-        event_dispatcher.add_listeners(EventType.END_MARKET_DATA, self.compute_kpi)
+        event_dispatcher.add_listeners(EventType.END_BACKTEST, self.compute_kpi)
 
         event_dispatcher.dispatch(Event(
                             type = EventType.INIT_BACKTEST,
@@ -59,10 +59,10 @@ class Backtest:
     def compute_kpi(self, event : Event):
         print("BACKTEST TERMINÉ")
 
-        self.load_data()
-        self.mapping_position_1()
+        #self.load_data()
+        #self.mapping_position_1()
 
-        self.returns().balance().pnl()
+        #self.returns().balance().pnl()
 
         #self.graph()
     ################################################################################

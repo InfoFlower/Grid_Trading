@@ -20,7 +20,7 @@ class TradingBot:
     def run(self):
         self.data_provider.stream_data()
 
-    def end(self):
+    def end(self, event : Event):
 
 
         

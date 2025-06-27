@@ -1,2 +1,2 @@
 BacktestId,HistoricalStartTimestamp,HistoricalEndTimestamp,Symbol,StrategyName,StrategyType,StrategyParams,InitialMoney,OperationalStartTimestamp
-0,1511776434000,1511826483000,BTCUSDT,,StrategyType.DUMB,{'level': 9345.0, 'asset_qty': 0.001, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005},1000,2025-06-24 21:05:54.291182
+0,1511776434000,1511826483000,BTCUSDT,,StrategyType.DUMB,{'level': 9345.0, 'asset_qty': 0.001, 'leverage': 1.0, 'tp_pct': 0.01, 'sl_pct': 0.005},1000,2025-06-27 18:54:42.212591
