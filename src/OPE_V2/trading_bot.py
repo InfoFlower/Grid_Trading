@@ -22,9 +22,6 @@ class TradingBot:
 
     def end(self, event : Event):
 
-
-        
-
         self.event_dispatcher.dispatch(Event(
                             type = EventType.END_BACKTEST,
                             data = 'fin backtest',
