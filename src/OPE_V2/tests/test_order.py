@@ -1,8 +1,8 @@
 import pytest 
 from datetime import datetime, timezone
 
-from OPE_V2.bot.order import Order, OrderSide
-from OPE_V2.event.event_type import EventType
+from bot.order.order import Order, OrderSide
+from event.event import EventType
 
 
 # ───────────────────────────────
@@ -15,7 +15,7 @@ def valid_order_created_buy() -> Order:
         created_at=int(datetime.now(timezone.utc).timestamp() * 1000),
         level=1000.0,
         asset_qty=1.0,
-        side=OrderSide.BUY,
+        side=OrderSide.LONG,
         leverage=3.0,
         tp_pct=0.1,
         sl_pct=0.05,
@@ -28,7 +28,7 @@ def order_no_tp_sl() -> Order:
         created_at=int(datetime.now(timezone.utc).timestamp() * 1000),
         level=500.0,
         asset_qty=2.0,
-        side=OrderSide.SELL,
+        side=OrderSide.SHORT,
         leverage=2.0,
         tp_pct=None,
         sl_pct=None,
