@@ -1,0 +1,21 @@
+# Use postgres/example user/password credentials
+
+services:
+
+  db:
+    image: postgres
+
+    container_name: GTBDD
+
+    volumes:
+      - postgresql_GTDD:/data/db
+
+    environment:
+      POSTGRES_PASSWORD: LenulAlex
+      POSTGRES_USER: LeRequeteur
+      POSTGRES_DB: GTBDD
+
+    ports:
+      - "5431:5432"
+volumes:
+  postgresql_GTDD:
