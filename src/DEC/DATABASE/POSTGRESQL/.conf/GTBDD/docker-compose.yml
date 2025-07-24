@@ -8,7 +8,7 @@ services:
     container_name: GTBDD
 
     volumes:
-      - postgresql_GTDD:/data/db
+      - postgresql_GTBDD:/data/db
 
     environment:
       POSTGRES_PASSWORD: LenulAlex
@@ -18,4 +18,4 @@ services:
     ports:
       - "5431:5432"
 volumes:
-  postgresql_GTDD:
+  postgresql_GTBDD:

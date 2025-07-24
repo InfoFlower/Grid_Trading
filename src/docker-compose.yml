@@ -1,0 +1,6 @@
+services:
+
+  astro:
+    build:
+      dockerfile: Dockerfile
+      context: ./DEC/ASTRO/
