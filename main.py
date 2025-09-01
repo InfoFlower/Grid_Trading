@@ -29,23 +29,6 @@ argparser.add_argument('--type_of_file', type=str, default='full')
 args=argparser.parse_args()
 type_of_file=args.type_of_file
 
-# print('\n'*2, '#'*20,'\n'*2)
-# print('STARTING PROCESS AYAAAAAA')
-# print('\n'*2, '#'*20,'\n'*2)
-
-
-# after_vars = datetime.fromtimestamp(time.time())
-# print('After vars :', after_vars)
-# print('Time to setup vars :', after_vars - start_time)
-# print('General time to setup :', after_vars - start_time)
-
-
-# print('\n'*2, '#'*20,'\n'*2)
-# after_data = datetime.fromtimestamp(time.time())
-# print('After data :', after_data)
-# print('Time to setup data :', after_data - after_vars)
-# print('General time to setup :', after_data - start_time)
-
 
 
 ##
