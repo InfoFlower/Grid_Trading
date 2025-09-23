@@ -23,7 +23,7 @@ services:
 
 networks:
   astro_c15280_airflow:
-    name: astro_c15280_airflow
+    name: astro_airflow
     external: true
       
 volumes:
