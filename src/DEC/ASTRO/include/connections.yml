@@ -1,8 +1,0 @@
-postgresql_GTBDD_conn:
-  conn_type: postgre
-  conn_id: postgresql_GTBDD
-  conn_login: LeRequeteur
-  conn_password: LenulAlex
-  conn_host: 192.168.1.197
-  conn_port: 5431
-  conn_schema: DMBTE
