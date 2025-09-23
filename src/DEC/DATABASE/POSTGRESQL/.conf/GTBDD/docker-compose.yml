@@ -16,7 +16,7 @@ services:
       POSTGRES_DB: GTBDD
 
     ports:
-      - "5431:5432"
+      - "5432:5432"
 
     networks:
       - astro_c15280_airflow
