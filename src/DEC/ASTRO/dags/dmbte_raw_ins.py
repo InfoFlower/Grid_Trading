@@ -15,9 +15,7 @@ load_dotenv()
 WD = os.getenv('WD')
 
 connection = BaseHook.get_connection("GTBDD_DMBTE")
-print(connection.schema)
-print(connection.login)
-url = f"postgresql+psycopg2://{connection.login}:{connection.password}@{connection.host}:{connection.port}/GTBDD"
+url = f"postgresql+psycopg2://{connection.login}:{connection.password}@{connection.host}:{connection.port}/{connection.schema}"
 print(url)
 
 engine = create_engine(url)
@@ -39,12 +37,15 @@ def DMBTE_INSERT():
     #insert_csv(file_path, connection.schema, table)
 
 
-# def insert_csv(file_path, schema, table, sep=","):
+def insert_csv(file_path, schema, table, sep=","):
 
     
-#     insert_query = """
-#     LOAD DATA LOCAL INFILE ?
-#     INTO TABLE ?.? FIELDS TERMINATED BY ?;
-#     """
-#     cursor.execute(insert_query, (file_path, schema, table, sep))
+    insert_query = """
+    LOAD DATA LOCAL INFILE ?
+    INTO TABLE ?.? FIELDS TERMINATED BY ?;
+    """
+    cursor.execute(insert_query, (file_path, schema, table, sep))
 
+
+
+DMBTE_INSERT()
