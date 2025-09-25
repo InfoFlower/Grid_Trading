@@ -19,10 +19,10 @@ services:
       - "5432:5432"
 
     networks:
-      - astro_c15280_airflow
+      - astro_airflow
 
 networks:
-  astro_c15280_airflow:
+  astro_airflow:
     name: astro_airflow
     external: true
       

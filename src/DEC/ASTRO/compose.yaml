@@ -84,8 +84,6 @@ services:
       
       
       - airflow_logs:/usr/local/airflow/logs
-      
-    
 
   dag-processor:
     depends_on:

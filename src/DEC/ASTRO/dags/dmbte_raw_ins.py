@@ -15,15 +15,15 @@ load_dotenv()
 WD = os.getenv('WD')
 
 connection = BaseHook.get_connection("GTBDD_DMBTE")
-
-schema = "DMBTE"
-
-url = f"postgresql+psycopg2://{connection.login}:{connection.password}@{connection.host}:{connection.port}/{connection.schema}"
+print(connection.schema)
+print(connection.login)
+url = f"postgresql+psycopg2://{connection.login}:{connection.password}@{connection.host}:{connection.port}/GTBDD"
+print(url)
 
 engine = create_engine(url)
 
-with engine.connect() as conn:
-    print(conn)
+with engine.connect() as conn: 
+   print(conn)
 
 @dag(
     start_date=datetime(2025, 8, 30),
@@ -36,15 +36,15 @@ def DMBTE_INSERT():
         pass
 
     t18 = EmptyOperator(task_id="t2")
-    insert_csv(file_path, schema, table)
+    #insert_csv(file_path, connection.schema, table)
 
 
-def insert_csv(file_path, schema, table, sep=","):
+# def insert_csv(file_path, schema, table, sep=","):
 
     
-    insert_query = """
-    LOAD DATA LOCAL INFILE ?
-    INTO TABLE ?.? FIELDS TERMINATED BY ?;
-    """
-    cursor.execute(insert_query, (file_path, schema, table, sep))
+#     insert_query = """
+#     LOAD DATA LOCAL INFILE ?
+#     INTO TABLE ?.? FIELDS TERMINATED BY ?;
+#     """
+#     cursor.execute(insert_query, (file_path, schema, table, sep))
 
