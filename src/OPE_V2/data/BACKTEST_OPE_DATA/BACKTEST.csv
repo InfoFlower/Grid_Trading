@@ -1,2 +1,2 @@
 BacktestId,TradingSessionType,HistoricalStartTimestamp,HistoricalEndTimestamp,Symbol,StrategyName,StrategyType,InitialMoney,OperationalStartTimestamp
-0,BACKTEST,1511776434000,1511826483000,BTCUSDT,,StrategyType.DUMB,1000,2025-09-29 21:00:53.692897
+0,BACKTEST,2017-11-27 10:53:54,2017-11-28 00:48:03,BTCUSDT,,StrategyType.DUMB,1000,2025-09-29 21:45:38.747198

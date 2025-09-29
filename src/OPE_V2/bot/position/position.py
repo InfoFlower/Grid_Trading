@@ -27,7 +27,7 @@ class Position:
     side : PositionSide
     
     #Events
-    position_event_timestamp : int
+    position_event_timestamp : datetime
     position_event : EventType
     
     #Optionnel

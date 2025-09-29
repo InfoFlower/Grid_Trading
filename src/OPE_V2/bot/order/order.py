@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Optional, ClassVar, Dict
+from datetime import datetime
 
 from event.event import EventType
 
@@ -23,7 +24,7 @@ class Order:
     leverage : float
 
     # Events
-    order_event_timestamp : int
+    order_event_timestamp : datetime
     order_event : EventType
 
     #Optionnel

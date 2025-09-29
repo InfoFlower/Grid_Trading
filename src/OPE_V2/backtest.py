@@ -38,8 +38,8 @@ class Backtest:
 
         self.id : int = 0 #SHA1
         self.label_id : str = "AAA"
-        self.historical_start_timestamp : int = data_provider.initial_data['TimeCol']
-        self.historical_end_timestamp : int = data_provider.last_data['TimeCol']
+        self.historical_start_timestamp : datetime = datetime.fromtimestamp(data_provider.initial_data['TimeCol']/1000)
+        self.historical_end_timestamp : datetime = datetime.fromtimestamp(data_provider.last_data['TimeCol']/1000)
         self.pair : str = data_provider.pair
         self.strategy_name : str = strategy.strategy_name
         self.strategy_type : StrategyType = strategy.strategy_type

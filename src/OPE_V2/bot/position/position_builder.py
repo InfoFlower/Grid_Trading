@@ -15,10 +15,11 @@ class PositionBuilder:
         """
         """
         current_candle = self.data_cache.get_market_candle
+        current_candle_datetime = datetime.fromtimestamp(current_candle['TimeCol']/1000)
 
         position_params = {}
         position_params['order_id'] = order.id
-        position_params['position_event_timestamp'] = current_candle['TimeCol']
+        position_params['position_event_timestamp'] = current_candle_datetime
         position_params['entry_price'] = order.level
         position_params['asset_qty'] = order.asset_qty
         position_params['leverage'] = order.leverage
@@ -42,12 +43,13 @@ class PositionBuilder:
     def modify(self, position : Position, event_type : EventType, close_type : PositionCloseType) -> Position:
 
         current_candle = self.data_cache.get_market_candle
+        current_candle_datetime = datetime.fromtimestamp(current_candle['TimeCol']/1000)
 
         if event_type == EventType.POSITION_CLOSED:
 
             position.position_event = event_type
             position.close_type = close_type
-            position.position_event_timestamp = current_candle['TimeCol']
+            position.position_event_timestamp = current_candle_datetime
             
             if close_type == PositionCloseType.TAKEPROFIT:
                 position.close_price = position.tp_price
