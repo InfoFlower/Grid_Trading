@@ -1,5 +1,7 @@
 import os
 from dotenv import load_dotenv
+import pandas as pd
+import csv
 
 from bot.order.order import Order
 from bot.position.position import Position
@@ -7,13 +9,37 @@ from event.event import EventType, EventDispatcher, Event
 from backtest import Backtest
 from portfolio.portfolio import Portfolio
 
-from data.data_utils import simple_json_to_csv
-
-
 load_dotenv()
 WD = os.getenv('WD')
 
 dir = f"{WD}src/OPE_V2/data/BACKTEST_OPE_DATA"
+
+def strategy_param_json_to_csv(id : str|int, data : dict, filepath_out : str):
+    """
+    Prend un json simple (un seul niveau, Dict[k, v : v==scalar])
+    {
+    'level': 9345.0,
+    'asset_qty': 0.001,
+    'leverage': 1.0,
+    'tp_pct': 0.01,
+    'sl_pct': 0.005
+    }
+    
+    Retourne un csv : id,key,value
+
+    id,key,value
+    id,level,9345.0
+    id,asset_qty,0.001
+    id,leverage,1.0
+    id,tp_pct,0.01
+    id,sl_pct,0.005
+    """
+    print(data)
+    with open(filepath_out, "w", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["id", "key", "value"])  # en-têtes
+        for k, v in data.items():
+            writer.writerow([id, k, v])
 
 class CSVDataWriter:
 
@@ -142,8 +168,7 @@ class CSVDataWriter:
         if obj.__class__ == Backtest:
             key = 'BACKTEST'
             self.backtest_id = obj.id
-            print(obj.strategy_params)
-            simple_json_to_csv(obj.strategy_params, f"{dir}/STRATEGY_PARAMS.csv")
+            strategy_param_json_to_csv(self.backtest_id, obj.strategy_params, f"{dir}/STRATEGY_PARAM.csv")
             
             
             #map = self.mapping_backtest(event)

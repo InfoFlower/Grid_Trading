@@ -79,6 +79,7 @@ mapping_file_table = [
     (f"{DATA_DIR}/ORDER.csv", 'e_order'),
     (f"{DATA_DIR}/POSITION.csv", 'e_position'),
     (f"{DATA_DIR}/BACKTEST.csv", 'e_trading_session'),
+    (f"{DATA_DIR}/STRATEGY_PARAM.csv", 'e_strategy_param'),
 ]
 
 @dag(
