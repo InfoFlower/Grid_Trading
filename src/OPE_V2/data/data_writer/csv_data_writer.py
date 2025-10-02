@@ -7,6 +7,8 @@ from event.event import EventType, EventDispatcher, Event
 from backtest import Backtest
 from portfolio.portfolio import Portfolio
 
+from data.data_utils import simple_json_to_csv
+
 
 load_dotenv()
 WD = os.getenv('WD')
@@ -140,19 +142,25 @@ class CSVDataWriter:
         if obj.__class__ == Backtest:
             key = 'BACKTEST'
             self.backtest_id = obj.id
-            map = self.mapping_backtest(event)
-        elif obj.__class__ == Portfolio:
-            key = 'PORTFOLIO'
-            map = self.mapping_portfolio(event)
-        elif obj.__class__ == Order:
-            key = 'ORDER'
-            map = self.mapping_order(event)
-        elif obj.__class__ == Position:
-            key = 'POSITION'
-            map = self.mapping_position(event)
+            print(obj.strategy_params)
+            simple_json_to_csv(obj.strategy_params, f"{dir}/STRATEGY_PARAMS.csv")
+            
+            
+            #map = self.mapping_backtest(event)
 
-        with open (self.files_path[key], 'a') as f:
-            f.write('\n'+self.sep.join([str(map[column]) for column in self.METADATA[key]]))
-            f.close()
+
+        # elif obj.__class__ == Portfolio:
+        #     key = 'PORTFOLIO'
+        #     map = self.mapping_portfolio(event)
+        # elif obj.__class__ == Order:
+        #     key = 'ORDER'
+        #     map = self.mapping_order(event)
+        # elif obj.__class__ == Position:
+        #     key = 'POSITION'
+        #     map = self.mapping_position(event)
+
+        # with open (self.files_path[key], 'a') as f:
+        #     f.write('\n'+self.sep.join([str(map[column]) for column in self.METADATA[key]]))
+        #     f.close()
 
 
