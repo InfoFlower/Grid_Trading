@@ -113,7 +113,8 @@ class Make_Op_data:
                     start_time=time.time()
                     logging.info(f"Partition {i[1]} done in {time_partition} seconds | {time.time()}")
                     i[5]=f.tell()
-                    writer.write(f'{i[0]};{i[1]};{i[2]};{i[3]-1};{i[4]};{i[5]}\n')
+                    #writer.write(f'{i[0]};{i[1]};{i[2]};{i[3]-1};{i[4]};{i[5]}\n')
+                    writer.write(f'\n{i[0]};{i[1]};{i[2]};{i[3]-1};{i[4]};{i[5]}')
                     i[1]+=1
                     i[4]=i[5]
                     i[2]=i[3]
@@ -129,7 +130,7 @@ class Make_Op_data:
 
     def make_file(self,path,clean):
         Opath=path[:path.rfind(self.path_sep)]
-        Opath=Opath[path.find(self.path_sep)+1:]
+        Opath=Opath[path.find(self.path_sep)+1:] #xxx/Opath/ "data/DATA_RAW_S_ORIGIN/data_raw_BTCUSDT.csv"
         self.datatype=path[path.find(self.path_sep)+1:path.rfind(self.path_sep)]
         self.File_name=path[path.rfind(self.path_sep)+1:path.rfind('.')]
         self.write_index_path=f'data/OPE_DATA/{Opath}/{self.File_name}_{self.suffix}.csv'
@@ -159,7 +160,10 @@ class Make_Op_data:
 if __name__ == '__main__':
 
     cols=['Open time', 'Open', 'High', 'Low', 'Close', 'Volume', 'Close time', 'Quote asset volume', 'Number of trades', 'Taker buy base asset volume', 'Taker buy quote asset volume', 'Ignore']
-    symbol=['BTCUSDT','ADAUSDT','DOGEUSDT','DOTUSDT','ETHUSDT','SOLUSDT','XRPUSDT']
-    appel=GetData(cols)
-    for i in symbol:
-        appel(i)
+    # #symbol=['BTCUSDT','ADAUSDT','DOGEUSDT','DOTUSDT','ETHUSDT','SOLUSDT','XRPUSDT']
+    # symbol=['BTCUSDT']
+    # appel=GetData(cols, "DATA_RAW_S_ORIGIN")
+    # for i in symbol:
+    #     appel(i)
+    op_data = Make_Op_data(partition=20000,nb_core=4,suffix='test_code',path_sep='/')
+    op_data("data/DATA_RAW_S_ORIGIN/data_raw_BTCUSDT.csv", cols)
