@@ -1,4 +1,5 @@
 import os
+import shutil
 from dotenv import load_dotenv
 import pandas as pd
 import csv
@@ -34,7 +35,7 @@ def strategy_param_json_to_csv(id : str|int, data : dict, filepath_out : str):
     id,tp_pct,0.01
     id,sl_pct,0.005
     """
-    print(data)
+
     with open(filepath_out, "w", newline="") as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(["id", "key", "value"])  # en-têtes
@@ -74,7 +75,7 @@ class CSVDataWriter:
         self.sep = sep
         self.files_path = {}
         self.event_dispatcher = event_dispatcher
-        #self.output_dir = output_dir
+        self.output_dir = output_dir
 
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
@@ -89,8 +90,8 @@ class CSVDataWriter:
 
         for event_type in self.EVENTS:
             event_dispatcher.add_listeners(event_type, self.log)
-
         
+        event_dispatcher.add_listeners(EventType.END_BACKTEST, self.get_market_data)
 
     def mapping_order(self, event : Event) -> dict:
 
@@ -162,6 +163,11 @@ class CSVDataWriter:
             'PositionShortAsset' : portfolio.portfolio_balance.positions.short,
             'OperationalTimestamp' : event.timestamp
         }
+        
+    def get_market_data(self, event : Event):
+        file_path = event.data['market_data_file_path']
+        shutil.copy(file_path, f"{self.output_dir}/MARKET_DATA.csv")
+
     def log(self, event : Event) -> None:
 
         obj = event.data
@@ -169,23 +175,19 @@ class CSVDataWriter:
             key = 'BACKTEST'
             self.backtest_id = obj.id
             strategy_param_json_to_csv(self.backtest_id, obj.strategy_params, f"{dir}/STRATEGY_PARAM.csv")
-            
-            
-            #map = self.mapping_backtest(event)
+            map = self.mapping_backtest(event)
+        elif obj.__class__ == Portfolio:
+            key = 'PORTFOLIO'
+            map = self.mapping_portfolio(event)
+        elif obj.__class__ == Order:
+            key = 'ORDER'
+            map = self.mapping_order(event)
+        elif obj.__class__ == Position:
+            key = 'POSITION'
+            map = self.mapping_position(event)
 
-
-        # elif obj.__class__ == Portfolio:
-        #     key = 'PORTFOLIO'
-        #     map = self.mapping_portfolio(event)
-        # elif obj.__class__ == Order:
-        #     key = 'ORDER'
-        #     map = self.mapping_order(event)
-        # elif obj.__class__ == Position:
-        #     key = 'POSITION'
-        #     map = self.mapping_position(event)
-
-        # with open (self.files_path[key], 'a') as f:
-        #     f.write('\n'+self.sep.join([str(map[column]) for column in self.METADATA[key]]))
-        #     f.close()
+        with open (self.files_path[key], 'a') as f:
+            f.write('\n'+self.sep.join([str(map[column]) for column in self.METADATA[key]]))
+            f.close()
 
 

@@ -20,14 +20,13 @@ class CSVDataProvider(DataProvider):
 
         self.event_dispatcher = event_dispatcher
         self.file_path = file_path
-        print(file_path)
         self.pair = file_path.split("/")[-1].split("_")[2] ### ATTENTION AU CHANGEMENT DE FORMAT DANS LE NOM DES FICHIERS
 
         #Initialisation de la data
         data = pl.read_csv(file_path, truncate_ragged_lines=True)
         self.data = data[self.CSV_DATA_STRUCTURE]
         self.data.columns = self.DATA_STRUCTURE
-    
+
     @property
     def initial_data(self) -> Dict[str, float | int]:
         return self.data.row(0, named=True)

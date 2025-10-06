@@ -24,7 +24,7 @@ class TradingBot:
 
         self.event_dispatcher.dispatch(Event(
                             type = EventType.END_BACKTEST,
-                            data = 'fin backtest',
+                            data = {'market_data_file_path':self.data_provider.file_path},
                             timestamp = datetime.now()
                         ))
 

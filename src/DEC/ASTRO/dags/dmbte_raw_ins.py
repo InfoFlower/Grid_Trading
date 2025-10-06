@@ -62,8 +62,6 @@ def insert_csv(file_path, schema, table, sep=","):
         sep=sql.Literal(sep)
     )
 
-    # connection = BaseHook.get_connection("GTBDD_DMBTE")
-    # url = f"postgresql+psycopg2://{connection.login}:{connection.password}@{connection.host}:{connection.port}/{connection.schema}"
     connection, url = connection_url(CONNEXION_ID)
     engine = create_engine(url)
     
