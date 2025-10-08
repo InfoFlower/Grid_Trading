@@ -134,8 +134,8 @@ class Make_Op_data:
         self.datatype=path[path.find(self.path_sep)+1:path.rfind(self.path_sep)]
         self.File_name=path[path.rfind(self.path_sep)+1:path.rfind('.')]
         self.write_index_path=f'data/OPE_DATA/{Opath}/{self.File_name}_{self.suffix}.csv'
-        if Opath not in os.listdir('data/OPE_DATA'): 
-            os.makedirs('data/OPE_DATA/'+Opath)
+        # if Opath not in os.listdir('data/OPE_DATA'): 
+        #     os.makedirs('data/OPE_DATA/'+ Opath)
         if f'data/OPE_DATA/{self.datatype}_{self.suffix}' not in os.listdir('data/OPE_DATA/'):
             if clean : self.clean_partition()
             os.makedirs(f'data/OPE_DATA/{self.datatype}_{self.suffix}')

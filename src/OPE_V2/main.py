@@ -20,7 +20,7 @@ load_dotenv()
 WD = os.getenv('WD')
 
 event_dispatcher = EventDispatcher()
-data_provider = CSVDataProvider(file_path=f'{WD}data/OPE_DATA/DATA_RAW_S_ORIGIN_test_code/data_raw_BTCUSDT_176.csv',
+data_provider = CSVDataProvider(file_path=f'{WD}data/OPE_DATA/data_raw_BTCUSDT_176.csv',
                                     event_dispatcher = event_dispatcher)
 
 ########## USER (FAIRE UN USER, pour rentrer les params (strat et backtest) ######################
