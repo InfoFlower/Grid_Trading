@@ -15,39 +15,13 @@ WD = os.getenv('WD')
 
 dir = f"{WD}src/OPE_V2/data/BACKTEST_OPE_DATA"
 
-def strategy_param_json_to_csv(id : str|int, data : dict, filepath_out : str):
-    """
-    Prend un json simple (un seul niveau, Dict[k, v : v==scalar])
-    {
-    'level': 9345.0,
-    'asset_qty': 0.001,
-    'leverage': 1.0,
-    'tp_pct': 0.01,
-    'sl_pct': 0.005
-    }
-    
-    Retourne un csv : id,key,value
-
-    id,key,value
-    id,level,9345.0
-    id,asset_qty,0.001
-    id,leverage,1.0
-    id,tp_pct,0.01
-    id,sl_pct,0.005
-    """
-
-    with open(filepath_out, "w", newline="") as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(["id", "key", "value"])  # en-têtes
-        for k, v in data.items():
-            writer.writerow([id, k, v])
-
 class CSVDataWriter:
 
     METADATA = {
         'BACKTEST' : ['BacktestId', 'TradingSessionType', 'HistoricalStartTimestamp','HistoricalEndTimestamp','Symbol',
                       'StrategyName','StrategyType',#'StrategyParams',
                       'InitialMoney','OperationalStartTimestamp'],
+        'STRATEGY_PARAM' : ["BacktestId", "ParamId", "Key", "Value"],
         'ORDER' : ['BacktestId', 'OrderId', 'OrderEventTimestamp', 'OrderEventType',
                    'OrderSide', 'OrderLevel','OrderAssetQty', 'OrderLeverage',
                    'OrderTakeprofitPrice','OrderStoplossPrice','OperationalTimestamp'],
@@ -138,7 +112,7 @@ class CSVDataWriter:
         backtest : Backtest = event.data
         return {
             'BacktestId' : backtest.id,
-            'TradingSessionType': "BACKTEST",
+            'TradingSessionType': backtest.trading_session_type,
             'HistoricalStartTimestamp' : backtest.historical_start_timestamp,
             'HistoricalEndTimestamp' : backtest.historical_end_timestamp,
             'Symbol' : backtest.pair,
@@ -168,13 +142,41 @@ class CSVDataWriter:
         file_path = event.data['market_data_file_path']
         shutil.copy(file_path, f"{self.output_dir}/MARKET_DATA.csv")
 
+    def strategy_param_json_to_csv(self, id : str|int, data : dict, filepath_out : str):
+        """
+        Prend un json simple (un seul niveau, Dict[k, v : v==scalar])
+        {
+        'level': 9345.0,
+        'asset_qty': 0.001,
+        'leverage': 1.0,
+        'tp_pct': 0.01,
+        'sl_pct': 0.005
+        }
+        
+        Retourne un csv : backtest_id,param_id,key,value
+
+        id,key,value
+        id,level,9345.0
+        id,asset_qty,0.001
+        id,leverage,1.0
+        id,tp_pct,0.01
+        id,sl_pct,0.005
+        """
+
+        with open(filepath_out, "w", newline="") as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(["BacktestId", "ParamId", "Key", "Value"])  # en-têtes
+            for i, (k, v) in enumerate(data.items()):
+                writer.writerow([id, i, k, v])
+
+
     def log(self, event : Event) -> None:
 
         obj = event.data
         if obj.__class__ == Backtest:
             key = 'BACKTEST'
             self.backtest_id = obj.id
-            strategy_param_json_to_csv(self.backtest_id, obj.strategy_params, f"{dir}/STRATEGY_PARAM.csv")
+            self.strategy_param_json_to_csv(self.backtest_id, obj.strategy_params, f"{dir}/STRATEGY_PARAM.csv")
             map = self.mapping_backtest(event)
         elif obj.__class__ == Portfolio:
             key = 'PORTFOLIO'

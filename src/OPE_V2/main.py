@@ -1,5 +1,6 @@
 #Main de test au moins pour le moment
 import os
+from enum import Enum
 from dotenv import load_dotenv
 
 from trading_bot import TradingBot

@@ -5,11 +5,11 @@ import polars as pl
 load_dotenv()
 WD = os.getenv('WD')
 
-
 from data.data_provider.csv_data_provider import CSVDataProvider
 from strategy.strategy import Strategy, StrategyType
 from portfolio.portfolio import Portfolio
 from event.event import EventDispatcher, Event, EventType
+from utils import hash_concat
 
 class Backtest:
 
@@ -36,8 +36,8 @@ class Backtest:
         self.event_dispatcher = event_dispatcher
         self.data_provider = data_provider
 
-        self.id : int = 0 #SHA1
-        self.label_id : str = "AAA"
+        
+        self.trading_session_type : str = "BACKTEST"
         self.historical_start_timestamp : datetime = datetime.fromtimestamp(data_provider.initial_data['TimeCol']/1000)
         self.historical_end_timestamp : datetime = datetime.fromtimestamp(data_provider.last_data['TimeCol']/1000)
         self.pair : str = data_provider.pair
@@ -47,6 +47,7 @@ class Backtest:
         self.initial_money : float = portfolio.initial_cash
         self.technical_start_timestamp : datetime = datetime.now()
         #self.technical_end_timestamp : datetime = datetime.now()
+        self.id : int = hash_concat([self.trading_session_type, datetime.strftime(self.historical_start_timestamp, '%Y-%m-%d %H:%M:%S'), datetime.strftime(self.historical_end_timestamp, '%Y-%m-%d %H:%M:%S'), self.pair, self.strategy_name, self.strategy_type.value, str(self.initial_money)]) #SHA1
 
         event_dispatcher.add_listeners(EventType.END_BACKTEST, self.compute_kpi)
 

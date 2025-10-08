@@ -6,8 +6,6 @@ from data.data_provider.csv_data_provider import CSVDataProvider
 
 from event.event import EventDispatcher, Event, EventType
 
-
-
 class TradingBot:
 
     #position_manager : PositionManager
