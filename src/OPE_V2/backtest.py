@@ -37,7 +37,7 @@ class Backtest:
         self.data_provider = data_provider
 
         
-        self.trading_session_type : str = "BACKTEST"
+        #self.trading_session_type : str = "BACKTEST"
         self.historical_start_timestamp : datetime = datetime.fromtimestamp(data_provider.initial_data['TimeCol']/1000)
         self.historical_end_timestamp : datetime = datetime.fromtimestamp(data_provider.last_data['TimeCol']/1000)
         self.pair : str = data_provider.pair
@@ -47,7 +47,7 @@ class Backtest:
         self.initial_money : float = portfolio.initial_cash
         self.technical_start_timestamp : datetime = datetime.now()
         #self.technical_end_timestamp : datetime = datetime.now()
-        self.id : int = hash_concat([self.trading_session_type, datetime.strftime(self.historical_start_timestamp, '%Y-%m-%d %H:%M:%S'), datetime.strftime(self.historical_end_timestamp, '%Y-%m-%d %H:%M:%S'), self.pair, self.strategy_name, self.strategy_type.value, str(self.initial_money)]) #SHA1
+        self.id : int = hash_concat([datetime.strftime(self.historical_start_timestamp, '%Y-%m-%d %H:%M:%S'), datetime.strftime(self.historical_end_timestamp, '%Y-%m-%d %H:%M:%S'), self.pair, self.strategy_name, self.strategy_type.value, str(self.initial_money)]) #SHA1
 
         event_dispatcher.add_listeners(EventType.END_BACKTEST, self.compute_kpi)
 

@@ -18,7 +18,8 @@ dir = f"{WD}src/OPE_V2/data/BACKTEST_OPE_DATA"
 class CSVDataWriter:
 
     METADATA = {
-        'BACKTEST' : ['BacktestId', 'TradingSessionType', 'HistoricalStartTimestamp','HistoricalEndTimestamp','Symbol',
+        'BACKTEST' : ['BacktestId', #'TradingSessionType', 
+                      'HistoricalStartTimestamp','HistoricalEndTimestamp','Symbol',
                       'StrategyName','StrategyType',#'StrategyParams',
                       'InitialMoney','OperationalStartTimestamp'],
         'STRATEGY_PARAM' : ["BacktestId", "ParamId", "Key", "Value"],
@@ -112,7 +113,7 @@ class CSVDataWriter:
         backtest : Backtest = event.data
         return {
             'BacktestId' : backtest.id,
-            'TradingSessionType': backtest.trading_session_type,
+            #'TradingSessionType': backtest.trading_session_type,
             'HistoricalStartTimestamp' : backtest.historical_start_timestamp,
             'HistoricalEndTimestamp' : backtest.historical_end_timestamp,
             'Symbol' : backtest.pair,

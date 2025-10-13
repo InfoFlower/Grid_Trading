@@ -19,7 +19,7 @@ load_dotenv()
 WD = os.getenv('WD')
 
 DATA_DIR = Variable.get('DATA_DIR')
-CONNEXION_ID = 'GTBDD_DMBTE'
+CONNEXION_ID = 'GTBDD'
 SCHEMA = 'DMBTE'
 
 def connection_url(conn_id):
@@ -76,7 +76,7 @@ def insert_csv(file_path, schema, table, sep=","):
 mapping_file_table = [
     (f"{DATA_DIR}/ORDER.csv", 'e_order'),
     (f"{DATA_DIR}/POSITION.csv", 'e_position'),
-    (f"{DATA_DIR}/BACKTEST.csv", 'e_trading_session'),
+    (f"{DATA_DIR}/BACKTEST.csv", 'e_backtest'),
     (f"{DATA_DIR}/STRATEGY_PARAM.csv", 'e_strategy_param'),
     (f"{DATA_DIR}/MARKET_DATA.csv", 'e_market_data'),
 ]
