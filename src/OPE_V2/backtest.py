@@ -9,7 +9,7 @@ from data.data_provider.csv_data_provider import CSVDataProvider
 from strategy.strategy import Strategy, StrategyType
 from portfolio.portfolio import Portfolio
 from event.event import EventDispatcher, Event, EventType
-from utils import hash_concat
+from utils.utils import hash_concat
 
 class Backtest:
 
