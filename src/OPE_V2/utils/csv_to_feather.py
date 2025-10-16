@@ -23,7 +23,8 @@ def csv_file_to_parquet(file_in : str, file_out : str):
     df = pd.read_csv(file_in)
     df.to_parquet(file_out)
 
-file = f"{WD}data/DATA_RAW_S_ORIGIN/data_raw_BTCUSDT"
+file = f"{WD}data/DATA_RAW_S_ORIGIN/test/data_raw_BTCUSDT_1-5_awk"
+
 
 file_in = f"{file}.csv"
 
