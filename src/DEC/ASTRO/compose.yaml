@@ -44,9 +44,9 @@ services:
       POSTGRES_PASSWORD: postgres
 
   db-migration:
+    build : .
     depends_on:
       - postgres
-    image: astro_c15280/airflow:latest
     command:
       - airflow
       - db
@@ -60,9 +60,9 @@ services:
     environment: *common-env-vars
 
   scheduler:
+    build : .
     depends_on:
       - db-migration
-    image: astro_c15280/airflow:latest
     command:
       - airflow
       - scheduler
@@ -86,9 +86,9 @@ services:
       - airflow_logs:/usr/local/airflow/logs
 
   dag-processor:
+    build : .
     depends_on:
       - db-migration
-    image: astro_c15280/airflow:latest
     command:
       - airflow
       - dag-processor
@@ -112,9 +112,9 @@ services:
     
 
   api-server:
+    build : .
     depends_on:
       - db-migration
-    image: astro_c15280/airflow:latest
     command:
       - airflow
       - api-server
@@ -136,13 +136,11 @@ services:
       - /home/luludocteur/Documents/GROTTE/TRADING_BOT/Grid_Trading/src/DEC/ASTRO/tests:/usr/local/airflow/tests:z
 
       - airflow_logs:/usr/local/airflow/logs
-      
-    
 
   triggerer:
+    build : .
     depends_on:
       - db-migration
-    image: astro_c15280/airflow:latest
     command:
       - airflow
       - triggerer

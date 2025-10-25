@@ -4,20 +4,16 @@ services:
 
   db:
     image: postgres
-
     container_name: GTBDD
-
+    restart: unless-stopped
     volumes:
       - postgresql_GTBDD:/data/db
-
     environment:
       POSTGRES_PASSWORD: LenulAlex
       POSTGRES_USER: LeRequeteur
       POSTGRES_DB: GTBDD
-
     ports:
       - "5432:5432"
-
     networks:
       - astro_airflow
 
