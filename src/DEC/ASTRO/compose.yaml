@@ -60,7 +60,7 @@ services:
     environment: *common-env-vars
 
   scheduler:
-    build : .
+    build: .
     depends_on:
       - db-migration
     command:
@@ -86,7 +86,7 @@ services:
       - airflow_logs:/usr/local/airflow/logs
 
   dag-processor:
-    build : .
+    build: .
     depends_on:
       - db-migration
     command:
@@ -112,7 +112,7 @@ services:
     
 
   api-server:
-    build : .
+    build: .
     depends_on:
       - db-migration
     command:
@@ -138,7 +138,7 @@ services:
       - airflow_logs:/usr/local/airflow/logs
 
   triggerer:
-    build : .
+    build: .
     depends_on:
       - db-migration
     command:
