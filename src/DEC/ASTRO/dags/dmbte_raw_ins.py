@@ -1,7 +1,6 @@
 import os
 import sys
 
-
 from airflow.decorators import dag, task
 from airflow.hooks.base import BaseHook
 from airflow.models import Variable
