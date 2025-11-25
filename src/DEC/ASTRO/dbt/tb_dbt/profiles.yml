@@ -1,0 +1,12 @@
+tb_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      user: LeRequeteur
+      password: LenulAlex
+      port: 5432
+      dbname: GTBDD
+      schema: dmbtc
+      threads: 4

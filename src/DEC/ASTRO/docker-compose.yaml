@@ -87,6 +87,7 @@ services:
       - ./include:/usr/local/airflow/include:z
       - ./tests:/usr/local/airflow/tests:z
       - ./data:/usr/local/airflow/data:z
+      - ./dbt:/usr/local/airflow/dbt:z
       
       
       - airflow_logs:/usr/local/airflow/logs
@@ -112,6 +113,7 @@ services:
       - ./plugins:/usr/local/airflow/plugins:z
       - ./include:/usr/local/airflow/include:z
       - ./tests:/usr/local/airflow/tests:z
+      - ./dbt:/usr/local/airflow/dbt:z
       
       - airflow_logs:/usr/local/airflow/logs
       
@@ -140,6 +142,7 @@ services:
       - ./plugins:/usr/local/airflow/plugins:z
       - ./include:/usr/local/airflow/include:z
       - ./tests:/usr/local/airflow/tests:z
+      - ./dbt:/usr/local/airflow/dbt:z
 
       - airflow_logs:/usr/local/airflow/logs
 
@@ -164,6 +167,7 @@ services:
       - ./plugins:/usr/local/airflow/plugins:z
       - ./include:/usr/local/airflow/include:z
       - ./data:/usr/local/airflow/data:z
+      - ./dbt:/usr/local/airflow/dbt:z
 
 
       - airflow_logs:/usr/local/airflow/logs

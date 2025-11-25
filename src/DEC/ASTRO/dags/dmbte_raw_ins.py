@@ -4,9 +4,6 @@ import sys
 from airflow.decorators import dag, task
 from airflow.hooks.base import BaseHook
 from airflow.models import Variable
-from airflow.operators.empty import EmptyOperator
-#from airflow.operators.postgresql import PostgresOperator
-from airflow.operators.python import PythonOperator
 
 from pendulum import datetime
 from sqlalchemy import create_engine
