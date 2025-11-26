@@ -11,13 +11,11 @@ _project_config = ProjectConfig(
 )
 
 _profile_config = ProfileConfig(
-    profile_name="tb_dbt",
+    profile_name="default",
     target_name="dev",
     profile_mapping=PostgresUserPasswordProfileMapping(
         conn_id="GTBDD",
-        profile_args={
-            "schema":'dmbtc'
-        }
+        profile_args={"schema":'dmbtc'}
     )
 )
 

@@ -33,9 +33,8 @@ models:
     # Config indicated by + and applies to all files under models/example/
     example:
       +tags: example
-      +schema: public
       +materialized: view
     dmbtc:
-      +tags: dmbtc
       +materialized: view
+      +tags: dmbtc
 
