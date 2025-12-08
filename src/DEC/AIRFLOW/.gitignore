@@ -1,0 +1,7 @@
+.git
+.env
+.DS_Store
+*/__pycache__/
+*/airflow.cfg
+data/
+logs/

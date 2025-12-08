@@ -1,8 +1,8 @@
 import os
 import sys
 
-from airflow.sdk import dag, task
-from airflow.sdk.bases.hook import BaseHook
+from airflow.decorators import dag, task
+from airflow.hooks.base import BaseHook
 from airflow.models import Variable
 
 from pendulum import datetime

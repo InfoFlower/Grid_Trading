@@ -15,11 +15,11 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - astro_airflow
+      - airflow_default
 
 networks:
-  astro_airflow:
-    name: astro_airflow
+  airflow_default:
+    name: airflow_default
     external: true
       
 volumes:
