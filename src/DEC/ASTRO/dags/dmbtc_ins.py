@@ -1,5 +1,6 @@
+from airflow import DAG
 from cosmos import DbtDag, RenderConfig
-from pendulum import datetime
+from datetime import datetime
 
 from include.dbt_profiles import _project_config, _profile_config, _execution_config
 

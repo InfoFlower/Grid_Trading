@@ -2,7 +2,7 @@ from airflow.decorators import dag
 from dbt_airflow.core.task_group import DbtTaskGroup
 from datetime import datetime
 
-from plugins.dbt_profiles import dbt_project_config, dbt_profile_config, dbt_airflow_config
+from include.dbt_profiles import dbt_project_config, dbt_profile_config, dbt_airflow_config
 
 @dag(
     dag_id='DMBTC_LOAD_VIEW',
