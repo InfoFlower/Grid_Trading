@@ -3,7 +3,7 @@ tb_dbt:
   outputs:
     dev:
       type: postgres
-      host: 172.21.0.9
+      host: 172.21.0.3
       user: LeRequeteur
       password: LenulAlex
       port: 5432

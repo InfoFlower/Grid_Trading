@@ -35,6 +35,7 @@ models:
       +tags: example
       +materialized: view
       +schema: public
+
     dmbtc:
       +materialized: view
       +tags: dmbtc
