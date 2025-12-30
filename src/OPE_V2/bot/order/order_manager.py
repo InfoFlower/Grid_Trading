@@ -47,12 +47,14 @@ class OrderManager:
                 if order.id in self.order_book:
                     raise KeyError(f"Order {order.id} already exists in the order book") 
             
+                print("###ORDER###")
                 self.order_book[order.id] = order
                 self.event_dispatcher.dispatch(Event(
                             type = EventType.ORDER_CREATED,
                             data = order,
                             timestamp = datetime.now()
                         ))
+
             else :
                 k, v = order_already_exists.popitem()
                 print(f"L'ordre {k} ({v.level, v.side}) existe déjà")
