@@ -63,8 +63,6 @@ def insert_csv(file_path, schema, table, sep=","):
     
     fake_conn = engine.raw_connection()
     fake_cur = fake_conn.cursor()
-    print("aahahahah")
-    print(os.getcwd())
     with open(file_path, "r") as f:
         fake_cur.copy_expert(insert_query.as_string(connection), f)
     fake_conn.commit()
