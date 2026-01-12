@@ -8,5 +8,5 @@ tb_dbt:
       password: LenulAlex
       port: 5432
       dbname: GTBDD
-      schema: dmbtc
+      schema: public
       threads: 4

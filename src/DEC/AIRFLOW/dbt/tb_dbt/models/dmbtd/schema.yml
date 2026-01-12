@@ -1,17 +1,17 @@
 version: 2
 
 models:
-  - name: c_market_data
+  - name: d_market_data
     description: market data pour les backtests à intégrer
 
-  - name: c_backtest
+  - name: d_backtest
     description: informations sur les backtests joués
 
-  - name: c_strategy_param
+  - name: d_strategy_param
     description: paramètres utilisés pour un backtest
 
-  - name: c_order
+  - name: d_order
     description: tous les ordres des backtest
 
-  - name: c_position
+  - name: d_position
     description: toutes les positions des backtest

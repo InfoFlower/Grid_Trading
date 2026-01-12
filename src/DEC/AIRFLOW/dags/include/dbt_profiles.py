@@ -19,7 +19,8 @@ dbt_profile_config = DbtProfileConfig(
     target="dev"
 )
 
-dbt_airflow_config = DbtAirflowConfig(
-    execution_operator=ExecutionOperator.BASH,
-    include_tags=['dmbtc']
-)
+def dbt_airflow_config(tags):
+    return DbtAirflowConfig(
+        execution_operator=ExecutionOperator.BASH,
+        include_tags=tags
+    )

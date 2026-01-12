@@ -1,0 +1,10 @@
+version: 2
+sources:
+  - name: dmbtc
+    schema: dmbtc
+    tables:
+      - name: c_market_data
+      - name: c_backtest
+      - name: c_order
+      - name: c_position
+      - name: c_strategy_param

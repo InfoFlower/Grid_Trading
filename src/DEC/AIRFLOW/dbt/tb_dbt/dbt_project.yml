@@ -39,4 +39,11 @@ models:
     dmbtc:
       +materialized: view
       +tags: dmbtc
+      +schema: dmbtc
+
+    dmbtd:
+      +materialized: incremental
+      +tags: dmbtd
+      +schema: dmbtd
+      incremental_strategy: 'delete+insert'
 

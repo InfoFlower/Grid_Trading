@@ -80,6 +80,7 @@ mapping_file_table = [
 @dag(
     start_date=datetime(2025, 8, 30),
     catchup=False,
+    schedule=None
 ) 
 def DMBTE_INSERT():
 
