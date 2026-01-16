@@ -3,6 +3,7 @@ import sys
 
 from airflow.decorators import dag, task
 from airflow.hooks.base import BaseHook
+from airflow.datasets import Dataset
 from airflow.models import Variable
 
 from pendulum import datetime
@@ -17,6 +18,10 @@ WD = os.getenv('WD')
 DATA_DIR = Variable.get('DATA_DIR')
 CONNEXION_ID = 'GTBDD'
 SCHEMA = 'DMBTE'
+
+#DATASETS
+schedule_dataset = None
+outlets_dataset = Dataset("DMBTE")
 
 def connection_url(conn_id):
     """
@@ -69,6 +74,10 @@ def insert_csv(file_path, schema, table, sep=","):
     fake_cur.close()
     fake_conn.close()
 
+@task(outlets=outlets_dataset)
+def dataset_outlet():
+    pass
+
 mapping_file_table = [
     (f"{DATA_DIR}/ORDER.csv", 'e_order'),
     (f"{DATA_DIR}/POSITION.csv", 'e_position'),
@@ -80,12 +89,10 @@ mapping_file_table = [
 @dag(
     start_date=datetime(2025, 8, 30),
     catchup=False,
-    schedule=None
+    schedule=schedule_dataset
 ) 
 def DMBTE_INSERT():
 
-    
-    
     for file, table in mapping_file_table:
         
         del_task = delete_table.override(task_id=f"delete_{table}")(
@@ -98,7 +105,9 @@ def DMBTE_INSERT():
             schema=SCHEMA,
             table=table)
 
-        del_task >> ins_task
+        del_task >> ins_task 
+
+    dataset_outlet()
 
 
 DMBTE_INSERT()

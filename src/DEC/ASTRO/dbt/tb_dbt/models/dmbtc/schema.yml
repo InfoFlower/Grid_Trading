@@ -1,5 +1,0 @@
-version: 2
-
-models:
-  - name: c_market_data
-    description: market data pour les backtest à intégrer
