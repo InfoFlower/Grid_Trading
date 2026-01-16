@@ -1,5 +1,6 @@
 from airflow.decorators import dag
 from airflow.datasets import Dataset
+from airflow.operators.dummy import DummyOperator
 from dbt_airflow.core.task_group import DbtTaskGroup
 from datetime import datetime
 
@@ -9,7 +10,7 @@ TAGS = ['dmbtc']
 
 #DATASETS
 schedule_dataset = [Dataset("DMBTE")]
-#outlets_dataset = [Dataset("DMBTC")]
+outlets_dataset = [Dataset("DMBTC")]
 
 @dag(
     dag_id='DMBTC_LOAD_VIEW',
@@ -27,6 +28,9 @@ def DMBTC_LOAD_VIEW():
         dbt_airflow_config=dbt_airflow_config(TAGS)
     )
 
-    dtg
+    dataset_task = DummyOperator(task_id="dataset")
+    dataset_task.outlets=outlets_dataset
+
+    dtg >> dataset_task
 
 DMBTC_LOAD_VIEW()

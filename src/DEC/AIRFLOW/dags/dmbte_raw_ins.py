@@ -5,6 +5,7 @@ from airflow.decorators import dag, task
 from airflow.hooks.base import BaseHook
 from airflow.datasets import Dataset
 from airflow.models import Variable
+from airflow.operators.dummy import DummyOperator
 
 from pendulum import datetime
 from sqlalchemy import create_engine
@@ -93,6 +94,8 @@ mapping_file_table = [
 ) 
 def DMBTE_INSERT():
 
+    insert_tasks = []
+
     for file, table in mapping_file_table:
         
         del_task = delete_table.override(task_id=f"delete_{table}")(
@@ -105,9 +108,15 @@ def DMBTE_INSERT():
             schema=SCHEMA,
             table=table)
 
-        del_task >> ins_task 
+        del_task >> ins_task
+        insert_tasks.append(ins_task)
 
-    dataset_outlet()
+    sync_task = DummyOperator(task_id="sync")
+
+    for task in insert_tasks:
+        task >> sync_task
+    
+    sync_task >> dataset_outlet()
 
 
 DMBTE_INSERT()
